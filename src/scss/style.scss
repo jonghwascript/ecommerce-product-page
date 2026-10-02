@@ -6,13 +6,14 @@
 @use 'utilities'as *;
 
 :root {
-  --page-max: 69.375rem;                    // 1110px (디자인 컨테이너)
+  --page-max: 69.375rem; // 1110px (디자인 컨테이너)
 }
 
 body {
   background-color: #fff;
 }
 
+.c-attribution,
 .c-header__inner,
 .c-product {
   --measure: var(--page-max);
@@ -58,7 +59,7 @@ button {
   padding-block: 19px;
   align-items: center;
 
-  .c-header__inner.l-center{
+  .c-header__inner.l-center {
     justify-content: flex-start;
 
     .c-header__start {
@@ -150,10 +151,12 @@ button {
 /* ################# Main   ################ */
 .c-page {
   .c-product {
+
     // border: 1px solid #000;
-    .c-product__layout.l-switcher {
-        --threshold: 61rem;
-      //갤러리정보
+    .c-product__layout {
+      --threshold: 61rem;
+
+      // 상품 컴포넌트 안에서 갤러리가 차지하는 위치·크기 등 배치를 담당
       .c-product__gallery {
         min-inline-size: 0; // = min-width: 0
 
@@ -161,41 +164,7 @@ button {
         @media (max-width: 63.99em) {
           // 프로젝트 분기점에 맞춤
           margin-inline: calc(var(--s1) * -1);
-        }
-
-        .c-gallery__stage {
-          position: relative; //화살표 기준
-
-          .c_gallery__list {
-            .c-gallery__open {
-              .c-gallery__frame {
-                --n: 375;
-                --d: 300;
-              }
-            }
-          }
-
-          //이전 다음 버튼
-          .c-gallery__control {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%); // 세로 중앙
-            z-index: 1; // 슬라이드 위에 표시
-            display: grid;
-            place-items: center;
-            inline-size: 2.5rem; //40px
-            block-size: 2.5rem; //40px
-            border-radius: 50%;
-            background-color: #fff;
-          }
-
-          .c-gallery__control--prev {
-            inset-inline-start: 1rem;
-          }
-
-          .c-gallery__control--next {
-            inset-inline-end: 1rem;
-          }
+          //요소에 좌우 음수 마진을 주면, 해당 요소가 양옆으로 늘어나서 부모 컨테이너의 영역 밖으로
         }
       }
 
@@ -207,15 +176,60 @@ button {
   }
 }
 
+// 갤러리 자체를 독립적인 컴포넌트로 정의
+.c-gallery {
+  .c-gallery__stage {
+    position: relative; //화살표 기준
+
+    .c-gallery__list {
+      //Slick 초기화 전에 나머지 이미지를 숨긴다.
+      &:not(.slick-initialized) {
+        >.c-gallery__open:not(:first-child) {
+          display: none;
+        }
+      }
+
+      .c-gallery__open {
+        .c-gallery__frame {
+          --n: 375;
+          --d: 300;
+        }
+      }
+    }
+
+    //이전 다음 버튼
+    .c-gallery__control {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%); // 세로 중앙
+      z-index: 1; // 슬라이드 위에 표시
+      display: grid;
+      place-items: center;
+      inline-size: 2.5rem; //40px
+      block-size: 2.5rem; //40px
+      border-radius: 50%;
+      background-color: #fff;
+    }
+
+    .c-gallery__control--prev {
+      inset-inline-start: 1rem;
+    }
+
+    .c-gallery__control--next {
+      inset-inline-end: 1rem;
+    }
+  }
+}
+
 //제품정보
-.c-product__details.l-stack {
+.c-product__details {
   --space: 32px;
 
   .c-product__heading {
     --space: 16px;
 
     .c-product__brand {
-      color: #000;
+      color: $Grey-500;
       @include text-preset-6;
     }
 
@@ -225,8 +239,85 @@ button {
     }
 
     .c-product__description {
-      color: #000;
+      color: $Grey-500;
       @include text-preset-4;
+    }
+  }
+}
+
+.c-price {
+  .c-price__sale {
+    --space: var(--s0);
+
+    .c-price__current {
+      @include text-preset-2;
+      color: $Grey-950;
+    }
+
+    .c-price__badge {
+      @include text-preset-3-B;
+      color: $White;
+      background-color: $Grey-950;
+      border-radius: 6px;
+      padding-block: 3px;
+      padding-inline: 9.5px;
+    }
+  }
+
+  .c-price__original {
+    del {
+      @include text-preset-3-B;
+      color: $Grey-950;
+    }
+  }
+}
+
+.c-quantity {
+  position: relative;
+
+  .c-quantity__button {
+    position: absolute;
+    // 버튼 자체의 위치를 세로 중앙으로 맞춤
+    top: 50%;
+    transform: translateY(-50%); // 세로 중앙
+    z-index: 1; // 슬라이드 위에 표시
+    //버튼 아이콘의 내부를 중앙으로 맞춘다
+    display: grid;
+    place-items: center;
+
+    &.c-quantity__button--decrease {
+      inset-inline-start: 1.1563rem;
+    }
+
+    &.c-quantity__button--increase {
+      inset-inline-end: 1.1563rem;
+    }
+  }
+}
+
+.c-quantity__value {
+  display: block;
+  border-radius: 10px;
+  background-color: $Grey-50;
+  padding: 1rem;
+  text-align: center;
+  @include text-preset-3-B;
+  color: $Grey-950;
+}
+
+.c-button--primary {
+  padding: 16px 16px;
+  background-color: $Orange-500;
+  border-radius: 10px;
+  text-align: center;
+
+  .l-with-icon {
+    @include text-preset-3-B;
+
+    .icon {
+      --space: 1rem;
+      width: 17px;
+      height: 16px;
     }
   }
 }
@@ -236,11 +327,11 @@ button {
   //todo
 }
 
-.attribution {
+.c-attribution {
   font-size: 0.6875rem;
   text-align: center;
 }
 
-.attribution a {
+.c-attribution a {
   color: hsl(228, 45%, 44%);
 }

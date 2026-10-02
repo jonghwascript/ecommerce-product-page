@@ -172,3 +172,35 @@ main.js에서 resize 때 `requestAnimationFrame`으로 한 프레임에 한 번 
 - 이미지 id가 `gallery-image_01`~`04`로 바뀌었지만 이전·다음 버튼과 썸네일의 `aria-controls="gallery-image"`는 그대로라 존재하지 않는 id를 가리킵니다.
 - 아이콘을 `<use href="./images/icon-*.svg">`처럼 `#id` 없이 파일 전체로 참조합니다. 브라우저에서 아이콘이 표시되는지 확인이 필요합니다.
 - `.c-product__details`의 `--space: 32px`, `16px`은 모듈러 스케일(`--s0` 16px, `--s1` 24px, `--s2` 36px)과 연결되지 않은 고정값입니다.
+# 2026-10-03 대화 기록
+
+## c-attribution 중앙 정렬: 클래스 연결과 정렬 대상
+
+대화 당시 HTML은 `c-attribution`을 사용했지만 SCSS 선택자는 `.attribution`이어서 `text-align: center`가 적용되지 않았습니다. 선택자를 `.c-attribution`과 `.c-attribution a`로 맞추는 방법을 안내했습니다.
+
+- `.l-center`의 `margin-inline: auto`는 요소 박스를 중앙에 배치합니다.
+- 박스 내부 글자의 중앙 정렬에는 `text-align: center`가 별도로 필요합니다.
+- 기록 시점의 `src/scss/style.scss`에는 선택자 수정이 이미 반영되어 있습니다.
+- `src/pages/index.html`의 인라인 `<style>`에는 이전 `.attribution` 선택자가 남아 있습니다. 현재 footer 클래스와 연결되지 않는 중복 스타일이므로 추후 정리할 수 있습니다.
+
+## 새로고침 시 Slick 이미지 추가 노출
+
+사용자가 새로고침 시 이미지가 한 장 더 보이는 현상을 보고했습니다. `src/js/main.js`는 `slidesToShow: 1`로 설정되어 있었습니다. 초기화 전에 잠깐 여러 이미지가 보이는 경우를 대상으로 다음 스타일을 제안했습니다.
+
+```scss
+.c-gallery__list:not(.slick-initialized) {
+  > .c-gallery__open:not(:first-child) {
+    display: none;
+  }
+}
+```
+
+Slick 초기화 전에는 첫 번째 버튼만 표시하고, `.slick-initialized` 클래스가 붙으면 이 숨김 규칙의 적용을 해제합니다. 기록 시점의 `src/scss/style.scss`에는 위 규칙이 중첩 문법으로 이미 반영되어 있습니다.
+
+초기화 직전의 일시적인 노출인지, 로딩 후에도 두 장이 계속 보이는지는 아직 확인되지 않았습니다. 지속적으로 보인다면 슬라이드와 컨테이너의 실제 너비를 추가로 확인해야 합니다. 기존에 기록된 리사이즈 시 노출 문제와는 별도로 구분합니다.
+
+## 검증 상태
+
+- 검증 완료: 관련 HTML 클래스, SCSS 선택자, Slick 옵션과 제안한 스타일의 현재 소스 반영 여부를 확인했습니다.
+- 미검증: 브라우저에서 중앙 정렬 결과 및 새로고침 문제의 재현·해결 여부.
+- 해당 없음: 이번 작업은 대화 기록만 추가하므로 빌드와 테스트는 실행하지 않았습니다.

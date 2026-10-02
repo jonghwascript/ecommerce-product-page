@@ -13,20 +13,11 @@
   <link rel="stylesheet" href="./js/lib/slick/slick.css">
   <link rel="stylesheet" href="./js/lib/slick/slick-theme.css">
   <link rel="stylesheet" href="./css/style.css">
-  <style>
-    .attribution {
-      font-size: 0.6875rem;
-      text-align: center;
-    }
-
-    .attribution a {
-      color: hsl(228, 45%, 44%);
-    }
-  </style>
 </head>
 
 <body>
   <a class="c-skip-link" href="#main">Skip to main content</a>
+  <!-- Header -->
   <header class="c-header">
     <div class="c-header__inner l-center l-cluster">
       <div class="c-header__start l-cluster">
@@ -98,13 +89,14 @@
     </div>
     <p class="u-sr-only" id="cart-status" role="status"></p>
   </header>
+  <!-- Main -->
   <main class="c-page" id="main" tabindex="-1">
     <article class="c-product l-center">
       <div class="c-product__layout l-switcher">
         <!-- Slick Slider Gallery -->
         <section class="c-product__gallery c-gallery" aria-label="Product images">
           <div class="c-gallery__stage">
-            <div class="c_gallery__list">
+            <div class="c-gallery__list">
               <button class="c-gallery__open" type="button" aria-haspopup="dialog" aria-controls="lightbox">
                 <span class="c-gallery__frame l-frame">
                   <img class="c-gallery__image" id="gallery-image_01" src="./images/image-product-1.jpg"
@@ -155,23 +147,23 @@
           <!-- Thumbs -->
           <ul class="c-gallery__thumbs l-cluster" role="list">
             <li class="c-gallery__thumb-item">
-              <button class="c-gallery__thumb is-active" type="button" aria-current="true" aria-controls="gallery-image"
+              <button class="c-gallery__thumb is-active" type="button" aria-current="true" aria-controls="gallery-image_01"
                 data-index="0"><span class="c-gallery__thumb-frame l-frame"><img
                     src="./images/image-product-1-thumbnail.jpg" alt="" width="88" height="88"></span><span
                   class="u-sr-only">View image 1 of 4</span></button>
             </li>
             <li class="c-gallery__thumb-item">
-              <button class="c-gallery__thumb" type="button" aria-controls="gallery-image" data-index="1"><span
+              <button class="c-gallery__thumb" type="button" aria-controls="gallery-image_02" data-index="1"><span
                   class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-2-thumbnail.jpg" alt=""
                     width="88" height="88"></span><span class="u-sr-only">View image 2 of 4</span></button>
             </li>
             <li class="c-gallery__thumb-item">
-              <button class="c-gallery__thumb" type="button" aria-controls="gallery-image" data-index="2"><span
+              <button class="c-gallery__thumb" type="button" aria-controls="gallery-image_03" data-index="2"><span
                   class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-3-thumbnail.jpg" alt=""
                     width="88" height="88"></span><span class="u-sr-only">View image 3 of 4</span></button>
             </li>
             <li class="c-gallery__thumb-item">
-              <button class="c-gallery__thumb" type="button" aria-controls="gallery-image" data-index="3"><span
+              <button class="c-gallery__thumb" type="button" aria-controls="gallery-image_04" data-index="3"><span
                   class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-4-thumbnail.jpg" alt=""
                     width="88" height="88"></span><span class="u-sr-only">View image 4 of 4</span></button>
             </li>
@@ -191,10 +183,15 @@
           </div>
           <div class="c-product__price c-price l-cluster" data-justify="between">
             <div class="c-price__sale l-cluster">
-              <p class="c-price__current"><span class="u-sr-only">Current price:</span>$125.00</p><span
-                class="c-price__badge c-badge c-badge--discount">50%<span class="u-sr-only"> off</span></span>
+              <p class="c-price__current">
+                <span class="u-sr-only">Current price:</span>$125.00
+              </p>
+              <span
+                class="c-price__badge c-badge c-badge--discount">50%<span class="u-sr-only"> off</span>
+              </span>
             </div>
-            <p class="c-price__original"><span class="u-sr-only">Original price:</span>
+            <p class="c-price__original">
+              <span class="u-sr-only">Original price:</span>
               <del>$250.00</del>
             </p>
           </div>
@@ -204,7 +201,7 @@
               <button class="c-quantity__button c-quantity__button--decrease is-disabled" type="button"
                 aria-disabled="true" aria-controls="quantity-value">
                 <svg aria-hidden="true" focusable="false" width="12" height="4">
-                  <use href="./images/icons.svg#icon-minus"></use>
+                  <use href="./images/icon-minus.svg"></use>
                 </svg><span class="u-sr-only">Decrease quantity</span>
               </button>
               <output class="c-quantity__value" id="quantity-value" aria-labelledby="quantity-label"
@@ -212,15 +209,17 @@
               <button class="c-quantity__button c-quantity__button--increase" type="button"
                 aria-controls="quantity-value">
                 <svg aria-hidden="true" focusable="false" width="12" height="12">
-                  <use href="./images/icons.svg#icon-plus"></use>
+                  <use href="./images/icon-plus.svg"></use>
                 </svg><span class="u-sr-only">Increase quantity</span>
               </button>
               <input id="quantity-input" type="hidden" name="quantity" value="0">
             </div>
-            <button class="c-purchase__submit c-button c-button--primary" type="submit"><span class="l-with-icon">
-                <svg class="icon l-icon" aria-hidden="true" focusable="false" width="17" height="16">
-                  <use href="./images/icons.svg#icon-cart"></use>
-                </svg>Add to cart</span></button>
+            <button class="c-purchase__submit c-button c-button--primary" type="submit">
+              <span class="l-with-icon">
+                <svg class="icon l-icon" aria-hidden="true" focusable="false" viewBox="0 0 22 20">
+                  <use href="./images/icon-cart.svg"></use>
+                </svg>Add to cart</span>
+              </button>
           </form>
         </div>
       </div>
@@ -280,9 +279,11 @@
       </ul>
     </div>
   </dialog>
-  <footer class="c-attribution">
-    <p>Challenge by<a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. Coded by<a
-        href="https://www.frontendmentor.io/profile/jonghwascript">jonghwascript</a>.</p>
+  <footer class="c-attribution l-center l-box">
+    <p>
+      Challenge by<a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. Coded by<a
+        href="https://www.frontendmentor.io/profile/jonghwascript">jonghwascript</a>.
+    </p>
   </footer>
   <script src="./js/lib/jquery-2.1.4.js"></script>
   <script src="./js/lib/slick/slick.min.js"></script>

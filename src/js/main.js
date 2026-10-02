@@ -1,7 +1,7 @@
 // $('.c-gallery__frame').slick({
 // });
 
-$('.c_gallery__list').slick({
+$('.c-gallery__list').slick({
   slidesToShow: 1,
   slidesToScroll: 1,
   infinite: true,
@@ -13,7 +13,7 @@ $('.c_gallery__list').slick({
 });
 
 // 리사이즈 중 slick의 50ms 지연으로 다음 슬라이드가 보이는 문제 방지
-var $gallery = $('.c_gallery__list');
+var $gallery = $('.c-gallery__list');
 var resizeFrame = 0;
 
 $(window).on('resize', function () {
