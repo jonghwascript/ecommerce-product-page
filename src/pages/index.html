@@ -1,186 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
 
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
   <title>Frontend Mentor | E-commerce product page</title>
 
   <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <link rel="stylesheet" href="./js/lib/slick/slick.css">
+  <link rel="stylesheet" href="./js/lib/slick/slick-theme.css">
+  <link rel="stylesheet" href="./css/style.css">
   <style>
-    .attribution { font-size: 0.6875rem; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
+    .attribution {
+      font-size: 0.6875rem;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
   </style>
 </head>
-<body><a class="c-skip-link" href="#main">Skip to main content</a>
-    <header class="c-header">
-      <div class="c-header__inner l-center l-cluster" data-justify="between">
-        <div class="c-header__start l-cluster">
-          <button class="c-header__menu-toggle c-icon-button" type="button" aria-expanded="false" aria-controls="primary-nav">
-            <svg aria-hidden="true" focusable="false" width="16" height="15">
-              <use href="./images/icons.svg#icon-menu"></use>
-            </svg><span class="u-sr-only">Open menu</span>
-          </button><a class="c-header__logo" href="/"><img src="./images/logo.svg" alt="sneakers" width="138" height="20"></a>
-          <nav class="c-header__nav c-nav" id="primary-nav" aria-label="Primary">
-            <button class="c-nav__close c-icon-button" type="button" aria-controls="primary-nav">
-              <svg aria-hidden="true" focusable="false" width="14" height="15">
-                <use href="./images/icons.svg#icon-close"></use>
-              </svg><span class="u-sr-only">Close menu</span>
-            </button>
-            <ul class="c-nav__list l-cluster" role="list">
-              <li class="c-nav__item"><a class="c-nav__link" href="#">Collections</a></li>
-              <li class="c-nav__item"><a class="c-nav__link" href="#">Men</a></li>
-              <li class="c-nav__item"><a class="c-nav__link" href="#">Women</a></li>
-              <li class="c-nav__item"><a class="c-nav__link" href="#">About</a></li>
-              <li class="c-nav__item"><a class="c-nav__link" href="#">Contact</a></li>
-            </ul>
-          </nav>
-          <div class="c-header__backdrop" aria-hidden="true" hidden></div>
-        </div>
-        <div class="c-header__actions l-cluster">
-          <button class="c-header__cart c-icon-button" id="cart-toggle" type="button" aria-expanded="false" aria-controls="cart-panel">
-            <svg aria-hidden="true" focusable="false" width="22" height="20">
-              <use href="./images/icons.svg#icon-cart"></use>
-            </svg><span class="u-sr-only">Cart</span><span class="c-header__badge c-badge c-badge--count">3<span class="u-sr-only"> items</span></span>
-          </button><a class="c-header__avatar c-avatar" href="#"><img class="c-avatar__image" src="./images/image-avatar.png" alt="" width="50" height="50"><span class="u-sr-only">My account</span></a>
-          <section class="c-header__cart-panel c-cart" id="cart-panel" aria-labelledby="cart-title" hidden>
-            <h2 class="c-cart__title" id="cart-title">Cart</h2>
-            <div class="c-cart__body l-stack">
-              <ul class="c-cart__list l-stack" role="list">
-                <li class="c-cart__item l-cluster">
-                  <div class="c-cart__thumb l-frame"><img src="./images/image-product-1-thumbnail.jpg" alt="" width="50" height="50"></div>
-                  <div class="c-cart__info">
-                    <p class="c-cart__name">Fall Limited Edition Sneakers</p>
-                    <p class="c-cart__price"><span class="c-cart__unit">$125.00 × 3</span><strong class="c-cart__total">$375.00</strong></p>
-                  </div>
-                  <button class="c-cart__remove c-icon-button" type="button">
-                    <svg aria-hidden="true" focusable="false" width="14" height="16">
-                      <use href="./images/icons.svg#icon-delete"></use>
-                    </svg><span class="u-sr-only">Remove Fall Limited Edition Sneakers from cart</span>
-                  </button>
-                </li>
-              </ul>
-              <button class="c-cart__checkout c-button c-button--primary c-button--block" type="button">Checkout</button>
-              <p class="c-cart__empty" hidden>Your cart is empty.</p>
-            </div>
-          </section>
-        </div>
-      </div>
-      <p class="u-sr-only" id="cart-status" role="status"></p>
-    </header>
-    <main class="c-page" id="main" tabindex="-1">
-      <article class="c-product l-center">
-        <div class="c-product__layout l-switcher">
-          <section class="c-product__gallery c-gallery" aria-label="Product images">
-            <div class="c-gallery__stage">
-              <button class="c-gallery__open" type="button" aria-haspopup="dialog" aria-controls="lightbox"><span class="c-gallery__frame l-frame"><img class="c-gallery__image" id="gallery-image" src="./images/image-product-1.jpg" alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole" width="448" height="445"></span><span class="u-sr-only">Open larger view</span></button>
-              <button class="c-gallery__control c-gallery__control--prev c-icon-button c-icon-button--round" type="button" aria-controls="gallery-image">
-                <svg aria-hidden="true" focusable="false" width="12" height="18">
-                  <use href="./images/icons.svg#icon-previous"></use>
-                </svg><span class="u-sr-only">Previous image</span>
-              </button>
-              <button class="c-gallery__control c-gallery__control--next c-icon-button c-icon-button--round" type="button" aria-controls="gallery-image">
-                <svg aria-hidden="true" focusable="false" width="13" height="18">
-                  <use href="./images/icons.svg#icon-next"></use>
-                </svg><span class="u-sr-only">Next image</span>
-              </button>
-            </div>
-            <p class="c-gallery__status u-sr-only" role="status">Image 1 of 4</p>
-            <ul class="c-gallery__thumbs l-cluster" role="list">
-              <li class="c-gallery__thumb-item">
-                <button class="c-gallery__thumb is-active" type="button" aria-current="true" aria-controls="gallery-image" data-index="0"><span class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-1-thumbnail.jpg" alt="" width="88" height="88"></span><span class="u-sr-only">View image 1 of 4</span></button>
-              </li>
-              <li class="c-gallery__thumb-item">
-                <button class="c-gallery__thumb" type="button" aria-controls="gallery-image" data-index="1"><span class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-2-thumbnail.jpg" alt="" width="88" height="88"></span><span class="u-sr-only">View image 2 of 4</span></button>
-              </li>
-              <li class="c-gallery__thumb-item">
-                <button class="c-gallery__thumb" type="button" aria-controls="gallery-image" data-index="2"><span class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-3-thumbnail.jpg" alt="" width="88" height="88"></span><span class="u-sr-only">View image 3 of 4</span></button>
-              </li>
-              <li class="c-gallery__thumb-item">
-                <button class="c-gallery__thumb" type="button" aria-controls="gallery-image" data-index="3"><span class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-4-thumbnail.jpg" alt="" width="88" height="88"></span><span class="u-sr-only">View image 4 of 4</span></button>
-              </li>
-            </ul>
-          </section>
-          <div class="c-product__details l-stack">
-            <div class="c-product__heading l-stack">
-              <p class="c-product__brand">Sneaker Company</p>
-              <h1 class="c-product__title">Fall Limited Edition Sneakers</h1>
-            </div>
-            <p class="c-product__description">These low-profile sneakers are your perfect casual wear companion. Featuring a durable rubber outer sole, they’ll withstand everything the weather can offer.</p>
-            <div class="c-product__price c-price l-cluster" data-justify="between">
-              <div class="c-price__sale l-cluster">
-                <p class="c-price__current"><span class="u-sr-only">Current price:</span>$125.00</p><span class="c-price__badge c-badge c-badge--discount">50%<span class="u-sr-only"> off</span></span>
-              </div>
-              <p class="c-price__original"><span class="u-sr-only">Original price:</span>
-                <del>$250.00</del>
-              </p>
-            </div>
-            <form class="c-product__purchase c-purchase l-switcher" action="#" method="post">
-              <div class="c-purchase__quantity c-quantity" role="group" aria-labelledby="quantity-label"><span class="u-sr-only" id="quantity-label">Quantity</span>
-                <button class="c-quantity__button c-quantity__button--decrease is-disabled" type="button" aria-disabled="true" aria-controls="quantity-value">
-                  <svg aria-hidden="true" focusable="false" width="12" height="4">
-                    <use href="./images/icons.svg#icon-minus"></use>
-                  </svg><span class="u-sr-only">Decrease quantity</span>
-                </button>
-                <output class="c-quantity__value" id="quantity-value" aria-labelledby="quantity-label" aria-live="polite">0</output>
-                <button class="c-quantity__button c-quantity__button--increase" type="button" aria-controls="quantity-value">
-                  <svg aria-hidden="true" focusable="false" width="12" height="12">
-                    <use href="./images/icons.svg#icon-plus"></use>
-                  </svg><span class="u-sr-only">Increase quantity</span>
-                </button>
-                <input id="quantity-input" type="hidden" name="quantity" value="0">
-              </div>
-              <button class="c-purchase__submit c-button c-button--primary" type="submit"><span class="l-with-icon">
-                  <svg class="icon l-icon" aria-hidden="true" focusable="false" width="17" height="16">
-                    <use href="./images/icons.svg#icon-cart"></use>
-                  </svg>Add to cart</span></button>
-            </form>
-          </div>
-        </div>
-      </article>
-    </main>
-    <dialog class="c-lightbox l-imposter" id="lightbox" aria-labelledby="lightbox-title">
-      <div class="c-lightbox__inner l-stack">
-        <h2 class="u-sr-only" id="lightbox-title">Product image gallery</h2>
-        <button class="c-lightbox__close c-icon-button" type="button">
-          <svg aria-hidden="true" focusable="false" width="14" height="15">
-            <use href="./images/icons.svg#icon-close"></use>
-          </svg><span class="u-sr-only">Close gallery</span>
+
+<body>
+  <a class="c-skip-link" href="#main">Skip to main content</a>
+  <header class="c-header">
+    <div class="c-header__inner l-center l-cluster">
+      <div class="c-header__start l-cluster">
+        <button class="c-header__menu-toggle c-icon-button" type="button" aria-expanded="false"
+          aria-controls="primary-nav">
+          <svg aria-hidden="true" focusable="false" width="16" height="15">
+            <use href="./images/icon-menu.svg"></use>
+          </svg>
+          <span class="u-sr-only">Open menu</span>
         </button>
-        <div class="c-lightbox__stage">
-          <div class="c-lightbox__frame l-frame"><img class="c-lightbox__image" id="lightbox-image" src="./images/image-product-1.jpg" alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole" width="550" height="550"></div>
-          <button class="c-lightbox__control c-lightbox__control--prev c-icon-button c-icon-button--round c-icon-button--large" type="button" aria-controls="lightbox-image">
-            <svg aria-hidden="true" focusable="false" width="12" height="18">
-              <use href="./images/icons.svg#icon-previous"></use>
-            </svg><span class="u-sr-only">Previous image</span>
+        <a class="c-header__logo" href="/">
+          <img src="./images/logo.svg" alt="sneakers" width="138" height="20">
+        </a>
+        <nav class="c-header__nav c-nav" id="primary-nav" aria-label="Primary">
+          <button class="c-nav__close c-icon-button" type="button" aria-controls="primary-nav">
+            <svg aria-hidden="true" focusable="false" width="14" height="15">
+              <use href="./images/icons.svg#icon-close"></use>
+            </svg>
+            <span class="u-sr-only">Close menu</span>
           </button>
-          <button class="c-lightbox__control c-lightbox__control--next c-icon-button c-icon-button--round c-icon-button--large" type="button" aria-controls="lightbox-image">
-            <svg aria-hidden="true" focusable="false" width="13" height="18">
-              <use href="./images/icons.svg#icon-next"></use>
-            </svg><span class="u-sr-only">Next image</span>
-          </button>
-        </div>
-        <p class="c-lightbox__status u-sr-only" role="status">Image 1 of 4</p>
-        <ul class="c-lightbox__thumbs l-cluster" role="list">
-          <li class="c-lightbox__thumb-item">
-            <button class="c-lightbox__thumb is-active" type="button" aria-current="true" aria-controls="lightbox-image" data-index="0"><span class="c-lightbox__thumb-frame l-frame"><img src="./images/image-product-1-thumbnail.jpg" alt="" width="88" height="88"></span><span class="u-sr-only">View image 1 of 4</span></button>
-          </li>
-          <li class="c-lightbox__thumb-item">
-            <button class="c-lightbox__thumb" type="button" aria-controls="lightbox-image" data-index="1"><span class="c-lightbox__thumb-frame l-frame"><img src="./images/image-product-2-thumbnail.jpg" alt="" width="88" height="88"></span><span class="u-sr-only">View image 2 of 4</span></button>
-          </li>
-          <li class="c-lightbox__thumb-item">
-            <button class="c-lightbox__thumb" type="button" aria-controls="lightbox-image" data-index="2"><span class="c-lightbox__thumb-frame l-frame"><img src="./images/image-product-3-thumbnail.jpg" alt="" width="88" height="88"></span><span class="u-sr-only">View image 3 of 4</span></button>
-          </li>
-          <li class="c-lightbox__thumb-item">
-            <button class="c-lightbox__thumb" type="button" aria-controls="lightbox-image" data-index="3"><span class="c-lightbox__thumb-frame l-frame"><img src="./images/image-product-4-thumbnail.jpg" alt="" width="88" height="88"></span><span class="u-sr-only">View image 4 of 4</span></button>
-          </li>
-        </ul>
+          <ul class="c-nav__list l-cluster" role="list">
+            <li class="c-nav__item"><a class="c-nav__link" href="#">Collections</a></li>
+            <li class="c-nav__item"><a class="c-nav__link" href="#">Men</a></li>
+            <li class="c-nav__item"><a class="c-nav__link" href="#">Women</a></li>
+            <li class="c-nav__item"><a class="c-nav__link" href="#">About</a></li>
+            <li class="c-nav__item"><a class="c-nav__link" href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="c-header__backdrop" aria-hidden="true" hidden></div>
       </div>
-    </dialog>
-    <footer class="c-attribution">
-      <p>Challenge by<a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. Coded by<a href="https://www.frontendmentor.io/profile/jonghwascript">jonghwascript</a>.</p>
-    </footer>
-  </body>
+      <div class="c-header__actions l-cluster">
+        <button class="c-header__cart c-icon-button" id="cart-toggle" type="button" aria-expanded="false"
+          aria-controls="cart-panel">
+          <svg aria-hidden="true" focusable="false" width="28" height="24">
+            <use href="./images/icon-cart.svg"></use>
+          </svg>
+          <span class="u-sr-only">Cart</span>
+          <span class="c-header__badge c-badge c-badge--count" data-count="0"><span class="u-sr-only">
+              items</span></span>
+        </button>
+        <a class="c-header__avatar c-avatar" href="#">
+          <img class="c-avatar__image" src="./images/image-avatar.png" alt="" width="24" height="24">
+          <span class="u-sr-only">My account</span>
+        </a>
+        <section class="c-header__cart-panel c-cart" id="cart-panel" aria-labelledby="cart-title" hidden>
+          <h2 class="c-cart__title" id="cart-title">Cart</h2>
+          <div class="c-cart__body l-stack">
+            <ul class="c-cart__list l-stack" role="list">
+              <li class="c-cart__item l-cluster">
+                <div class="c-cart__thumb l-frame"><img src="./images/image-product-1-thumbnail.jpg" alt="" width="50"
+                    height="50"></div>
+                <div class="c-cart__info">
+                  <p class="c-cart__name">Fall Limited Edition Sneakers</p>
+                  <p class="c-cart__price"><span class="c-cart__unit">$125.00 × 3</span><strong
+                      class="c-cart__total">$375.00</strong></p>
+                </div>
+                <button class="c-cart__remove c-icon-button" type="button">
+                  <svg aria-hidden="true" focusable="false" width="14" height="16">
+                    <use href="./images/icons.svg#icon-delete"></use>
+                  </svg><span class="u-sr-only">Remove Fall Limited Edition Sneakers from cart</span>
+                </button>
+              </li>
+            </ul>
+            <button class="c-cart__checkout c-button c-button--primary c-button--block" type="button">Checkout</button>
+            <p class="c-cart__empty" hidden>Your cart is empty.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+    <p class="u-sr-only" id="cart-status" role="status"></p>
+  </header>
+  <main class="c-page" id="main" tabindex="-1">
+    <article class="c-product l-center">
+      <div class="c-product__layout l-switcher">
+        <!-- Slick Slider Gallery -->
+        <section class="c-product__gallery c-gallery" aria-label="Product images">
+          <div class="c-gallery__stage">
+            <div class="c_gallery__list">
+              <button class="c-gallery__open" type="button" aria-haspopup="dialog" aria-controls="lightbox">
+                <span class="c-gallery__frame l-frame">
+                  <img class="c-gallery__image" id="gallery-image_01" src="./images/image-product-1.jpg"
+                    alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole"
+                    width="448" height="445">
+                </span>
+                <span class="u-sr-only">Open larger view</span>
+              </button>
+              <button class="c-gallery__open" type="button" aria-haspopup="dialog" aria-controls="lightbox">
+                <span class="c-gallery__frame l-frame">
+                  <img class="c-gallery__image" id="gallery-image_02" src="./images/image-product-2.jpg"
+                    alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole"
+                    width="448" height="445">
+                </span>
+                <span class="u-sr-only">Open larger view</span>
+              </button>
+              <button class="c-gallery__open" type="button" aria-haspopup="dialog" aria-controls="lightbox">
+                <span class="c-gallery__frame l-frame">
+                  <img class="c-gallery__image" id="gallery-image_03" src="./images/image-product-3.jpg"
+                    alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole"
+                    width="448" height="445">
+                </span>
+                <span class="u-sr-only">Open larger view</span>
+              </button>
+              <button class="c-gallery__open" type="button" aria-haspopup="dialog" aria-controls="lightbox">
+                <span class="c-gallery__frame l-frame">
+                  <img class="c-gallery__image" id="gallery-image_04" src="./images/image-product-4.jpg"
+                    alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole"
+                    width="448" height="445">
+                </span>
+                <span class="u-sr-only">Open larger view</span>
+              </button>
+            </div>
+            <button class="c-gallery__control c-gallery__control--prev c-icon-button c-icon-button--round" type="button"
+              aria-controls="gallery-image">
+              <svg aria-hidden="true" focusable="false" width="12" height="18">
+                <use href="./images/icon-previous.svg"></use>
+              </svg><span class="u-sr-only">Previous image</span>
+            </button>
+            <button class="c-gallery__control c-gallery__control--next c-icon-button c-icon-button--round" type="button"
+              aria-controls="gallery-image">
+              <svg aria-hidden="true" focusable="false" width="13" height="18">
+                <use href="./images/icon-next.svg"></use>
+              </svg><span class="u-sr-only">Next image</span>
+            </button>
+          </div>
+          <p class="c-gallery__status u-sr-only" role="status">Image 1 of 4</p>
+          <!-- Thumbs -->
+          <ul class="c-gallery__thumbs l-cluster" role="list">
+            <li class="c-gallery__thumb-item">
+              <button class="c-gallery__thumb is-active" type="button" aria-current="true" aria-controls="gallery-image"
+                data-index="0"><span class="c-gallery__thumb-frame l-frame"><img
+                    src="./images/image-product-1-thumbnail.jpg" alt="" width="88" height="88"></span><span
+                  class="u-sr-only">View image 1 of 4</span></button>
+            </li>
+            <li class="c-gallery__thumb-item">
+              <button class="c-gallery__thumb" type="button" aria-controls="gallery-image" data-index="1"><span
+                  class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-2-thumbnail.jpg" alt=""
+                    width="88" height="88"></span><span class="u-sr-only">View image 2 of 4</span></button>
+            </li>
+            <li class="c-gallery__thumb-item">
+              <button class="c-gallery__thumb" type="button" aria-controls="gallery-image" data-index="2"><span
+                  class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-3-thumbnail.jpg" alt=""
+                    width="88" height="88"></span><span class="u-sr-only">View image 3 of 4</span></button>
+            </li>
+            <li class="c-gallery__thumb-item">
+              <button class="c-gallery__thumb" type="button" aria-controls="gallery-image" data-index="3"><span
+                  class="c-gallery__thumb-frame l-frame"><img src="./images/image-product-4-thumbnail.jpg" alt=""
+                    width="88" height="88"></span><span class="u-sr-only">View image 4 of 4</span></button>
+            </li>
+          </ul>
+        </section>
+        <!-- Products Details -->
+        <div class="c-product__details l-stack">
+          <div class="c-product__heading l-stack">
+            <p class="c-product__brand">
+              Sneaker Company
+            </p>
+            <h1 class="c-product__title">Fall Limited Edition Sneakers</h1>
+            <p class="c-product__description">
+              These low-profile sneakers are your perfect casual wear companion. Featuring
+              a durable rubber outer sole, they’ll withstand everything the weather can offer.
+            </p>
+          </div>
+          <div class="c-product__price c-price l-cluster" data-justify="between">
+            <div class="c-price__sale l-cluster">
+              <p class="c-price__current"><span class="u-sr-only">Current price:</span>$125.00</p><span
+                class="c-price__badge c-badge c-badge--discount">50%<span class="u-sr-only"> off</span></span>
+            </div>
+            <p class="c-price__original"><span class="u-sr-only">Original price:</span>
+              <del>$250.00</del>
+            </p>
+          </div>
+          <form class="c-product__purchase c-purchase l-switcher" action="#" method="post">
+            <div class="c-purchase__quantity c-quantity" role="group" aria-labelledby="quantity-label"><span
+                class="u-sr-only" id="quantity-label">Quantity</span>
+              <button class="c-quantity__button c-quantity__button--decrease is-disabled" type="button"
+                aria-disabled="true" aria-controls="quantity-value">
+                <svg aria-hidden="true" focusable="false" width="12" height="4">
+                  <use href="./images/icons.svg#icon-minus"></use>
+                </svg><span class="u-sr-only">Decrease quantity</span>
+              </button>
+              <output class="c-quantity__value" id="quantity-value" aria-labelledby="quantity-label"
+                aria-live="polite">0</output>
+              <button class="c-quantity__button c-quantity__button--increase" type="button"
+                aria-controls="quantity-value">
+                <svg aria-hidden="true" focusable="false" width="12" height="12">
+                  <use href="./images/icons.svg#icon-plus"></use>
+                </svg><span class="u-sr-only">Increase quantity</span>
+              </button>
+              <input id="quantity-input" type="hidden" name="quantity" value="0">
+            </div>
+            <button class="c-purchase__submit c-button c-button--primary" type="submit"><span class="l-with-icon">
+                <svg class="icon l-icon" aria-hidden="true" focusable="false" width="17" height="16">
+                  <use href="./images/icons.svg#icon-cart"></use>
+                </svg>Add to cart</span></button>
+          </form>
+        </div>
+      </div>
+    </article>
+  </main>
+  <dialog class="c-lightbox l-imposter" id="lightbox" aria-labelledby="lightbox-title">
+    <div class="c-lightbox__inner l-stack">
+      <h2 class="u-sr-only" id="lightbox-title">Product image gallery</h2>
+      <button class="c-lightbox__close c-icon-button" type="button">
+        <svg aria-hidden="true" focusable="false" width="14" height="15">
+          <use href="./images/icons.svg#icon-close"></use>
+        </svg><span class="u-sr-only">Close gallery</span>
+      </button>
+      <div class="c-lightbox__stage">
+        <div class="c-lightbox__frame l-frame"><img class="c-lightbox__image" id="lightbox-image"
+            src="./images/image-product-1.jpg"
+            alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole"
+            width="550" height="550"></div>
+        <button
+          class="c-lightbox__control c-lightbox__control--prev c-icon-button c-icon-button--round c-icon-button--large"
+          type="button" aria-controls="lightbox-image">
+          <svg aria-hidden="true" focusable="false" width="12" height="18">
+            <use href="./images/icons.svg#icon-previous"></use>
+          </svg><span class="u-sr-only">Previous image</span>
+        </button>
+        <button
+          class="c-lightbox__control c-lightbox__control--next c-icon-button c-icon-button--round c-icon-button--large"
+          type="button" aria-controls="lightbox-image">
+          <svg aria-hidden="true" focusable="false" width="13" height="18">
+            <use href="./images/icons.svg#icon-next"></use>
+          </svg><span class="u-sr-only">Next image</span>
+        </button>
+      </div>
+      <p class="c-lightbox__status u-sr-only" role="status">Image 1 of 4</p>
+      <ul class="c-lightbox__thumbs l-cluster" role="list">
+        <li class="c-lightbox__thumb-item">
+          <button class="c-lightbox__thumb is-active" type="button" aria-current="true" aria-controls="lightbox-image"
+            data-index="0"><span class="c-lightbox__thumb-frame l-frame"><img
+                src="./images/image-product-1-thumbnail.jpg" alt="" width="88" height="88"></span><span
+              class="u-sr-only">View image 1 of 4</span></button>
+        </li>
+        <li class="c-lightbox__thumb-item">
+          <button class="c-lightbox__thumb" type="button" aria-controls="lightbox-image" data-index="1"><span
+              class="c-lightbox__thumb-frame l-frame"><img src="./images/image-product-2-thumbnail.jpg" alt=""
+                width="88" height="88"></span><span class="u-sr-only">View image 2 of 4</span></button>
+        </li>
+        <li class="c-lightbox__thumb-item">
+          <button class="c-lightbox__thumb" type="button" aria-controls="lightbox-image" data-index="2"><span
+              class="c-lightbox__thumb-frame l-frame"><img src="./images/image-product-3-thumbnail.jpg" alt=""
+                width="88" height="88"></span><span class="u-sr-only">View image 3 of 4</span></button>
+        </li>
+        <li class="c-lightbox__thumb-item">
+          <button class="c-lightbox__thumb" type="button" aria-controls="lightbox-image" data-index="3"><span
+              class="c-lightbox__thumb-frame l-frame"><img src="./images/image-product-4-thumbnail.jpg" alt=""
+                width="88" height="88"></span><span class="u-sr-only">View image 4 of 4</span></button>
+        </li>
+      </ul>
+    </div>
+  </dialog>
+  <footer class="c-attribution">
+    <p>Challenge by<a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. Coded by<a
+        href="https://www.frontendmentor.io/profile/jonghwascript">jonghwascript</a>.</p>
+  </footer>
+  <script src="./js/lib/jquery-2.1.4.js"></script>
+  <script src="./js/lib/slick/slick.min.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+
 </html>
