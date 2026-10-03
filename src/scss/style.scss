@@ -64,10 +64,6 @@ button {
 
 /* ################# c-site  ################ */
 .c-site {
-  // @include mq('tablet') {
-  //   padding-inline: 80px;
-  // }
-
   @include mq('desktop') {
     --space: 96px;
   }
@@ -111,6 +107,9 @@ button {
       }
     }
 
+    .c-header__actions{
+      
+    }
   }
 }
 
@@ -181,6 +180,7 @@ button {
       border-radius: 6.5px;
       font-family: $font-family-primary;
       font-size: 0.625rem;
+      line-height: 13px;
       color: $White;
 
       //등장 애니 메이션
@@ -206,18 +206,30 @@ button {
       object-fit: cover;
     }
   }
-
-  // 장바구니
-  .c-cart {
+  //장바구니 위치 조정
+  .c-header__cart-panel{
     position: absolute;
     height: 256px;
     top: calc(100% + 0.5rem);
     left: 0.5rem;
     right: 0.5rem;
     z-index: 100;
+    max-inline-size: 22.8125rem;  // max 365px
+
+    @include mq('tablet'){
+      width: 365px;
+      top: calc(100% + -0.5rem);
+      left:auto;
+      right: 0.5rem;
+    }
+  }
+
+  // 장바구니 리스트
+  .c-cart {
     background-color: $White;
     padding-block: 24px;
     border-radius: 10px;
+    box-shadow: 10px 20px 30px rgba(0, 0, 0, 0.08);
 
     display: flex;
     flex-direction: column;
@@ -355,28 +367,6 @@ button {
           //요소에 좌우 음수 마진을 주면, 해당 요소가 양옆으로 늘어나서 부모 컨테이너의 영역 밖으로
         }
       }
-
-      //썸네일
-      .c-gallery__thumbs {
-        display: none;
-
-        @include mq('desktop') {
-          display: flex;
-          gap: 2rem; //32px
-          justify-content: space-between;
-          flex-wrap: nowrap;
-
-          >.c-gallery__thumb-item {
-            flex: 1;
-
-            .c-gallery__thumb-frame {
-              --n: 88;
-              --d: 88;
-              border-radius: 10px;
-            }
-          }
-        }
-      }
     }
   }
 }
@@ -385,24 +375,6 @@ button {
 .c-gallery {
   @include mq('desktop') {
     --space: 2rem; // 32px
-  }
-
-  .c-gallery__thumb-frame {
-    border: 2px solid transparent; // 평소: 보이지 않는 테두리
-    background-color: $White;
-  }
-
-  // hover는 is-active보다 위에 둔다 (아래쪽 규칙이 이기므로)
-  .c-gallery__thumb:hover img {
-    opacity: 0.5; // 마우스를 올리면 살짝 흐리게
-  }
-
-  .c-gallery__thumb.is-active .c-gallery__thumb-frame {
-    border-color: $Orange-500; // 선택: 색만 주황으로
-  }
-
-  .c-gallery__thumb.is-active img {
-    opacity: 0.25; // 사진을 흐리게
   }
 
   .c-gallery__stage {
@@ -417,7 +389,7 @@ button {
         }
       }
 
-      .c-gallery__open {        
+      .c-gallery__open {
         overflow: hidden;
 
         .c-gallery__frame {
@@ -450,10 +422,6 @@ button {
       block-size: 2.5rem; //40px
       border-radius: 50%;
       background-color: #fff;
-      
-      @include mq('desktop'){
-        display: none;  
-      }
     }
 
     .c-gallery__control--prev {
@@ -464,6 +432,52 @@ button {
       inset-inline-end: 1rem;
     }
   }
+
+  //터치 시 나타나는 기본 하이라이트를 제거
+  .c-gallery__thumb,
+  .c-gallery__open {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  //썸네일
+  .c-gallery__thumbs {
+    display: none;
+
+    @include mq('desktop') {
+      display: flex;
+      gap: 2rem; //32px
+      justify-content: space-between;
+      flex-wrap: nowrap;
+
+      >.c-gallery__thumb-item {
+        flex: 1;
+
+        .c-gallery__thumb-frame {
+          --n: 88;
+          --d: 88;
+          border-radius: 0.625rem; //10px
+        }
+      }
+    }
+
+    .c-gallery__thumb-frame {
+      border: 2px solid transparent; // 평소: 보이지 않는 테두리
+      background-color: $White;
+    }
+
+    // hover는 is-active보다 위에 둔다 (아래쪽 규칙이 이기므로)
+    .c-gallery__thumb:hover img {
+      opacity: 0.5; // 마우스를 올리면 살짝 흐리게
+    }
+
+    .c-gallery__thumb.is-active .c-gallery__thumb-frame {
+      border-color: $Orange-500; // 선택: 색만 주황으로
+    }
+
+    .c-gallery__thumb.is-active img {
+      opacity: 0.25; // 사진을 흐리게
+    }
+  }
 }
 
 
@@ -472,7 +486,8 @@ button {
 .c-product__details {
   --space: 2rem;
   justify-content: center;
-    // 디자인 컬럼 너비를 따르도록 reset의 60ch 제한 해제
+
+  // 디자인 컬럼 너비를 따르도록 reset의 60ch 제한 해제
   :is(p, h1) {
     max-width: none;
   }
@@ -593,6 +608,36 @@ button {
       height: 16px;
     }
   }
+}
+
+
+/* 화면 가로 넓이가 1024px 이상일 때(PC)만 아래 코드를 적용합니다 */
+@media (min-width: 1024px) {
+  /* 1. 슬라이드가 보여지는 '창(틀)' 자체를 둥글게 자르기 */
+  .c-gallery__list .slick-list {
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
+  }
+
+  /* 2. 버튼 투명화 및 둥글기 적용 */
+  .c-gallery__list .c-gallery__open {
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    border-radius: 20px !important;
+  }
+
+  /* 3. 내부 이미지 둥글기 적용 */
+  .c-gallery__list .c-gallery__image {
+    border-radius: 20px !important;
+    display: block;
+    width: 100%;
+  }
+
 }
 
 /* ################# Dialog   ################ */

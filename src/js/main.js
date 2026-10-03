@@ -49,8 +49,10 @@ function initNavigation($) {
     const $focusable = $nav
       .find('a[href], button, input, select, textarea, [tabindex]')
       .filter(':visible:not(:disabled)')
-      .filter((_, element) =>
-        $(element).prop('tabIndex') >= 0 && !$(element).closest('[inert]').length,
+      .filter(
+        (_, element) =>
+          $(element).prop('tabIndex') >= 0 &&
+          !$(element).closest('[inert]').length,
       );
     const $first = $focusable.first();
     const $last = $focusable.last();
@@ -62,7 +64,10 @@ function initNavigation($) {
     }
 
     // 포커스가 메뉴 밖에 있거나 양 끝에서 벗어나려 하면 반대쪽 끝으로 돌린다.
-    if (!$nav.has(active).length || (event.shiftKey ? $first.is(active) : $last.is(active))) {
+    if (
+      !$nav.has(active).length ||
+      (event.shiftKey ? $first.is(active) : $last.is(active))
+    ) {
       event.preventDefault();
       (event.shiftKey ? $last : $first).trigger('focus');
     }
@@ -109,7 +114,9 @@ function initGallery($) {
   }
 
   // 화살표로 넘길 때도 갱신되도록 Slick 이벤트에서 동기화한다.
-  $gallery.on('beforeChange', (_event, _slick, _currentSlide, nextSlide) => syncThumbs(nextSlide));
+  $gallery.on('beforeChange', (_event, _slick, _currentSlide, nextSlide) =>
+    syncThumbs(nextSlide),
+  );
 
   // 썸네일을 클릭하면 data-index에 해당하는 슬라이드로 이동한다.
   $thumbs.on('click', (event) => {
@@ -152,14 +159,19 @@ function initCart($) {
   const $status = $('#cart-status');
   const $error = $form.find('.c-purchase__error');
 
-  if (!$form.length || !$value.length || !$toggle.length || !$panel.length) return;
+  if (!$form.length || !$value.length || !$toggle.length || !$panel.length)
+    return;
 
   // 장바구니에 담을 상품 정보는 페이지 본문에서 읽는다.
   const product = {
     id: 'fall-limited-edition-sneakers',
     name: $('.c-product__title').text().trim(),
     // "Current price:$125.00"에서 숫자와 소수점만 남긴다.
-    price: Number($('.c-price__current').text().replace(/[^\d.]/g, '')),
+    price: Number(
+      $('.c-price__current')
+        .text()
+        .replace(/[^\d.]/g, ''),
+    ),
     thumbnail: './images/image-product-1-thumbnail.jpg',
   };
 
@@ -190,7 +202,9 @@ function initCart($) {
     $value.text(quantity);
     $input.val(quantity);
     // disabled 대신 aria-disabled를 써서 0일 때도 버튼에 포커스가 남게 한다.
-    $decrease.toggleClass('is-disabled', atMin).attr('aria-disabled', String(atMin));
+    $decrease
+      .toggleClass('is-disabled', atMin)
+      .attr('aria-disabled', String(atMin));
   }
 
   // 배지에는 항목 수가 아니라 담긴 수량의 합계를 표시한다.
@@ -198,18 +212,26 @@ function initCart($) {
   function renderBadge() {
     const count = items.reduce((sum, item) => sum + item.quantity, 0);
     $badge.attr('data-count', count);
-    $badge.find('.u-sr-only').text(`, ${count} ${count === 1 ? 'item' : 'items'}`);
+    $badge
+      .find('.u-sr-only')
+      .text(`, ${count} ${count === 1 ? 'item' : 'items'}`);
   }
 
   // 장바구니 항목 하나의 <li>를 만든다.
   // 상품명 등 데이터는 .text()/.attr()로 넣어 HTML로 해석되지 않게 한다.
   function createItem(item) {
-    const $remove = $('<button class="c-cart__remove c-icon-button" type="button"></button>')
+    const $remove = $(
+      '<button class="c-cart__remove c-icon-button" type="button"></button>',
+    )
       .attr('data-id', item.id)
       .html(
         '<svg aria-hidden="true" focusable="false" width="14" height="16"><use href="./images/icon-delete.svg"></use></svg>',
       )
-      .append($('<span class="u-sr-only"></span>').text(`Remove ${item.name} from cart`));
+      .append(
+        $('<span class="u-sr-only"></span>').text(
+          `Remove ${item.name} from cart`,
+        ),
+      );
 
     return $('<li class="c-cart__item l-cluster"></li>').append(
       $('<div class="c-cart__thumb l-frame"></div>').append(
@@ -293,7 +315,9 @@ function initCart($) {
     $status.text(`Removed ${removed.name} from cart.`);
 
     // 삭제된 버튼에 있던 포커스를 다음 삭제 버튼이나 카트 버튼으로 옮긴다.
-    const $next = $list.find('.c-cart__remove').eq(Math.min(index, items.length - 1));
+    const $next = $list
+      .find('.c-cart__remove')
+      .eq(Math.min(index, items.length - 1));
     ($next.length ? $next : $toggle).trigger('focus');
   });
 
@@ -302,7 +326,8 @@ function initCart($) {
   $checkout.on('click', () => setCartOpen(false, { restoreFocus: true }));
 
   $(document).on('keydown', (event) => {
-    if (isOpen && event.key === 'Escape') setCartOpen(false, { restoreFocus: true });
+    if (isOpen && event.key === 'Escape')
+      setCartOpen(false, { restoreFocus: true });
   });
 
   // 패널 내부나 카트 버튼이 아닌 곳을 클릭하면 닫는다.
@@ -327,3 +352,24 @@ jQuery(($) => {
   initGallery($);
   initCart($);
 });
+
+// 화면 크기를 체크하는 함수
+function checkWindowSize() {
+  var windowWidth = $(window).width();
+
+  if (windowWidth >= 1024) {
+    // console.log('현재 너비: ' + windowWidth + 'px (1024px 이상)');
+    // 1024px 이상일 때 실행할 로직 작성
+    $('.c-gallery__control').addClass('u-hidden');
+  } else {
+    // console.log('현재 너비: ' + windowWidth + 'px (1024px 미만)');
+    // 1024px 미만일 때 실행할 로직 작성
+    $('.c-gallery__control').removeClass('u-hidden');
+  }
+}
+
+// 창 크기가 변경될 때마다 함수 실행
+$(window).on('resize', checkWindowSize);
+
+// 페이지가 처음 로드될 때 현재 상태를 확인하기 위해 한 번 실행
+checkWindowSize();

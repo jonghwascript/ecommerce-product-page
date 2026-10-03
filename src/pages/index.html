@@ -65,7 +65,12 @@
                 type="button"
                 aria-controls="primary-nav"
               >
-                <svg aria-hidden="true" focusable="false" width="14" height="15">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  width="14"
+                  height="15"
+                >
                   <use href="./images/icon-close.svg"></use>
                 </svg>
                 <span class="u-sr-only">Close menu</span>
@@ -92,6 +97,7 @@
             <div class="c-header__backdrop" aria-hidden="true"></div>
           </div>
           <div class="c-header__actions l-cluster">
+            <!-- 장바구니 열기 버튼  -->
             <button
               class="c-header__cart c-icon-button"
               id="cart-toggle"
@@ -99,14 +105,22 @@
               aria-expanded="false"
               aria-controls="cart-panel"
             >
-              <svg aria-hidden="true" focusable="false" width="28" height="24">
+              <svg aria-hidden="true" 
+                focusable="false" 
+                width="28" 
+                height="24" 
+                viewBox="0 0 22 20">
                 <use href="./images/icon-cart.svg"></use>
               </svg>
               <span class="u-sr-only">Cart</span>
-              <span class="c-header__badge c-badge c-badge--count" data-count="0"
+              <!-- 배치 카운터 -->
+              <span
+                class="c-header__badge c-badge c-badge--count"
+                data-count="0"
                 ><span class="u-sr-only"> items</span></span
               >
             </button>
+            <!-- 내 프로필 보기  -->
             <a class="c-header__avatar c-avatar" href="#">
               <img
                 class="c-avatar__image"
@@ -117,6 +131,7 @@
               />
               <span class="u-sr-only">My account</span>
             </a>
+            <!-- 장바구니 리스트  -->
             <section
               class="c-header__cart-panel c-cart"
               id="cart-panel"
@@ -148,8 +163,9 @@
               class="c-product__gallery c-gallery l-stack"
               aria-label="Product images"
             >
-              <div class="c-gallery__stage">
-                <div class="c-gallery__list" id="gallery-slides">
+              <div class="c-gallery__stage slider">
+                <div class="c-gallery__list my-slider" id="gallery-slides">
+                  <!-- 사진 1번  -->
                   <button
                     class="c-gallery__open"
                     type="button"
@@ -167,6 +183,7 @@
                     </span>
                     <span class="u-sr-only">Open larger view</span>
                   </button>
+                  <!-- 사진 2번  -->
                   <button
                     class="c-gallery__open"
                     type="button"
@@ -184,6 +201,7 @@
                     </span>
                     <span class="u-sr-only">Open larger view</span>
                   </button>
+                  <!-- 사진 3번 -->
                   <button
                     class="c-gallery__open"
                     type="button"
@@ -201,6 +219,7 @@
                     </span>
                     <span class="u-sr-only">Open larger view</span>
                   </button>
+                  <!-- 사진 4번  -->
                   <button
                     class="c-gallery__open"
                     type="button"
@@ -219,6 +238,7 @@
                     <span class="u-sr-only">Open larger view</span>
                   </button>
                 </div>
+                <!-- 이전 사진 보기  -->
                 <button
                   class="c-gallery__control c-gallery__control--prev c-icon-button c-icon-button--round"
                   type="button"
@@ -230,9 +250,11 @@
                     width="12"
                     height="18"
                   >
-                    <use href="./images/icon-previous.svg"></use></svg
-                  ><span class="u-sr-only">Previous image</span>
+                    <use href="./images/icon-previous.svg"></use>
+                  </svg>
+                  <span class="u-sr-only">Previous image</span>
                 </button>
+                <!-- 다음 사진 보기  -->
                 <button
                   class="c-gallery__control c-gallery__control--next c-icon-button c-icon-button--round"
                   type="button"
