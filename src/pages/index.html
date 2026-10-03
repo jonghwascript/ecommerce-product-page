@@ -124,37 +124,7 @@
           >
             <h2 class="c-cart__title" id="cart-title">Cart</h2>
             <div class="c-cart__body l-stack">
-              <ul class="c-cart__list l-stack" role="list">
-                <li class="c-cart__item l-cluster">
-                  <div class="c-cart__thumb l-frame">
-                    <img
-                      src="./images/image-product-1-thumbnail.jpg"
-                      alt=""
-                      width="50"
-                      height="50"
-                    />
-                  </div>
-                  <div class="c-cart__info">
-                    <p class="c-cart__name">Fall Limited Edition Sneakers</p>
-                    <p class="c-cart__price">
-                      <span class="c-cart__unit">$125.00 × 3</span
-                      ><strong class="c-cart__total">$375.00</strong>
-                    </p>
-                  </div>
-                  <button class="c-cart__remove c-icon-button" type="button">
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      width="14"
-                      height="16"
-                    >
-                      <use href="./images/icons.svg#icon-delete"></use></svg
-                    ><span class="u-sr-only"
-                      >Remove Fall Limited Edition Sneakers from cart</span
-                    >
-                  </button>
-                </li>
-              </ul>
+              <ul class="c-cart__list l-stack" role="list"></ul>
               <button
                 class="c-cart__checkout c-button c-button--primary c-button--block"
                 type="button"
@@ -448,6 +418,7 @@
               <button
                 class="c-purchase__submit c-button c-button--primary"
                 type="submit"
+                aria-describedby="quantity-error"
               >
                 <span class="l-with-icon">
                   <svg
@@ -460,6 +431,11 @@
                   >Add to cart</span
                 >
               </button>
+              <p
+                class="c-purchase__error"
+                id="quantity-error"
+                role="alert"
+              ></p>
             </form>
           </div>
         </div>
