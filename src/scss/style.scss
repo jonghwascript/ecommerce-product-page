@@ -191,10 +191,12 @@ button {
 /* ################# Main   ################ */
 .c-page {
   .c-product {
-
-    // border: 1px solid #000;
     .c-product__layout {
       --threshold: 61rem;
+
+      @include mq('desktop') {
+        gap: clamp(1.5rem, calc(-75.895rem + 120.93vw), 8rem);
+      }
 
       // 상품 컴포넌트 안에서 갤러리가 차지하는 위치·크기 등 배치를 담당
       .c-product__gallery {
@@ -263,24 +265,40 @@ button {
 
 //제품정보
 .c-product__details {
-  --space: 32px;
+  --space: 2rem;
+  justify-content: center;
 
   .c-product__heading {
     --space: 16px;
 
     .c-product__brand {
       color: $Grey-500;
-      @include text-preset-6;
+      font-family: $font-family-primary;
+      font-weight: 700;
+      font-size: clamp(0.75rem, calc(0.69rem + 0.254vw), 0.813rem);
+      line-height: clamp(0.116rem, calc(0.107rem + 0.038vw), 0.125rem);
     }
 
     .c-product__title {
       color: $Grey-950;
-      @include text-preset-2;
+      font-family: $font-family-primary;
+      font-weight: 700;
+      font-size: clamp(1.75rem, calc(0.796rem + 4.071vw), 2.75rem);
     }
 
     .c-product__description {
       color: $Grey-500;
-      @include text-preset-4;
+      font-family: $font-family-primary;
+      font-weight: 400;
+      font-size: clamp(0.938rem, calc(0.878rem + 0.254vw), 1rem);
+    }
+  }
+
+  .c-product__price {
+    @include mq('tablet') {
+      flex-direction: column;
+      row-gap: 8px;
+      align-items: flex-start;
     }
   }
 }
@@ -307,42 +325,36 @@ button {
   .c-price__original {
     del {
       @include text-preset-3-B;
-      color: $Grey-950;
+      color: $Grey-500;
     }
   }
 }
 
 .c-quantity {
-  position: relative;
+  display: flex;
 
-  .c-quantity__button {
-    position: absolute;
-    // 버튼 자체의 위치를 세로 중앙으로 맞춤
-    top: 50%;
-    transform: translateY(-50%); // 세로 중앙
-    z-index: 1; // 슬라이드 위에 표시
-    //버튼 아이콘의 내부를 중앙으로 맞춘다
-    display: grid;
-    place-items: center;
-
-    &.c-quantity__button--decrease {
-      inset-inline-start: 1.1563rem;
-    }
-
-    &.c-quantity__button--increase {
-      inset-inline-end: 1.1563rem;
-    }
+  .c-quantity__button--decrease {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: $Grey-50;
+    flex: 1;
   }
-}
 
-.c-quantity__value {
-  display: block;
-  border-radius: 10px;
-  background-color: $Grey-50;
-  padding: 1rem;
-  text-align: center;
-  @include text-preset-3-B;
-  color: $Grey-950;
+  .c-quantity__value {
+    flex: 3;
+    background-color: $Grey-50;
+    padding: 1rem;
+    text-align: center;
+    @include text-preset-3-B;
+    color: $Grey-950;
+  }
+
+  .c-quantity__button--increase {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: $Grey-50;
+    flex: 1;
+  }
 }
 
 .c-button--primary {
@@ -368,8 +380,13 @@ button {
 }
 
 .c-attribution {
+  border: 0;
   font-size: 0.6875rem;
   text-align: center;
+
+  >p {
+    max-inline-size: 100%;
+  }
 }
 
 .c-attribution a {

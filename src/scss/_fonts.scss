@@ -3,13 +3,15 @@
 @font-face {
   font-family: 'Work Sans';
   src: url('../fonts/KumbhSans-VariableFont_YOPQ,wght.ttf') format('truetype');
-  font-weight: 100 900; /* Work Sans 폰트가 지원하는 굵기 범위 (일반적으로 100~900) */
+  font-weight: 100 900;
+  /* Work Sans 폰트가 지원하는 굵기 범위 (일반적으로 100~900) */
   font-style: normal;
   font-display: swap;
 }
 
 
-$font-family-primary: "Kumbh Sans", sans-serif;
+$font-family-primary: "Kumbh Sans",
+sans-serif;
 
 //Text Preset 1 - Kumbh Sans Bold - 44px - 48px Line Height - 0px Line Spacing
 @mixin text-preset-1 {
@@ -18,6 +20,7 @@ $font-family-primary: "Kumbh Sans", sans-serif;
   font-size: 44px;
   line-height: 48px;
 }
+
 //Text Preset 6 - Kumbh Sans Bold - 12px - 15px Line Height - 1.85px Line Spacing
 @mixin text-preset-6 {
   font-family: $font-family-primary;
@@ -26,6 +29,7 @@ $font-family-primary: "Kumbh Sans", sans-serif;
   line-height: 15px;
   letter-spacing: 1.85px;
 }
+
 //Text Preset 2 - Kumbh Sans Bold - 28px - 32px Line Height - 0px Line Spacing
 @mixin text-preset-2 {
   font-family: $font-family-primary;
@@ -33,6 +37,7 @@ $font-family-primary: "Kumbh Sans", sans-serif;
   font-size: 28px;
   line-height: 32px;
 }
+
 //Text Preset 3 (Bold) - Kumbh Sans Bold - 16px - 26px Line Height - 0px Line Spacing
 @mixin text-preset-3-B {
   font-family: $font-family-primary;
@@ -40,6 +45,7 @@ $font-family-primary: "Kumbh Sans", sans-serif;
   font-size: 16px;
   line-height: 26px;
 }
+
 //Text Preset 3 - Kumbh Sans Regular - 16px - 26px Line Height - 0px Line Spacing
 @mixin text-preset-3-R {
   font-family: $font-family-primary;
@@ -47,6 +53,7 @@ $font-family-primary: "Kumbh Sans", sans-serif;
   font-size: 16px;
   line-height: 26px;
 }
+
 //Text Preset 4 - Kumbh Sans Regular - 15px - 26px Line Height - 0px Line Spacing
 @mixin text-preset-4 {
   font-family: $font-family-primary;
@@ -54,6 +61,7 @@ $font-family-primary: "Kumbh Sans", sans-serif;
   font-size: 15px;
   line-height: 26px;
 }
+
 //Text Preset 5 - Kumbh Sans Bold - 13px - 16px Line Height - 2px Line Spacing
 @mixin text-preset-5 {
   font-family: $font-family-primary;
@@ -62,4 +70,17 @@ $font-family-primary: "Kumbh Sans", sans-serif;
   line-height: 16px;
 }
 
+@mixin text-preset-6 {
+  font-family: $font-family-primary;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 26px;
+}
 
+
+@mixin text-preset($fontSize, $weight, $lineHeight) {
+  font-family: $font-family-primary;
+  font-weight: $weight;
+  font-size: $fontSize;
+  line-height: $lineHeight;
+}
