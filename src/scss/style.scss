@@ -137,6 +137,7 @@ button {
           display: contents;
           width: auto;
           height: auto;
+          overflow: visible;
           padding: 0;
           background: transparent;
           transition: none;
@@ -177,6 +178,9 @@ button {
   position: fixed;
   width: var(--measure);
   height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
   left: calc(var(--measure) * -1);
   top: 0;
 
@@ -186,6 +190,11 @@ button {
   padding-inline: 24px;
   align-items: flex-start;
   --space: 56px;
+
+  // 낮은 화면에서도 닫기 버튼과 링크를 줄이지 않고 내부에서 스크롤한다.
+  > * {
+    flex-shrink: 0;
+  }
 
   transition: all 0.3s ease-out;
 
