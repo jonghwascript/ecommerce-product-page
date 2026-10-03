@@ -404,9 +404,9 @@ function initCart($) {
     $panel.prop('hidden', !open);
     $toggle.attr('aria-expanded', String(open));
     if(isOpen){
-      $('.c-button--primary').addClass('u-orange-300');
+      $('.c-purchase__submit').addClass('u-orange-300');
     }else{
-      $('.c-button--primary').removeClass('u-orange-300');
+      $('.c-purchase__submit').removeClass('u-orange-300');
     }
 
     if (!open && restoreFocus) $toggle[0].focus({ preventScroll: true });
