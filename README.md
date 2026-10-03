@@ -41,7 +41,10 @@ The page uses sample product data and a client-side cart. Checkout and the heade
 ### Links
 
 - [Frontend Mentor challenge](https://www.frontendmentor.io/challenges/ecommerce-product-page-UPsZ9MJp6)
-- A live deployment has not been published.
+
+- Solution URL: [Repository](https://github.com/jonghwascript/ecommerce-product-page)
+
+- Live Site URL: [Live site](https://jonghwascript.github.io/ecommerce-product-page/)
 
 ## Built with
 
