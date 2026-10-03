@@ -187,6 +187,48 @@ function initLightbox($) {
   let index = 0;
   let opener = null;
 
+  function focusGalleryControl() {
+    gallery.closest('.c-gallery')
+      .querySelector('.c-gallery__control--next')?.focus({ preventScroll: true });
+  }
+
+  function syncImageControls() {
+    gallery.querySelectorAll('.c-gallery__open').forEach((element) => {
+      const tag = desktop.matches ? 'BUTTON' : 'DIV';
+      const hadFocus = document.activeElement === element;
+      if (element.tagName !== tag) {
+        const replacement = document.createElement(tag);
+        for (const attribute of element.attributes) {
+          replacement.setAttribute(attribute.name, attribute.value);
+        }
+        // 자식을 이동해 원본 이미지 참조와 대체 텍스트를 유지한다.
+        replacement.append(...element.childNodes);
+        element.replaceWith(replacement);
+        element = replacement;
+      }
+      element.querySelector('.u-sr-only').hidden = !desktop.matches;
+      if (desktop.matches) {
+        element.setAttribute('type', 'button');
+        element.setAttribute('aria-haspopup', 'dialog');
+        element.setAttribute('aria-controls', dialog.id);
+        const slide = element.closest('.slick-slide');
+        element.tabIndex = slide
+          ? (slide.classList.contains('slick-active') && !slide.classList.contains('slick-cloned') ? 0 : -1)
+          : (element.contains(images[0]) ? 0 : -1);
+      } else {
+        element.removeAttribute('type');
+        element.removeAttribute('tabindex');
+        element.removeAttribute('aria-haspopup');
+        element.removeAttribute('aria-controls');
+        if (hadFocus) focusGalleryControl();
+      }
+    });
+  }
+
+  // 재초기화로 생성된 복제 슬라이드에도 현재 화면의 의미를 적용한다.
+  $(gallery).on('reInit', syncImageControls);
+  syncImageControls();
+
   function showImage(nextIndex) {
     index = (nextIndex + images.length) % images.length;
     image.src = images[index].src;
@@ -212,9 +254,11 @@ function initLightbox($) {
   closeButton.addEventListener('click', () => dialog.close());
   desktop.addEventListener('change', (event) => {
     if (!event.matches && dialog.open) dialog.close();
+    syncImageControls();
   });
   dialog.addEventListener('close', () => {
-    if (opener?.isConnected) opener.focus({ preventScroll: true });
+    if (!desktop.matches) focusGalleryControl();
+    else if (opener?.isConnected) opener.focus({ preventScroll: true });
   });
   dialog.querySelector('.c-lightbox__control--prev')
     .addEventListener('click', () => showImage(index - 1));
