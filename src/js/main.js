@@ -94,6 +94,30 @@ function initGallery($) {
     speed: 300,
   });
 
+  const $thumbs = $('.c-gallery__thumb');
+  const $status = $('.c-gallery__status');
+
+  // 현재 슬라이드에 맞춰 썸네일 활성 표시와 스크린 리더 안내를 갱신한다.
+  function syncThumbs(index) {
+    $thumbs.each((i, thumb) => {
+      const isCurrent = i === index;
+      $(thumb).toggleClass('is-active', isCurrent);
+      if (isCurrent) $(thumb).attr('aria-current', 'true');
+      else $(thumb).removeAttr('aria-current');
+    });
+    $status.text(`Image ${index + 1} of ${$thumbs.length}`);
+  }
+
+  // 화살표로 넘길 때도 갱신되도록 Slick 이벤트에서 동기화한다.
+  $gallery.on('beforeChange', (_event, _slick, _currentSlide, nextSlide) => syncThumbs(nextSlide));
+
+  // 썸네일을 클릭하면 data-index에 해당하는 슬라이드로 이동한다.
+  $thumbs.on('click', (event) => {
+    const index = Number($(event.currentTarget).attr('data-index'));
+    if (Number.isNaN(index)) return;
+    $gallery.slick('slickGoTo', index);
+  });
+
   // 리사이즈 중 다음 슬라이드가 보이지 않도록 프레임당 한 번 재배치한다.
   let resizeFrame = 0;
   $(window).on('resize', () => {

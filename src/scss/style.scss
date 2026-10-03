@@ -338,6 +338,23 @@ button {
       //썸네일
       .c-gallery__thumbs {
         display: none;
+
+        @include mq('desktop') {
+          display: flex;
+          gap: 2rem; //32px
+          justify-content: space-between;
+          flex-wrap: nowrap;
+
+          >.c-gallery__thumb-item {
+            flex: 1;
+
+            .c-gallery__thumb-frame {
+              --n: 88;
+              --d: 88;
+              border-radius: 10px;
+            }
+          }
+        }
       }
     }
   }
@@ -345,10 +362,33 @@ button {
 
 // 갤러리 자체를 독립적인 컴포넌트로 정의
 .c-gallery {
+  @include mq('desktop') {
+    --space: 2rem; // 32px
+  }
+
+  .c-gallery__thumb-frame {
+    border: 2px solid transparent; // 평소: 보이지 않는 테두리
+    background-color: $White;
+  }
+
+  // hover는 is-active보다 위에 둔다 (아래쪽 규칙이 이기므로)
+  .c-gallery__thumb:hover img {
+    opacity: 0.5; // 마우스를 올리면 살짝 흐리게
+  }
+
+  .c-gallery__thumb.is-active .c-gallery__thumb-frame {
+    border-color: $Orange-500; // 선택: 색만 주황으로
+  }
+
+  .c-gallery__thumb.is-active img {
+    opacity: 0.25; // 사진을 흐리게
+  }
+
   .c-gallery__stage {
     position: relative; //화살표 기준
 
     .c-gallery__list {
+
       //Slick 초기화 전에 나머지 이미지를 숨긴다.
       &:not(.slick-initialized) {
         >.c-gallery__open:not(:first-child) {
@@ -356,10 +396,23 @@ button {
         }
       }
 
-      .c-gallery__open {
+      .c-gallery__open {        
+        overflow: hidden;
+
         .c-gallery__frame {
           --n: 375;
           --d: 300;
+
+          @include mq('tablet') {
+            border-radius: 0.9375rem; //15px
+            --n: 608;
+            --d: 290;
+          }
+
+          @include mq('desktop') {
+            --n: 448;
+            --d: 445;
+          }
         }
       }
     }
@@ -376,6 +429,10 @@ button {
       block-size: 2.5rem; //40px
       border-radius: 50%;
       background-color: #fff;
+      
+      @include mq('desktop'){
+        display: none;  
+      }
     }
 
     .c-gallery__control--prev {
@@ -387,6 +444,8 @@ button {
     }
   }
 }
+
+
 
 //제품정보
 .c-product__details {

@@ -144,11 +144,11 @@
         <div class="c-product__layout l-switcher">
           <!-- Slick Slider Gallery -->
           <section
-            class="c-product__gallery c-gallery"
+            class="c-product__gallery c-gallery l-stack"
             aria-label="Product images"
           >
             <div class="c-gallery__stage">
-              <div class="c-gallery__list">
+              <div class="c-gallery__list" id="gallery-slides">
                 <button
                   class="c-gallery__open"
                   type="button"
@@ -158,9 +158,8 @@
                   <span class="c-gallery__frame l-frame">
                     <img
                       class="c-gallery__image"
-                      id="gallery-image_01"
                       src="./images/image-product-1.jpg"
-                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole"
+                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 1"
                       width="448"
                       height="445"
                     />
@@ -176,9 +175,8 @@
                   <span class="c-gallery__frame l-frame">
                     <img
                       class="c-gallery__image"
-                      id="gallery-image_02"
                       src="./images/image-product-2.jpg"
-                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole"
+                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 2"
                       width="448"
                       height="445"
                     />
@@ -194,9 +192,8 @@
                   <span class="c-gallery__frame l-frame">
                     <img
                       class="c-gallery__image"
-                      id="gallery-image_03"
                       src="./images/image-product-3.jpg"
-                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole"
+                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 3"
                       width="448"
                       height="445"
                     />
@@ -212,9 +209,8 @@
                   <span class="c-gallery__frame l-frame">
                     <img
                       class="c-gallery__image"
-                      id="gallery-image_04"
                       src="./images/image-product-4.jpg"
-                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole"
+                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 4"
                       width="448"
                       height="445"
                     />
@@ -225,7 +221,7 @@
               <button
                 class="c-gallery__control c-gallery__control--prev c-icon-button c-icon-button--round"
                 type="button"
-                aria-controls="gallery-image"
+                aria-controls="gallery-slides"
               >
                 <svg
                   aria-hidden="true"
@@ -239,7 +235,7 @@
               <button
                 class="c-gallery__control c-gallery__control--next c-icon-button c-icon-button--round"
                 type="button"
-                aria-controls="gallery-image"
+                aria-controls="gallery-slides"
               >
                 <svg
                   aria-hidden="true"
@@ -262,7 +258,7 @@
                   class="c-gallery__thumb is-active"
                   type="button"
                   aria-current="true"
-                  aria-controls="gallery-image_01"
+                  aria-controls="gallery-slides"
                   data-index="0"
                 >
                   <span class="c-gallery__thumb-frame l-frame">
@@ -279,7 +275,7 @@
                 <button
                   class="c-gallery__thumb"
                   type="button"
-                  aria-controls="gallery-image_02"
+                  aria-controls="gallery-slides"
                   data-index="1"
                 >
                   <span class="c-gallery__thumb-frame l-frame">
@@ -297,7 +293,7 @@
                 <button
                   class="c-gallery__thumb"
                   type="button"
-                  aria-controls="gallery-image_03"
+                  aria-controls="gallery-slides"
                   data-index="2"
                 >
                   <span class="c-gallery__thumb-frame l-frame">
@@ -315,7 +311,7 @@
                 <button
                   class="c-gallery__thumb"
                   type="button"
-                  aria-controls="gallery-image_04"
+                  aria-controls="gallery-slides"
                   data-index="3"
                 >
                   <span class="c-gallery__thumb-frame l-frame">
