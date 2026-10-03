@@ -14,11 +14,13 @@ function initNavigation($) {
   // 필수 요소가 없으면 다른 기능에 영향을 주지 않도록 초기화를 건너뛴다.
   if (!$menuToggle.length || !$nav.length || !$closeButton.length) return;
 
+  const desktop = window.matchMedia('(min-width: 1024px)');
   let isOpen = false;
 
   // 메뉴의 열림 상태와 클래스·ARIA·inert·포커스를 한 곳에서 동기화한다.
-  function setMenuOpen(open) {
+  function setMenuOpen(open, { restoreFocus = true } = {}) {
     const wasOpen = isOpen;
+    open = open && !desktop.matches;
     isOpen = open;
     $nav.toggleClass('is-active', open);
     $body.toggleClass('no-scroll', open);
@@ -26,10 +28,37 @@ function initNavigation($) {
     $mainContent.prop('inert', open);
 
     // 포커스를 먼저 복원한 뒤 메뉴를 보조 기술과 키보드에서 숨긴다.
-    if (!open && wasOpen) $menuToggle[0].focus({ preventScroll: true });
-    $nav.prop('inert', !open).attr('aria-hidden', String(!open));
+    if (!open && wasOpen && restoreFocus && !desktop.matches) {
+      $menuToggle[0].focus({ preventScroll: true });
+    }
+    if (desktop.matches) {
+      $nav.prop('inert', false).removeAttr('aria-hidden');
+    } else {
+      $nav.prop('inert', !open).attr('aria-hidden', String(!open));
+    }
     if (open) $closeButton[0].focus({ preventScroll: true });
   }
+
+  function syncNavigationMode() {
+    const active = document.activeElement;
+    // CSS가 닫기 버튼을 숨기면서 포커스가 body로 먼저 이동할 수도 있다.
+    const needsDesktopFocus = desktop.matches && (
+      active === $menuToggle[0] ||
+      active === $closeButton[0] ||
+      (isOpen && active === document.body)
+    );
+    // 모바일 전환 시 메뉴를 숨기기 전에 포커스를 바깥으로 옮긴다.
+    if (!desktop.matches && $nav[0].contains(active)) {
+      $menuToggle[0].focus({ preventScroll: true });
+    }
+    setMenuOpen(false, { restoreFocus: false });
+    // 데스크톱에서 사라지는 열기·닫기 버튼에 포커스를 남기지 않는다.
+    if (needsDesktopFocus) {
+      $nav.find('a[href]').first()[0]?.focus({ preventScroll: true });
+    }
+  }
+
+  desktop.addEventListener('change', syncNavigationMode);
 
   $menuToggle.on('click', () => setMenuOpen(!isOpen));
   $closeButton.add($overlay).on('click', () => setMenuOpen(false));
@@ -73,8 +102,8 @@ function initNavigation($) {
     }
   });
 
-  // 초기 상태: 닫힘(aria-hidden·inert 적용)
-  setMenuOpen(false);
+  // 데스크톱은 항상 접근 가능, 모바일은 닫힌 상태로 시작한다.
+  syncNavigationMode();
 }
 
 // ==========================================
