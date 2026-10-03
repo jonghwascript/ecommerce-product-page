@@ -20,15 +20,6 @@ sans-serif;
   line-height: 48px;
 }
 
-//Text Preset 6 - Kumbh Sans Bold - 12px - 15px Line Height - 1.85px Line Spacing
-@mixin text-preset-6 {
-  font-family: $font-family-primary;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 15px;
-  letter-spacing: 1.85px;
-}
-
 //Text Preset 2 - Kumbh Sans Bold - 28px - 32px Line Height - 0px Line Spacing
 @mixin text-preset-2 {
   font-family: $font-family-primary;
