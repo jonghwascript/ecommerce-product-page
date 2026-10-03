@@ -137,6 +137,70 @@ function initGallery($) {
 }
 
 // ==========================================
+// 상품 이미지 라이트박스
+// 네이티브 모달의 배경 접근 차단과 Esc 닫기를 사용한다.
+// ==========================================
+function initLightbox($) {
+  const dialog = document.querySelector('.c-lightbox');
+  const gallery = document.querySelector('.c-gallery__list');
+  if (!dialog || !gallery) return;
+
+  const images = Array.from(
+    gallery.querySelectorAll('.c-gallery__open:not(.slick-cloned) img'),
+  );
+  const image = dialog.querySelector('.c-lightbox__image');
+  const closeButton = dialog.querySelector('.c-lightbox__close');
+  const thumbs = Array.from(dialog.querySelectorAll('.c-lightbox__thumb'));
+  if (!images.length || !image || !closeButton) return;
+
+  const desktop = window.matchMedia('(min-width: 1024px)');
+  let index = 0;
+  let opener = null;
+
+  function showImage(nextIndex) {
+    index = (nextIndex + images.length) % images.length;
+    image.src = images[index].src;
+    image.alt = images[index].alt;
+    thumbs.forEach((thumb, i) => {
+      thumb.classList.toggle('is-active', i === index);
+      if (i === index) thumb.setAttribute('aria-current', 'true');
+      else thumb.removeAttribute('aria-current');
+    });
+    dialog.querySelector('.c-lightbox__status').textContent =
+      `Image ${index + 1} of ${images.length}`;
+  }
+
+  $(gallery).on('click', '.c-gallery__open', (event) => {
+    if (!desktop.matches || dialog.open) return;
+    opener = event.currentTarget;
+    const selected = opener.querySelector('img');
+    showImage(Math.max(0, images.findIndex((item) => item.src === selected.src)));
+    dialog.showModal();
+    closeButton.focus({ preventScroll: true });
+  });
+
+  closeButton.addEventListener('click', () => dialog.close());
+  desktop.addEventListener('change', (event) => {
+    if (!event.matches && dialog.open) dialog.close();
+  });
+  dialog.addEventListener('close', () => {
+    if (opener?.isConnected) opener.focus({ preventScroll: true });
+  });
+  dialog.querySelector('.c-lightbox__control--prev')
+    .addEventListener('click', () => showImage(index - 1));
+  dialog.querySelector('.c-lightbox__control--next')
+    .addEventListener('click', () => showImage(index + 1));
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => showImage(Number(thumb.dataset.index)));
+  });
+  dialog.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    showImage(index + (event.key === 'ArrowLeft' ? -1 : 1));
+  });
+}
+
+// ==========================================
 // 수량 선택과 장바구니
 // 수량 증감 → Add to cart로 담기 → 헤더 카트 패널에서 확인·삭제
 // 상태(quantity, items, isOpen)는 이 함수 안에서만 관리하고
@@ -350,6 +414,7 @@ function initCart($) {
 jQuery(($) => {
   initNavigation($);
   initGallery($);
+  initLightbox($);
   initCart($);
 });
 

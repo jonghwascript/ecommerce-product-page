@@ -422,6 +422,15 @@ button {
       block-size: 2.5rem; //40px
       border-radius: 50%;
       background-color: #fff;
+
+      &:hover {
+        color: $Orange-500;
+      }
+
+      &:focus-visible {
+        outline: 3px solid $Orange-500;
+        outline-offset: 3px;
+      }
     }
 
     .c-gallery__control--prev {
@@ -613,11 +622,12 @@ button {
 
 /* 화면 가로 넓이가 1024px 이상일 때(PC)만 아래 코드를 적용합니다 */
 @media (min-width: 1024px) {
+
   /* 1. 슬라이드가 보여지는 '창(틀)' 자체를 둥글게 자르기 */
   .c-gallery__list .slick-list {
     border-radius: 20px !important;
     overflow: hidden !important;
-    
+
     -webkit-transform: translate3d(0, 0, 0) !important;
     transform: translate3d(0, 0, 0) !important;
     -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
@@ -642,7 +652,144 @@ button {
 
 /* ################# Dialog   ################ */
 .c-lightbox {
-  //todo
+  position: fixed;
+  inset: 0;
+  transform: none;
+  margin: auto;
+  inline-size: min(34.375rem, calc(100% - 2rem));
+  max-block-size: calc(100dvh - 1rem);
+  padding: 1rem;
+  border: 0;
+  background: transparent;
+  overflow: auto;
+
+  @include mq('desktop') {
+    // 좌우 패딩 증가분만큼 바깥 너비도 늘려 이미지 너비를 유지한다.
+    --control-gutter: max(1rem, 34px);
+    inline-size: calc(34.375rem + 2 * (var(--control-gutter) - 1rem));
+    padding-inline: var(--control-gutter);
+  }
+
+  &::backdrop {
+    background: rgb(0 0 0 / 75%);
+  }
+
+  .c-lightbox__inner {
+    --space: 1rem;
+
+    @include mq('desktop') {
+      --space: 2rem;
+    }
+  }
+
+  .c-lightbox__close {
+    align-self: flex-end;
+
+    .btn-close-icon {
+      color: $Orange-500;
+    }
+  }
+
+  .c-lightbox__stage {
+    position: relative;
+  }
+
+  .c-lightbox__frame {
+    --n: 375;
+    --d: 300;
+
+    @include mq('tablet') {
+      --n: 608;
+      --d: 290;
+      border-radius: 0.9375rem;
+    }
+
+    @include mq('desktop') {
+      --n: 448;
+      --d: 445;
+      border-radius: 20px;
+    }
+  }
+
+  .c-lightbox__control {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    inline-size: 56px;
+    block-size: 56px;
+    border-radius: 50%;
+    background: $White;
+  }
+
+  .c-lightbox__control--prev {
+    left: 0;
+    transform: translateY(-50%);
+
+    @include mq('desktop') {
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .c-lightbox__control--next {
+    right: 0;
+    transform: translateY(-50%);
+
+    @include mq('desktop') {
+      transform: translate(50%, -50%);
+    }
+  }
+
+  .c-lightbox__thumbs {
+    margin-inline: auto;
+    --space: 2rem;
+
+    >.c-lightbox__thumb-item {
+      flex: 1;
+      min-inline-size: 0;
+    }
+  }
+
+  .c-lightbox__thumb {
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+    inline-size: 88px;
+    flex-shrink: 0;
+  }
+
+  .c-lightbox__thumb-frame {
+    --n: 88;
+    --d: 88;
+    border: 2px solid transparent;
+    border-radius: 0.625rem;
+    background: $White;
+  }
+
+  .c-lightbox__thumb:hover img {
+    opacity: 0.5;
+  }
+
+  .c-lightbox__thumb.is-active .c-lightbox__thumb-frame {
+    border-color: $Orange-500;
+  }
+
+  .c-lightbox__thumb.is-active img {
+    opacity: 0.25;
+  }
+
+  button:hover {
+    color: $Orange-500;
+  }
+
+  button:focus-visible {
+    outline: 3px solid $Orange-500;
+    outline-offset: 3px;
+  }
+}
+
+body:has(.c-lightbox[open]) {
+  overflow: hidden;
 }
 
 .c-attribution {
