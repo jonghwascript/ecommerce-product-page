@@ -147,9 +147,9 @@
   max-inline-size: var(--measure, 60ch);   // 기본값은 그대로 60ch
   // 가로 여백만 자동으로 설정하여 중앙 정렬
   margin-inline: auto;
-  // 최소 가로 여백 적용
-  padding-inline-start: var(--s1, 1.5rem);
-  padding-inline-end: var(--s1, 1.5rem);
+  // 최소 가로 여백 적용 (--gutter-inline으로 컴포넌트별 조정 가능)
+  padding-inline-start: var(--gutter-inline, var(--s1, 1.5rem));
+  padding-inline-end: var(--gutter-inline, var(--s1, 1.5rem));
   //| padding | ←──── 60ch content ────→ | padding |
 }
 

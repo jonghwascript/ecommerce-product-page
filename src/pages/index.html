@@ -30,413 +30,415 @@
 
   <body>
     <a class="c-skip-link" href="#main">Skip to main content</a>
-    <!-- Header -->
-    <header class="c-header">
-      <div class="c-header__inner l-center l-cluster">
-        <div class="c-header__start l-cluster">
-          <button
-            class="c-header__menu-toggle c-icon-button"
-            type="button"
-            aria-expanded="false"
-            aria-controls="primary-nav"
-          >
-            <svg aria-hidden="true" focusable="false" width="16" height="15">
-              <use href="./images/icon-menu.svg"></use>
-            </svg>
-            <span class="u-sr-only">Open menu</span>
-          </button>
-          <a class="c-header__logo" href="/">
-            <img
-              src="./images/logo.svg"
-              alt="sneakers"
-              width="138"
-              height="20"
-            />
-          </a>
-          <nav
-            class="c-header__nav c-nav l-stack"
-            id="primary-nav"
-            aria-label="Primary"
-            aria-hidden="true"
-          >
+    <div class="c-site l-stack">
+      <!-- Header -->
+      <header class="c-header">
+        <div class="c-header__inner l-center l-cluster">
+          <div class="c-header__start l-cluster">
             <button
-              class="c-nav__close c-icon-button"
+              class="c-header__menu-toggle c-icon-button"
               type="button"
+              aria-expanded="false"
               aria-controls="primary-nav"
             >
-              <svg aria-hidden="true" focusable="false" width="14" height="15">
-                <use href="./images/icon-close.svg"></use>
+              <svg aria-hidden="true" focusable="false" width="16" height="15">
+                <use href="./images/icon-menu.svg"></use>
               </svg>
-              <span class="u-sr-only">Close menu</span>
+              <span class="u-sr-only">Open menu</span>
             </button>
-            <ul class="c-nav__list l-stack" role="list">
-              <li class="c-nav__item">
-                <a class="c-nav__link" href="#">Collections</a>
-              </li>
-              <li class="c-nav__item">
-                <a class="c-nav__link" href="#">Men</a>
-              </li>
-              <li class="c-nav__item">
-                <a class="c-nav__link" href="#">Women</a>
-              </li>
-              <li class="c-nav__item">
-                <a class="c-nav__link" href="#">About</a>
-              </li>
-              <li class="c-nav__item">
-                <a class="c-nav__link" href="#">Contact</a>
-              </li>
-            </ul>
-          </nav>
-          <!-- 오버레이 -->
-          <div class="c-header__backdrop" aria-hidden="true"></div>
-        </div>
-        <div class="c-header__actions l-cluster">
-          <button
-            class="c-header__cart c-icon-button"
-            id="cart-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="cart-panel"
-          >
-            <svg aria-hidden="true" focusable="false" width="28" height="24">
-              <use href="./images/icon-cart.svg"></use>
-            </svg>
-            <span class="u-sr-only">Cart</span>
-            <span class="c-header__badge c-badge c-badge--count" data-count="0"
-              ><span class="u-sr-only"> items</span></span
+            <a class="c-header__logo" href="/">
+              <img
+                src="./images/logo.svg"
+                alt="sneakers"
+                width="138"
+                height="20"
+              />
+            </a>
+            <nav
+              class="c-header__nav c-nav l-stack"
+              id="primary-nav"
+              aria-label="Primary"
+              aria-hidden="true"
             >
-          </button>
-          <a class="c-header__avatar c-avatar" href="#">
-            <img
-              class="c-avatar__image"
-              src="./images/image-avatar.png"
-              alt=""
-              width="24"
-              height="24"
-            />
-            <span class="u-sr-only">My account</span>
-          </a>
-          <section
-            class="c-header__cart-panel c-cart"
-            id="cart-panel"
-            aria-labelledby="cart-title"
-            hidden
-          >
-            <h2 class="c-cart__title" id="cart-title">Cart</h2>
-            <div class="c-cart__body l-stack">
-              <ul class="c-cart__list l-stack" role="list"></ul>
               <button
-                class="c-cart__checkout c-button c-button--primary c-button--block"
+                class="c-nav__close c-icon-button"
                 type="button"
+                aria-controls="primary-nav"
               >
-                Checkout
-              </button>
-              <p class="c-cart__empty" hidden>Your cart is empty.</p>
-            </div>
-          </section>
-        </div>
-      </div>
-      <p class="u-sr-only" id="cart-status" role="status"></p>
-    </header>
-    <!-- Main -->
-    <main class="c-page" id="main" tabindex="-1">
-      <article class="c-product l-center">
-        <div class="c-product__layout l-switcher">
-          <!-- Slick Slider Gallery -->
-          <section
-            class="c-product__gallery c-gallery l-stack"
-            aria-label="Product images"
-          >
-            <div class="c-gallery__stage">
-              <div class="c-gallery__list" id="gallery-slides">
-                <button
-                  class="c-gallery__open"
-                  type="button"
-                  aria-haspopup="dialog"
-                  aria-controls="lightbox"
-                >
-                  <span class="c-gallery__frame l-frame">
-                    <img
-                      class="c-gallery__image"
-                      src="./images/image-product-1.jpg"
-                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 1"
-                      width="448"
-                      height="445"
-                    />
-                  </span>
-                  <span class="u-sr-only">Open larger view</span>
-                </button>
-                <button
-                  class="c-gallery__open"
-                  type="button"
-                  aria-haspopup="dialog"
-                  aria-controls="lightbox"
-                >
-                  <span class="c-gallery__frame l-frame">
-                    <img
-                      class="c-gallery__image"
-                      src="./images/image-product-2.jpg"
-                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 2"
-                      width="448"
-                      height="445"
-                    />
-                  </span>
-                  <span class="u-sr-only">Open larger view</span>
-                </button>
-                <button
-                  class="c-gallery__open"
-                  type="button"
-                  aria-haspopup="dialog"
-                  aria-controls="lightbox"
-                >
-                  <span class="c-gallery__frame l-frame">
-                    <img
-                      class="c-gallery__image"
-                      src="./images/image-product-3.jpg"
-                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 3"
-                      width="448"
-                      height="445"
-                    />
-                  </span>
-                  <span class="u-sr-only">Open larger view</span>
-                </button>
-                <button
-                  class="c-gallery__open"
-                  type="button"
-                  aria-haspopup="dialog"
-                  aria-controls="lightbox"
-                >
-                  <span class="c-gallery__frame l-frame">
-                    <img
-                      class="c-gallery__image"
-                      src="./images/image-product-4.jpg"
-                      alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 4"
-                      width="448"
-                      height="445"
-                    />
-                  </span>
-                  <span class="u-sr-only">Open larger view</span>
-                </button>
-              </div>
-              <button
-                class="c-gallery__control c-gallery__control--prev c-icon-button c-icon-button--round"
-                type="button"
-                aria-controls="gallery-slides"
-              >
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  width="12"
-                  height="18"
-                >
-                  <use href="./images/icon-previous.svg"></use></svg
-                ><span class="u-sr-only">Previous image</span>
-              </button>
-              <button
-                class="c-gallery__control c-gallery__control--next c-icon-button c-icon-button--round"
-                type="button"
-                aria-controls="gallery-slides"
-              >
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  width="13"
-                  height="18"
-                >
-                  <use href="./images/icon-next.svg"></use>
+                <svg aria-hidden="true" focusable="false" width="14" height="15">
+                  <use href="./images/icon-close.svg"></use>
                 </svg>
-                <span class="u-sr-only">Next image</span>
+                <span class="u-sr-only">Close menu</span>
               </button>
-            </div>
-            <p class="c-gallery__status u-sr-only" role="status">
-              Image 1 of 4
-            </p>
-            <!-- Thumbs -->
-            <ul class="c-gallery__thumbs l-cluster" role="list">
-              <li class="c-gallery__thumb-item">
-                <button
-                  class="c-gallery__thumb is-active"
-                  type="button"
-                  aria-current="true"
-                  aria-controls="gallery-slides"
-                  data-index="0"
-                >
-                  <span class="c-gallery__thumb-frame l-frame">
-                    <img
-                      src="./images/image-product-1-thumbnail.jpg"
-                      alt=""
-                      width="88"
-                      height="88"
-                  /></span>
-                  <span class="u-sr-only">View image 1 of 4</span>
-                </button>
-              </li>
-              <li class="c-gallery__thumb-item">
-                <button
-                  class="c-gallery__thumb"
-                  type="button"
-                  aria-controls="gallery-slides"
-                  data-index="1"
-                >
-                  <span class="c-gallery__thumb-frame l-frame">
-                    <img
-                      src="./images/image-product-2-thumbnail.jpg"
-                      alt=""
-                      width="88"
-                      height="88"
-                    />
-                  </span>
-                  <span class="u-sr-only">View image 2 of 4</span>
-                </button>
-              </li>
-              <li class="c-gallery__thumb-item">
-                <button
-                  class="c-gallery__thumb"
-                  type="button"
-                  aria-controls="gallery-slides"
-                  data-index="2"
-                >
-                  <span class="c-gallery__thumb-frame l-frame">
-                    <img
-                      src="./images/image-product-3-thumbnail.jpg"
-                      alt=""
-                      width="88"
-                      height="88"
-                    />
-                  </span>
-                  <span class="u-sr-only">View image 3 of 4</span>
-                </button>
-              </li>
-              <li class="c-gallery__thumb-item">
-                <button
-                  class="c-gallery__thumb"
-                  type="button"
-                  aria-controls="gallery-slides"
-                  data-index="3"
-                >
-                  <span class="c-gallery__thumb-frame l-frame">
-                    <img
-                      src="./images/image-product-4-thumbnail.jpg"
-                      alt=""
-                      width="88"
-                      height="88"
-                    />
-                  </span>
-                  <span class="u-sr-only">View image 4 of 4</span>
-                </button>
-              </li>
-            </ul>
-          </section>
-          <!-- Products Details -->
-          <div class="c-product__details l-stack">
-            <div class="c-product__heading l-stack">
-              <p class="c-product__brand">Sneaker Company</p>
-              <h1 class="c-product__title">Fall Limited Edition Sneakers</h1>
-              <p class="c-product__description">
-                These low-profile sneakers are your perfect casual wear
-                companion. Featuring a durable rubber outer sole, they’ll
-                withstand everything the weather can offer.
-              </p>
-            </div>
-            <div
-              class="c-product__price c-price l-cluster"
-              data-justify="between"
+              <ul class="c-nav__list l-stack" role="list">
+                <li class="c-nav__item">
+                  <a class="c-nav__link" href="#">Collections</a>
+                </li>
+                <li class="c-nav__item">
+                  <a class="c-nav__link" href="#">Men</a>
+                </li>
+                <li class="c-nav__item">
+                  <a class="c-nav__link" href="#">Women</a>
+                </li>
+                <li class="c-nav__item">
+                  <a class="c-nav__link" href="#">About</a>
+                </li>
+                <li class="c-nav__item">
+                  <a class="c-nav__link" href="#">Contact</a>
+                </li>
+              </ul>
+            </nav>
+            <!-- 오버레이 -->
+            <div class="c-header__backdrop" aria-hidden="true"></div>
+          </div>
+          <div class="c-header__actions l-cluster">
+            <button
+              class="c-header__cart c-icon-button"
+              id="cart-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="cart-panel"
             >
-              <div class="c-price__sale l-cluster">
-                <p class="c-price__current">
-                  <span class="u-sr-only">Current price:</span>$125.00
-                </p>
-                <span class="c-price__badge c-badge c-badge--discount"
-                  >50%<span class="u-sr-only"> off</span>
-                </span>
-              </div>
-              <p class="c-price__original">
-                <span class="u-sr-only">Original price:</span>
-                <del>$250.00</del>
-              </p>
-            </div>
-            <form
-              class="c-product__purchase c-purchase l-switcher"
-              action="#"
-              method="post"
+              <svg aria-hidden="true" focusable="false" width="28" height="24">
+                <use href="./images/icon-cart.svg"></use>
+              </svg>
+              <span class="u-sr-only">Cart</span>
+              <span class="c-header__badge c-badge c-badge--count" data-count="0"
+                ><span class="u-sr-only"> items</span></span
+              >
+            </button>
+            <a class="c-header__avatar c-avatar" href="#">
+              <img
+                class="c-avatar__image"
+                src="./images/image-avatar.png"
+                alt=""
+                width="24"
+                height="24"
+              />
+              <span class="u-sr-only">My account</span>
+            </a>
+            <section
+              class="c-header__cart-panel c-cart"
+              id="cart-panel"
+              aria-labelledby="cart-title"
+              hidden
             >
-              <div
-                class="c-purchase__quantity c-quantity"
-                role="group"
-                aria-labelledby="quantity-label"
-              >
-                <span class="u-sr-only" id="quantity-label">Quantity</span>
+              <h2 class="c-cart__title" id="cart-title">Cart</h2>
+              <div class="c-cart__body l-stack">
+                <ul class="c-cart__list l-stack" role="list"></ul>
                 <button
-                  class="c-quantity__button c-quantity__button--decrease is-disabled"
+                  class="c-cart__checkout c-button c-button--primary c-button--block"
                   type="button"
-                  aria-disabled="true"
-                  aria-controls="quantity-value"
                 >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    width="12"
-                    height="4"
-                  >
-                    <use href="./images/icon-minus.svg"></use>
-                  </svg>
-                  <span class="u-sr-only">Decrease quantity</span>
+                  Checkout
                 </button>
-                <output
-                  class="c-quantity__value"
-                  id="quantity-value"
-                  aria-labelledby="quantity-label"
-                  aria-live="polite"
-                  >0</output
-                >
-                <button
-                  class="c-quantity__button c-quantity__button--increase"
-                  type="button"
-                  aria-controls="quantity-value"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    width="12"
-                    height="12"
-                  >
-                    <use href="./images/icon-plus.svg"></use>
-                  </svg>
-                  <span class="u-sr-only">Increase quantity</span>
-                </button>
-                <input
-                  id="quantity-input"
-                  type="hidden"
-                  name="quantity"
-                  value="0"
-                />
+                <p class="c-cart__empty" hidden>Your cart is empty.</p>
               </div>
-              <button
-                class="c-purchase__submit c-button c-button--primary"
-                type="submit"
-                aria-describedby="quantity-error"
-              >
-                <span class="l-with-icon">
-                  <svg
-                    class="icon l-icon"
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 22 20"
-                  >
-                    <use href="./images/icon-cart.svg"></use></svg
-                  >Add to cart</span
-                >
-              </button>
-              <p
-                class="c-purchase__error"
-                id="quantity-error"
-                role="alert"
-              ></p>
-            </form>
+            </section>
           </div>
         </div>
-      </article>
-    </main>
+        <p class="u-sr-only" id="cart-status" role="status"></p>
+      </header>
+      <!-- Main -->
+      <main class="c-page" id="main" tabindex="-1">
+        <article class="c-product l-center">
+          <div class="c-product__layout l-switcher">
+            <!-- Slick Slider Gallery -->
+            <section
+              class="c-product__gallery c-gallery l-stack"
+              aria-label="Product images"
+            >
+              <div class="c-gallery__stage">
+                <div class="c-gallery__list" id="gallery-slides">
+                  <button
+                    class="c-gallery__open"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="lightbox"
+                  >
+                    <span class="c-gallery__frame l-frame">
+                      <img
+                        class="c-gallery__image"
+                        src="./images/image-product-1.jpg"
+                        alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 1"
+                        width="448"
+                        height="445"
+                      />
+                    </span>
+                    <span class="u-sr-only">Open larger view</span>
+                  </button>
+                  <button
+                    class="c-gallery__open"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="lightbox"
+                  >
+                    <span class="c-gallery__frame l-frame">
+                      <img
+                        class="c-gallery__image"
+                        src="./images/image-product-2.jpg"
+                        alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 2"
+                        width="448"
+                        height="445"
+                      />
+                    </span>
+                    <span class="u-sr-only">Open larger view</span>
+                  </button>
+                  <button
+                    class="c-gallery__open"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="lightbox"
+                  >
+                    <span class="c-gallery__frame l-frame">
+                      <img
+                        class="c-gallery__image"
+                        src="./images/image-product-3.jpg"
+                        alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 3"
+                        width="448"
+                        height="445"
+                      />
+                    </span>
+                    <span class="u-sr-only">Open larger view</span>
+                  </button>
+                  <button
+                    class="c-gallery__open"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="lightbox"
+                  >
+                    <span class="c-gallery__frame l-frame">
+                      <img
+                        class="c-gallery__image"
+                        src="./images/image-product-4.jpg"
+                        alt="A pair of white and beige sneakers on an orange background, one standing upright to show its white rubber sole, view 4"
+                        width="448"
+                        height="445"
+                      />
+                    </span>
+                    <span class="u-sr-only">Open larger view</span>
+                  </button>
+                </div>
+                <button
+                  class="c-gallery__control c-gallery__control--prev c-icon-button c-icon-button--round"
+                  type="button"
+                  aria-controls="gallery-slides"
+                >
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    width="12"
+                    height="18"
+                  >
+                    <use href="./images/icon-previous.svg"></use></svg
+                  ><span class="u-sr-only">Previous image</span>
+                </button>
+                <button
+                  class="c-gallery__control c-gallery__control--next c-icon-button c-icon-button--round"
+                  type="button"
+                  aria-controls="gallery-slides"
+                >
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    width="13"
+                    height="18"
+                  >
+                    <use href="./images/icon-next.svg"></use>
+                  </svg>
+                  <span class="u-sr-only">Next image</span>
+                </button>
+              </div>
+              <p class="c-gallery__status u-sr-only" role="status">
+                Image 1 of 4
+              </p>
+              <!-- Thumbs -->
+              <ul class="c-gallery__thumbs l-cluster" role="list">
+                <li class="c-gallery__thumb-item">
+                  <button
+                    class="c-gallery__thumb is-active"
+                    type="button"
+                    aria-current="true"
+                    aria-controls="gallery-slides"
+                    data-index="0"
+                  >
+                    <span class="c-gallery__thumb-frame l-frame">
+                      <img
+                        src="./images/image-product-1-thumbnail.jpg"
+                        alt=""
+                        width="88"
+                        height="88"
+                    /></span>
+                    <span class="u-sr-only">View image 1 of 4</span>
+                  </button>
+                </li>
+                <li class="c-gallery__thumb-item">
+                  <button
+                    class="c-gallery__thumb"
+                    type="button"
+                    aria-controls="gallery-slides"
+                    data-index="1"
+                  >
+                    <span class="c-gallery__thumb-frame l-frame">
+                      <img
+                        src="./images/image-product-2-thumbnail.jpg"
+                        alt=""
+                        width="88"
+                        height="88"
+                      />
+                    </span>
+                    <span class="u-sr-only">View image 2 of 4</span>
+                  </button>
+                </li>
+                <li class="c-gallery__thumb-item">
+                  <button
+                    class="c-gallery__thumb"
+                    type="button"
+                    aria-controls="gallery-slides"
+                    data-index="2"
+                  >
+                    <span class="c-gallery__thumb-frame l-frame">
+                      <img
+                        src="./images/image-product-3-thumbnail.jpg"
+                        alt=""
+                        width="88"
+                        height="88"
+                      />
+                    </span>
+                    <span class="u-sr-only">View image 3 of 4</span>
+                  </button>
+                </li>
+                <li class="c-gallery__thumb-item">
+                  <button
+                    class="c-gallery__thumb"
+                    type="button"
+                    aria-controls="gallery-slides"
+                    data-index="3"
+                  >
+                    <span class="c-gallery__thumb-frame l-frame">
+                      <img
+                        src="./images/image-product-4-thumbnail.jpg"
+                        alt=""
+                        width="88"
+                        height="88"
+                      />
+                    </span>
+                    <span class="u-sr-only">View image 4 of 4</span>
+                  </button>
+                </li>
+              </ul>
+            </section>
+            <!-- Products Details -->
+            <div class="c-product__details l-stack">
+              <div class="c-product__heading l-stack">
+                <p class="c-product__brand">Sneaker Company</p>
+                <h1 class="c-product__title">Fall Limited Edition Sneakers</h1>
+                <p class="c-product__description">
+                  These low-profile sneakers are your perfect casual wear
+                  companion. Featuring a durable rubber outer sole, they’ll
+                  withstand everything the weather can offer.
+                </p>
+              </div>
+              <div
+                class="c-product__price c-price l-cluster"
+                data-justify="between"
+              >
+                <div class="c-price__sale l-cluster">
+                  <p class="c-price__current">
+                    <span class="u-sr-only">Current price:</span>$125.00
+                  </p>
+                  <span class="c-price__badge c-badge c-badge--discount"
+                    >50%<span class="u-sr-only"> off</span>
+                  </span>
+                </div>
+                <p class="c-price__original">
+                  <span class="u-sr-only">Original price:</span>
+                  <del>$250.00</del>
+                </p>
+              </div>
+              <form
+                class="c-product__purchase c-purchase l-switcher"
+                action="#"
+                method="post"
+              >
+                <div
+                  class="c-purchase__quantity c-quantity"
+                  role="group"
+                  aria-labelledby="quantity-label"
+                >
+                  <span class="u-sr-only" id="quantity-label">Quantity</span>
+                  <button
+                    class="c-quantity__button c-quantity__button--decrease is-disabled"
+                    type="button"
+                    aria-disabled="true"
+                    aria-controls="quantity-value"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      focusable="false"
+                      width="12"
+                      height="4"
+                    >
+                      <use href="./images/icon-minus.svg"></use>
+                    </svg>
+                    <span class="u-sr-only">Decrease quantity</span>
+                  </button>
+                  <output
+                    class="c-quantity__value"
+                    id="quantity-value"
+                    aria-labelledby="quantity-label"
+                    aria-live="polite"
+                    >0</output
+                  >
+                  <button
+                    class="c-quantity__button c-quantity__button--increase"
+                    type="button"
+                    aria-controls="quantity-value"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      focusable="false"
+                      width="12"
+                      height="12"
+                    >
+                      <use href="./images/icon-plus.svg"></use>
+                    </svg>
+                    <span class="u-sr-only">Increase quantity</span>
+                  </button>
+                  <input
+                    id="quantity-input"
+                    type="hidden"
+                    name="quantity"
+                    value="0"
+                  />
+                </div>
+                <button
+                  class="c-purchase__submit c-button c-button--primary"
+                  type="submit"
+                  aria-describedby="quantity-error"
+                >
+                  <span class="l-with-icon">
+                    <svg
+                      class="icon l-icon"
+                      aria-hidden="true"
+                      focusable="false"
+                      viewBox="0 0 22 20"
+                    >
+                      <use href="./images/icon-cart.svg"></use></svg
+                    >Add to cart</span
+                  >
+                </button>
+                <p
+                  class="c-purchase__error"
+                  id="quantity-error"
+                  role="alert"
+                ></p>
+              </form>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
     <dialog
       class="c-lightbox l-imposter"
       id="lightbox"
