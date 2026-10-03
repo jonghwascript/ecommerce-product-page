@@ -56,6 +56,7 @@ button {
 
 /* ################# Header  ################ */
 .c-header {
+  position: relative;
   padding-block: 19px;
   align-items: center;
 
@@ -66,84 +67,123 @@ button {
       --space: 1rem;
       align-items: baseline;
 
-      .c-header__menu-toggle {
-        // 햄버거 메뉴
-      }
-
-      .c-header__logo {
-        img {
-          padding: 0;
-          margin: 0;
-        }
-      }
-
-      .c-header__nav {
-        .c-nav__close {
-          svg {}
-        }
-
-        .c-nav__list {
-          display: none;
-
-          .c-nav__item {
-            .c-nav__link {
-              //todo
-            }
-          }
-        }
-      }
-
       .c-header__backdrop {
-        //todo
+        position: fixed;
+        inset: 0;
+        background: rgb(0 0 0 / 60%);
+        pointer-events: none;
+        /* 클릭 통과됨 */
+        z-index: 99;
+
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s;
+      }
+
+      // 메뉴가 열렸을 때 오버레이 표시
+      &:has(.c-nav.is-active) {
+        .c-header__backdrop {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+          /* 클릭을 오버레이가 대신 맞아서 막아줌 */
+        }
       }
     }
 
-    .c-header__actions {
-      margin-inline-start: auto;
-      --space: 1.5rem;
+  }
+}
 
-      .c-header__cart {
-        position: relative;
+.c-nav {
+  --measure: clamp(15.625rem, calc(12.584rem + 12.977vw), 18.813rem);
+  position: fixed;
+  width: var(--measure);
+  height: 100vh;
+  left: calc(var(--measure) * -1);
+  top: 0;
 
-        .c-badge {
-          position: absolute;
-          top: -15%;
-          left: 38%;
-          width: 19px;
-          height: 13px;
-          background-color: $Orange-500;
-          border-radius: 6.5px;
-          font-family: $font-family-primary;
-          font-size: 0.625rem;
-          color: $White;
+  z-index: 999;
+  background-color: $White;
+  padding-block: 24px;
+  padding-inline: 24px;
+  align-items: flex-start;
+  --space: 56px;
 
-          //등장 애니 메이션
-          transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+  transition: all 0.3s ease-out;
 
-          &::after {
-            content: attr(data-count);
-          }
+  //사용자가 운영체제에서 **‘동작 줄이기’**를 켰을 때 메뉴의 슬라이드 애니메이션을 끄는 설정
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 
-          &[data-count="0"] {
-            opacity: 0;
-            transform: scale(0);
-            pointer-events: none;
-          }
-        }
+  &.is-active {
+    left: 0;
+  }
+
+  .c-nav__list {
+    align-items: flex-start;
+    --space: 24px;
+    @include text-preset-6;
+    color: $Grey-950;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover,
+      &:focus-visible {
+        text-decoration: underline;
+        text-underline-offset: 0.25em;
       }
 
-      .c-header__avatar {
-        .c-avatar__image {
-          width: clamp(1.5rem, calc(-0.051rem + 6.616vw), 3.125rem);
-          height: auto;
-          aspect-ratio: 1;
-          object-fit: cover;
-        }
+      &:focus-visible {
+        outline: 2px solid $Grey-950;
+        outline-offset: 3px;
+      }
+    }
+  }
+}
+
+.c-header__actions {
+  margin-inline-start: auto;
+  --space: 1.5rem;
+
+  .c-header__cart {
+    position: relative;
+
+    .c-badge {
+      position: absolute;
+      top: -15%;
+      left: 38%;
+      width: 19px;
+      height: 13px;
+      background-color: $Orange-500;
+      border-radius: 6.5px;
+      font-family: $font-family-primary;
+      font-size: 0.625rem;
+      color: $White;
+
+      //등장 애니 메이션
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+
+      &::after {
+        content: attr(data-count);
       }
 
-      .c-header__cart-panel {
-        //todo
+      &[data-count="0"] {
+        opacity: 0;
+        transform: scale(0);
+        pointer-events: none;
       }
+    }
+  }
+
+  .c-header__avatar {
+    .c-avatar__image {
+      width: clamp(1.5rem, calc(-0.051rem + 6.616vw), 3.125rem);
+      height: auto;
+      aspect-ratio: 1;
+      object-fit: cover;
     }
   }
 }

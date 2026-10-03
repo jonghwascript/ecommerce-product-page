@@ -54,9 +54,10 @@
             />
           </a>
           <nav
-            class="c-header__nav c-nav"
+            class="c-header__nav c-nav l-stack"
             id="primary-nav"
             aria-label="Primary"
+            aria-hidden="true"
           >
             <button
               class="c-nav__close c-icon-button"
@@ -68,7 +69,7 @@
               </svg>
               <span class="u-sr-only">Close menu</span>
             </button>
-            <ul class="c-nav__list l-cluster" role="list">
+            <ul class="c-nav__list l-stack" role="list">
               <li class="c-nav__item">
                 <a class="c-nav__link" href="#">Collections</a>
               </li>
@@ -86,7 +87,8 @@
               </li>
             </ul>
           </nav>
-          <div class="c-header__backdrop" aria-hidden="true" hidden></div>
+          <!-- 오버레이 -->
+          <div class="c-header__backdrop" aria-hidden="true"></div>
         </div>
         <div class="c-header__actions l-cluster">
           <button
