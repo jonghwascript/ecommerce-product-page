@@ -174,9 +174,10 @@ function initLightbox($) {
   const gallery = document.querySelector('.c-gallery__list');
   if (!dialog || !gallery) return;
 
+  // Slick은 버튼의 조상 슬라이드에 slick-cloned를 붙인다.
   const images = Array.from(
-    gallery.querySelectorAll('.c-gallery__open:not(.slick-cloned) img'),
-  );
+    gallery.querySelectorAll('.c-gallery__open img'),
+  ).filter((image) => !image.closest('.slick-cloned'));
   const image = dialog.querySelector('.c-lightbox__image');
   const closeButton = dialog.querySelector('.c-lightbox__close');
   const thumbs = Array.from(dialog.querySelectorAll('.c-lightbox__thumb'));
