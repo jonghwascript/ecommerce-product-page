@@ -107,9 +107,7 @@ button {
       }
     }
 
-    .c-header__actions{
-      
-    }
+    .c-header__actions {}
   }
 }
 
@@ -206,21 +204,28 @@ button {
       object-fit: cover;
     }
   }
+
   //장바구니 위치 조정
-  .c-header__cart-panel{
+  .c-header__cart-panel {
     position: absolute;
     height: 256px;
     top: calc(100% + 0.5rem);
-    left: 0.5rem;
-    right: 0.5rem;
+    left: 0.4rem;
+    right: 0.4rem;
     z-index: 100;
-    max-inline-size: 22.8125rem;  // max 365px
+    // width: 100%;
+    max-inline-size: 22.8125rem; // max 365px
 
-    @include mq('tablet'){
-      width: 365px;
+    @include mq('tablet') {
+      width: 22.8125rem; //365px
       top: calc(100% + -0.5rem);
-      left:auto;
+      left: auto;
       right: 0.5rem;
+    }
+
+    @include mq('tablet') {
+      left: auto;
+      right: 15%;
     }
   }
 
@@ -804,4 +809,8 @@ body:has(.c-lightbox[open]) {
 
 .c-attribution a {
   color: hsl(228, 45%, 44%);
+}
+
+.u-orange-300 {
+  background-color: $Orange-300;
 }
