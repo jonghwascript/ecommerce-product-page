@@ -88,10 +88,11 @@
 
 - 원본 HTML: `src/pages/index.html`
 - SCSS: `src/scss/style.scss` 및 공통 모듈
-- 메뉴 스크립트: `src/js/main.js`
+- 스크립트: `src/js/main.js` — 내비게이션 메뉴, 갤러리, 수량 선택·장바구니
 - 생성 결과: `dist` — 직접 수정하지 않는다.
-- `npm run build`: dist 정리, HTML 처리, SCSS 컴파일, 정적 파일 복사
-- `npm run dev`: 초기 빌드 및 파일 감시. HTTP 서버나 자동 브라우저 새로고침은 제공하지 않는다.
+- `npm run build`: dist 전체 삭제 후 HTML 처리, SCSS 컴파일, 정적 파일 복사
+- `npm run dev`: 초기 빌드 후 Browsersync(`http://localhost:3000`, `dist` 서비스)를 띄우고 `src` 변경을 감시해 해당 결과만 다시 만들고 브라우저를 자동 새로고침한다.
+- `npm run dev` 실행 중에는 `npm run build`를 실행하지 않는다. dist 전체 삭제가 Browsersync 서비스·감시 작업과 충돌해 404, 깨진 화면, 연속 새로고침, Windows 파일 잠금 오류(`EPERM`·`EBUSY`)를 일으킬 수 있다. 실행 여부는 3000번 포트 사용 여부로 확인하며(예: PowerShell `Get-NetTCPConnection -LocalPort 3000`), 실행 중이면 dist 갱신은 감시 작업에 맡기고 아래 출력 없는 검사만 사용한다. 브라우저 검증은 `http://localhost:3000`에서 한다.
 - `npm run format`: 소스를 변경하는 명령이므로 검사 목적으로 무조건 실행하지 않는다.
 - `npm test`: 현재 실제 테스트가 없는 실패용 placeholder다. 테스트 통과로 보고하지 않는다.
 - JavaScript 문법 검사: `node --check src/js/main.js`
