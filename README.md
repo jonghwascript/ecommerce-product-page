@@ -7,6 +7,8 @@ This repository contains a responsive product page built for the [Frontend Mento
 - [Overview](#overview)
 - [Built with](#built-with)
 - [Features](#features)
+- [What I learned](#what-i-learned)
+- [Continued development](#continued-development)
 - [Screenshot](#screenshot)
 - [Implementation notes](#implementation-notes)
   - [HTML structure and accessibility](#html-structure-and-accessibility)
@@ -64,6 +66,19 @@ The page uses sample product data and a client-side cart. Checkout and the heade
 - A cart panel with a quantity badge, item total, removal control, and empty state.
 - Keyboard focus styles, focus restoration, skip navigation, and reduced-motion handling for the navigation drawer.
 
+## What I learned
+
+- I learned that responsive behavior depends on the space a component actually has, not only on the viewport. Accounting for page gutters made the product layout switch cleanly at the intended desktop width.
+- I had to account for Slick's cloned slides: the carousel can display duplicates, while the lightbox and its status need to use only the four original images.
+- The hardest interaction decision was keeping the lightbox desktop-only without replacing gallery elements during a resize. Stable button nodes preserve Slick's references, while disabling them on mobile keeps their behavior clear.
+- I learned to treat visual state, keyboard access, focus, and ARIA state as parts of one interaction. This mattered most when the navigation or gallery crossed the mobile/desktop breakpoint.
+
+## Continued development
+
+- I would move the product configuration into a reusable catalog so the page can support multiple products without coupling cart data to displayed text.
+- I would add cart persistence and connect checkout to a real purchase flow.
+- I would continue testing breakpoint changes, keyboard use, and screen-reader announcements in multiple browsers and with real assistive technology.
+
 ## Implementation notes
 
 ### HTML structure and accessibility
@@ -71,7 +86,7 @@ The page uses sample product data and a client-side cart. Checkout and the heade
 - The document uses a skip link, `header`, `nav`, `main`, product `article`, gallery `section`, native `dialog`, and `footer` landmarks.
 - The main product title is the page's `h1`. The cart and lightbox use labelled headings.
 - Decorative SVGs are hidden from assistive technology. Product images have descriptive alternative text; thumbnail images are decorative because their buttons have their own accessible names.
-- On mobile, gallery images are non-interactive elements. At the desktop breakpoint, JavaScript changes them to buttons and adds the lightbox relationship and accessible action label. If the viewport crosses back below the breakpoint while the dialog is open, it closes and focus moves to gallery navigation.
+- Gallery images keep stable button markup across viewport changes. The buttons are disabled on mobile and enabled with a lightbox action on desktop. If the viewport crosses back below the breakpoint while the dialog is open, it closes and focus moves to gallery navigation.
 - Buttons share a visible `:focus-visible` outline. The focus outline for the main gallery image is inset so Slick's clipping does not cut it off.
 - The navigation drawer keeps its `aria-expanded`, `aria-hidden`, and `inert` states in sync. It traps Tab while open on mobile, restores focus when closed, and becomes an ordinary accessible navigation bar on desktop.
 

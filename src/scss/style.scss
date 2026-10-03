@@ -23,7 +23,7 @@ body {
 .c-header__inner,
 .c-product {
   @include mq('tablet') {
-    --gutter-inline: 80px;
+    --gutter-inline: 5rem; //80px
   }
 }
 
@@ -69,7 +69,7 @@ button {
 /* ################# c-site  ################ */
 .c-site {
   @include mq('desktop') {
-    --space: calc(96px - 44px);
+    --space: calc(6rem - 2.75rem); //96px - 44px
   }
 }
 
@@ -77,15 +77,15 @@ button {
 /* ################# Header  ################ */
 .c-header {
   position: relative;
-  padding-block: 19px;
+  padding-block: 1.1875rem; //19px
   align-items: center;
 
-  @include mq('desktop'){
-    &::after{
+  @include mq('desktop') {
+    &::after {
       content: '';
       display: block;
       width: 100%;
-      margin-block-start: 44px;
+      margin-block-start: 2.75rem; //44px
       height: 1px;
       background-color: $Grey-100;
     }
@@ -149,7 +149,7 @@ button {
 
             .c-nav__link {
               font-family: $font-family-primary;
-              font-size: 15px;
+              font-size: 0.9375rem; //15px
               font-weight: 400;
               color: $Grey-500;
 
@@ -157,13 +157,13 @@ button {
               &:focus-visible {
                 text-decoration: underline;
                 color: $Orange-500;
-                text-underline-offset: 62px;
-                text-decoration-thickness: 4px;
+                text-underline-offset: 3.875rem; //62px
+                text-decoration-thickness: 0.25rem; //4px
               }
 
               &:focus-visible {
-                outline: 2px solid $Grey-950;
-                outline-offset: 3px;
+                outline: 0.125rem solid $Grey-950;
+                outline-offset: 0.1875rem;
               }
             }
           }
@@ -177,7 +177,6 @@ button {
   --measure: clamp(15.625rem, calc(12.584rem + 12.977vw), 18.813rem);
   position: fixed;
   width: var(--measure);
-  height: 100vh;
   height: 100dvh;
   overflow-y: auto;
   overscroll-behavior-y: contain;
@@ -186,13 +185,13 @@ button {
 
   z-index: 999;
   background-color: $White;
-  padding-block: 24px;
-  padding-inline: 24px;
+  padding-block: 1.5rem; //24px
+  padding-inline: 1.5rem; //24px
   align-items: flex-start;
-  --space: 56px;
+  --space: 3.5rem; //56px
 
   // 낮은 화면에서도 닫기 버튼과 링크를 줄이지 않고 내부에서 스크롤한다.
-  > * {
+  >* {
     flex-shrink: 0;
   }
 
@@ -209,7 +208,7 @@ button {
 
   .c-nav__list {
     align-items: flex-start;
-    --space: 24px;
+    --space: 1.5rem; //24px
     @include text-preset-6;
     color: $Grey-950;
 
@@ -242,13 +241,13 @@ button {
       position: absolute;
       top: -15%;
       left: 38%;
-      width: 19px;
-      height: 13px;
+      width: 1.1875rem; //19px
+      height: 0.8125rem; //13px
       background-color: $Orange-500;
       border-radius: 6.5px;
       font-family: $font-family-primary;
       font-size: 0.625rem;
-      line-height: 13px;
+      line-height: 0.8125rem;
       color: $White;
 
       //등장 애니 메이션
@@ -278,12 +277,11 @@ button {
   //장바구니 위치 조정
   .c-header__cart-panel {
     position: absolute;
-    height: 256px;
+    height: 16rem; //256px
     top: calc(100% + 0.5rem);
     left: 0.4rem;
     right: 0.4rem;
     z-index: 100;
-    // width: 100%;
     max-inline-size: 22.8125rem; // max 365px
 
     @include mq('tablet') {
@@ -293,7 +291,7 @@ button {
       right: 0.5rem;
     }
 
-    @include mq('tablet') {
+    @include mq('desktop') {
       left: auto;
       right: 15%;
     }
@@ -302,8 +300,8 @@ button {
   // 장바구니 리스트
   .c-cart {
     background-color: $White;
-    padding-block: 24px;
-    border-radius: 10px;
+    padding-block: 1.5rem; //24px
+    border-radius: 0.625rem; //10px
     box-shadow: 10px 20px 30px rgba(0, 0, 0, 0.08);
 
     display: flex;
@@ -315,7 +313,7 @@ button {
     }
 
     .c-cart__title {
-      padding-inline: 12px;
+      padding-inline: 0.75rem; //12px
       @include text-preset-3-B;
       color: $Grey-950;
       flex-shrink: 0;
@@ -326,13 +324,13 @@ button {
         width: 100%;
         height: 1px;
         background-color: $Grey-100;
-        margin-block-start: 24px;
-        margin-block-end: 25px;
+        margin-block-start: 1.5rem; //24px
+        margin-block-end: 1.5625rem; //25px
       }
     }
 
     .c-cart__body {
-      --inline-padding: 24px;
+      --inline-padding: 1.5rem; //24px
       flex: 1;
       min-height: 0;
 
@@ -342,7 +340,7 @@ button {
       }
 
       .c-cart__list {
-        --space: 4px;
+        --space: 0.25rem; //4px
         flex: 1;
         min-height: 0;
 
@@ -354,14 +352,14 @@ button {
         .c-cart__item {
           padding-inline: var(--inline-padding);
           justify-content: flex-start;
-          --space: 16px;
+          --space: 1rem; //16px
           flex-shrink: 0;
 
           .c-cart__thumb {
             --n: 50;
             --d: 50;
             flex-shrink: 0;
-            flex-basis: 50px;
+            flex-basis: 3.125rem; //50px
           }
 
           .c-cart__info {
@@ -421,27 +419,23 @@ button {
 }
 
 /* ################# Main   ################ */
-.c-page {
-  .c-product {
-    .c-product__layout {
-      // 화면 1024px(64rem)에서 가로 전환: 화면 폭 − 좌우 여백 = 레이아웃 너비
-      --threshold: calc(64rem - 2 * var(--gutter-inline, var(--s1)));
+.c-product__layout {
+  // 화면 1024px(64rem)에서 가로 전환: 화면 폭 − 좌우 여백 = 레이아웃 너비
+  --threshold: calc(64rem - 2 * var(--gutter-inline, var(--s1)));
 
-      @include mq('desktop') {
-        gap: clamp(1.5rem, calc(-75.895rem + 120.93vw), 8rem);
-      }
+  @include mq('desktop') {
+    gap: clamp(1.5rem, calc(-75.895rem + 120.93vw), 8rem);
+  }
 
-      // 상품 컴포넌트 안에서 갤러리가 차지하는 위치·크기 등 배치를 담당
-      .c-product__gallery {
-        min-inline-size: 0; // = min-width: 0
+  // 상품 컴포넌트 안에서 갤러리가 차지하는 위치·크기 등 배치를 담당
+  .c-product__gallery {
+    min-inline-size: 0; // = min-width: 0
 
-        // 모바일: l-center 여백만큼 밖으로 확장 (full-bleed)
-        @media (max-width: 63.99em) {
-          // 프로젝트 분기점에 맞춤
-          margin-inline: calc(var(--gutter-inline, var(--s1)) * -1);
-          //요소에 좌우 음수 마진을 주면, 해당 요소가 양옆으로 늘어나서 부모 컨테이너의 영역 밖으로
-        }
-      }
+    // 모바일: l-center 여백만큼 밖으로 확장 (full-bleed)
+    @media (max-width: 63.99em) {
+      // 프로젝트 분기점에 맞춤
+      margin-inline: calc(var(--gutter-inline, var(--s1)) * -1);
+      //요소에 좌우 음수 마진을 주면, 해당 요소가 양옆으로 늘어나서 부모 컨테이너의 영역 밖으로 확장
     }
   }
 }
@@ -550,7 +544,7 @@ button {
     }
 
     .c-gallery__thumb-frame {
-      border: 2px solid transparent; // 평소: 보이지 않는 테두리
+      border: 0.125rem solid transparent; // 평소: 보이지 않는 테두리
       background-color: $White;
     }
 
@@ -610,7 +604,7 @@ button {
   .c-product__price {
     @include mq('tablet') {
       flex-direction: column;
-      row-gap: 8px;
+      row-gap: 0.5rem; //8px
       align-items: flex-start;
     }
   }
@@ -629,9 +623,9 @@ button {
       @include text-preset-3-B;
       color: $White;
       background-color: $Grey-950;
-      border-radius: 6px;
-      padding-block: 3px;
-      padding-inline: 9.5px;
+      border-radius: 0.375rem; //6px
+      padding-block: 0.1875rem; //3px
+      padding-inline: 0.5938rem; //9.5px
     }
   }
 
@@ -646,9 +640,10 @@ button {
 .c-quantity {
   display: flex;
 
+  .c-quantity__button--increase,
   .c-quantity__button--decrease {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-left-radius: 0.625rem; //10px
+    border-bottom-left-radius: 0.625rem; //10px
     background-color: $Grey-50;
     flex: 1;
   }
@@ -660,13 +655,6 @@ button {
     text-align: center;
     @include text-preset-3-B;
     color: $Grey-950;
-  }
-
-  .c-quantity__button--increase {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    background-color: $Grey-50;
-    flex: 1;
   }
 }
 
@@ -683,9 +671,9 @@ button {
 }
 
 .c-button--primary {
-  padding: 16px 16px;
+  padding: 1rem 1rem;
   background-color: $Orange-500;
-  border-radius: 10px;
+  border-radius: 0.625rem;    //10px
   text-align: center;
 
   .l-with-icon {
@@ -693,8 +681,8 @@ button {
 
     .icon {
       --space: 1rem;
-      width: 17px;
-      height: 16px;
+      width: 1.0625rem;   //17px
+      height: 1rem; //16px
     }
   }
 }
@@ -705,7 +693,7 @@ button {
 
   /* 1. 슬라이드가 보여지는 '창(틀)' 자체를 둥글게 자르기 */
   .c-gallery__list .slick-list {
-    border-radius: 20px !important;
+    border-radius: 1.25rem !important;  //20px
     overflow: hidden !important;
 
     -webkit-transform: translate3d(0, 0, 0) !important;
@@ -717,12 +705,12 @@ button {
   .c-gallery__list .c-gallery__open {
     border: none !important;
     background: transparent !important;
-    border-radius: 20px !important;
+    border-radius: 1.25rem !important;  //20px
   }
 
   /* 3. 내부 이미지 둥글기 적용 */
   .c-gallery__list .c-gallery__image {
-    border-radius: 20px !important;
+    border-radius: 1.25rem !important;  //20px
     display: block;
     width: 100%;
   }
@@ -786,7 +774,7 @@ button {
     @include mq('desktop') {
       --n: 448;
       --d: 445;
-      border-radius: 20px;
+      border-radius: 1.25rem; //20px
     }
   }
 
@@ -796,8 +784,8 @@ button {
     z-index: 1;
     display: grid;
     place-items: center;
-    inline-size: 56px;
-    block-size: 56px;
+    inline-size: 3.5rem;  //56px
+    block-size: 3.5rem;   //56px
     border-radius: 50%;
     background: $White;
   }
@@ -833,7 +821,7 @@ button {
   .c-lightbox__thumb {
     width: 100%;
     -webkit-tap-highlight-color: transparent;
-    inline-size: 88px;
+    inline-size: 5.5rem;  //88px
     flex-shrink: 0;
   }
 
@@ -862,8 +850,8 @@ button {
   }
 
   button:focus-visible {
-    outline: 3px solid $Orange-500;
-    outline-offset: 3px;
+    outline: 0.1875rem solid $Orange-500;
+    outline-offset: 0.1875rem;
   }
 }
 

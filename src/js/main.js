@@ -16,12 +16,19 @@ function initNavigation($) {
 
   const desktop = window.matchMedia('(min-width: 1024px)');
   let isOpen = false;
+  let hideNavTimer = 0;
 
   // 메뉴의 열림 상태와 클래스·ARIA·inert·포커스를 한 곳에서 동기화한다.
   function setMenuOpen(open, { restoreFocus = true } = {}) {
     const wasOpen = isOpen;
     open = open && !desktop.matches;
     isOpen = open;
+    if (open) {
+      clearTimeout(hideNavTimer);
+      $nav.prop('hidden', false);
+      // 숨김 해제 직후 오프스크린 시작 위치를 확정해 열림 전환을 유지한다.
+      $nav[0].offsetWidth;
+    }
     $nav.toggleClass('is-active', open);
     $body.toggleClass('no-scroll', open);
     $menuToggle.attr('aria-expanded', String(open));
@@ -32,9 +39,19 @@ function initNavigation($) {
       $menuToggle[0].focus({ preventScroll: true });
     }
     if (desktop.matches) {
-      $nav.prop('inert', false).removeAttr('aria-hidden');
+      clearTimeout(hideNavTimer);
+      $nav.prop('hidden', false);
+      $nav.prop('inert', false).attr('aria-hidden', 'false');
     } else {
       $nav.prop('inert', !open).attr('aria-hidden', String(!open));
+      if (!open && wasOpen) {
+        // 시각적 닫힘 전환 동안에도 inert와 aria-hidden으로 탐색을 막는다.
+        hideNavTimer = setTimeout(() => {
+          if (!isOpen && !desktop.matches) $nav.prop('hidden', true);
+        }, 300);
+      } else {
+        $nav.prop('hidden', true);
+      }
     }
     if (open) $closeButton[0].focus({ preventScroll: true });
   }
@@ -194,18 +211,9 @@ function initLightbox($) {
 
   function syncImageControls() {
     gallery.querySelectorAll('.c-gallery__open').forEach((element) => {
-      const tag = desktop.matches ? 'BUTTON' : 'DIV';
       const hadFocus = document.activeElement === element;
-      if (element.tagName !== tag) {
-        const replacement = document.createElement(tag);
-        for (const attribute of element.attributes) {
-          replacement.setAttribute(attribute.name, attribute.value);
-        }
-        // 자식을 이동해 원본 이미지 참조와 대체 텍스트를 유지한다.
-        replacement.append(...element.childNodes);
-        element.replaceWith(replacement);
-        element = replacement;
-      }
+      // 버튼 노드는 유지하고 모바일에서는 네이티브 disabled 상태로 비활성화한다.
+      element.disabled = !desktop.matches;
       element.querySelector('.u-sr-only').hidden = !desktop.matches;
       if (desktop.matches) {
         element.setAttribute('type', 'button');
@@ -216,7 +224,6 @@ function initLightbox($) {
           ? (slide.classList.contains('slick-active') && !slide.classList.contains('slick-cloned') ? 0 : -1)
           : (element.contains(images[0]) ? 0 : -1);
       } else {
-        element.removeAttribute('type');
         element.removeAttribute('tabindex');
         element.removeAttribute('aria-haspopup');
         element.removeAttribute('aria-controls');
@@ -243,7 +250,7 @@ function initLightbox($) {
   }
 
   $(gallery).on('click', '.c-gallery__open', (event) => {
-    if (!desktop.matches || dialog.open) return;
+    if (!desktop.matches || event.currentTarget.disabled || dialog.open) return;
     opener = event.currentTarget;
     const selected = opener.querySelector('img');
     showImage(Math.max(0, images.findIndex((item) => item.src === selected.src)));
@@ -300,24 +307,26 @@ function initCart($) {
   if (!$form.length || !$value.length || !$toggle.length || !$panel.length)
     return;
 
-  // 장바구니에 담을 상품 정보는 페이지 본문에서 읽는다.
+  // 상품 정보는 이 객체를 원본으로 사용하고 본문과 장바구니에 렌더링한다.
   const product = {
     id: 'fall-limited-edition-sneakers',
-    name: $('.c-product__title').text().trim(),
-    // "Current price:$125.00"에서 숫자와 소수점만 남긴다.
-    price: Number(
-      $('.c-price__current')
-        .text()
-        .replace(/[^\d.]/g, ''),
-    ),
+    name: 'Fall Limited Edition Sneakers',
+    price: 125,
     thumbnail: './images/image-product-1-thumbnail.jpg',
   };
+  const $productTitle = $('.c-product__title');
+  const $productPrice = $('.c-price__amount');
 
   let quantity = 0; // 현재 선택한 수량
   let isOpen = false; // 카트 패널 열림 여부
   const items = []; // 장바구니 항목: { id, name, price, thumbnail, quantity }
 
   const formatPrice = (amount) => `$${amount.toFixed(2)}`;
+
+  function renderProduct() {
+    $productTitle.text(product.name);
+    $productPrice.text(formatPrice(product.price));
+  }
 
   let errorTimer = 0;
 
@@ -485,6 +494,7 @@ function initCart($) {
   });
 
   // 초기 상태: 수량 0, 빈 장바구니, 패널 닫힘
+  renderProduct();
   renderQuantity();
   renderCart();
   setCartOpen(false);
@@ -500,7 +510,7 @@ jQuery(($) => {
 
 // 화면 크기를 체크하는 함수
 function checkWindowSize() {
-  var windowWidth = $(window).width();
+  const windowWidth = $(window).width();
 
   if (windowWidth >= 1024) {
     // console.log('현재 너비: ' + windowWidth + 'px (1024px 이상)');

@@ -16,57 +16,56 @@ sans-serif;
 @mixin text-preset-1 {
   font-family: $font-family-primary;
   font-weight: 700;
-  font-size: 44px;
-  line-height: 48px;
+  font-size: 2.75rem;
+  line-height: 3rem;
 }
 
 //Text Preset 2 - Kumbh Sans Bold - 28px - 32px Line Height - 0px Line Spacing
 @mixin text-preset-2 {
   font-family: $font-family-primary;
   font-weight: 700;
-  font-size: 28px;
-  line-height: 32px;
+  font-size: 1.75rem;
+  line-height: 2rem;
 }
 
 //Text Preset 3 (Bold) - Kumbh Sans Bold - 16px - 26px Line Height - 0px Line Spacing
 @mixin text-preset-3-B {
   font-family: $font-family-primary;
   font-weight: 700;
-  font-size: 16px;
-  line-height: 26px;
+  font-size: 1rem;
+  line-height: 1.625rem;
 }
 
 //Text Preset 3 - Kumbh Sans Regular - 16px - 26px Line Height - 0px Line Spacing
 @mixin text-preset-3-R {
   font-family: $font-family-primary;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 26px;
+  font-size: 1rem;
+  line-height: 1.625rem;
 }
 
 //Text Preset 4 - Kumbh Sans Regular - 15px - 26px Line Height - 0px Line Spacing
 @mixin text-preset-4 {
   font-family: $font-family-primary;
   font-weight: 400;
-  font-size: 15px;
-  line-height: 26px;
+  font-size: 0.9375rem;
+  line-height: 1.625rem;
 }
 
 //Text Preset 5 - Kumbh Sans Bold - 13px - 16px Line Height - 2px Line Spacing
 @mixin text-preset-5 {
   font-family: $font-family-primary;
   font-weight: 700;
-  font-size: 13px;
-  line-height: 16px;
+  font-size: 0.8125rem;
+  line-height: 1rem;
 }
 
 @mixin text-preset-6 {
   font-family: $font-family-primary;
   font-weight: 700;
-  font-size: 18px;
-  line-height: 26px;
+  font-size: 1.125rem;
+  line-height: 1.625rem;
 }
-
 
 @mixin text-preset($fontSize, $weight, $lineHeight) {
   font-family: $font-family-primary;
