@@ -49,10 +49,9 @@ button {
   background-color: transparent;
   border: none;
 
-  /* 내부 여백 및 외곽선 초기화 */
+  /* 내부 여백 초기화 */
   padding: 0;
   margin: 0;
-  outline: none;
   box-shadow: none;
 
   /* 마우스 커서 및 정렬 */
@@ -60,6 +59,11 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  &:focus-visible {
+    outline: 3px solid $Grey-950;
+    outline-offset: 3px;
+  }
 }
 
 /* ################# c-site  ################ */
@@ -454,6 +458,11 @@ button {
       .c-gallery__open {
         overflow: hidden;
 
+        // Slick의 overflow에 잘리지 않도록 이미지 안쪽에 표시한다.
+        &:focus-visible {
+          outline-offset: -6px;
+        }
+
         .c-gallery__frame {
           --n: 375;
           --d: 300;
@@ -698,7 +707,6 @@ button {
   /* 2. 버튼 투명화 및 둥글기 적용 */
   .c-gallery__list .c-gallery__open {
     border: none !important;
-    outline: none !important;
     background: transparent !important;
     border-radius: 20px !important;
   }
