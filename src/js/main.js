@@ -507,24 +507,3 @@ jQuery(($) => {
   initLightbox($);
   initCart($);
 });
-
-// 화면 크기를 체크하는 함수
-function checkWindowSize() {
-  const windowWidth = $(window).width();
-
-  if (windowWidth >= 1024) {
-    // console.log('현재 너비: ' + windowWidth + 'px (1024px 이상)');
-    // 1024px 이상일 때 실행할 로직 작성
-    $('.c-gallery__control').addClass('u-hidden');
-  } else {
-    // console.log('현재 너비: ' + windowWidth + 'px (1024px 미만)');
-    // 1024px 미만일 때 실행할 로직 작성
-    $('.c-gallery__control').removeClass('u-hidden');
-  }
-}
-
-// 창 크기가 변경될 때마다 함수 실행
-$(window).on('resize', checkWindowSize);
-
-// 페이지가 처음 로드될 때 현재 상태를 확인하기 위해 한 번 실행
-checkWindowSize();
