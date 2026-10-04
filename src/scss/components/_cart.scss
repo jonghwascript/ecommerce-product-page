@@ -1,28 +1,27 @@
-@use '../fonts' as *;
-@use '../variables' as *;
-@use '../mixins' as *;
+@use '../fonts'as *;
+@use '../variables'as *;
+@use '../mixins'as *;
 
 .c-header__actions {
+
+  @include mq('tablet') {
+    position: relative;
+  }
+
   //장바구니 위치 조정
   .c-header__cart-panel {
     position: absolute;
-    height: 16rem; //256px
     top: calc(100% + 0.5rem);
-    left: 0.4rem;
-    right: 0.4rem;
+    inset-inline: 0.4rem;
+    margin-inline-start: auto;
+    max-inline-size: 22.8125rem;
+    height: 16rem;
     z-index: 100;
-    max-inline-size: 22.8125rem; // max 365px
 
     @include mq('tablet') {
-      width: 22.8125rem; //365px
-      top: calc(100% + -0.5rem);
-      left: auto;
-      right: 0.5rem;
-    }
-
-    @include mq('desktop') {
-      left: auto;
-      right: 15%;
+      top: calc(100% + 1rem);
+      inset-inline: auto 0;
+      width: 22.8125rem;
     }
   }
 
@@ -146,4 +145,3 @@
     }
   }
 }
-

@@ -29,7 +29,7 @@
     "gulp-sass": "^6.0.1",
     "gulp-sourcemaps": "^3.0.0",
     "prettier": "^3.9.6",
-    "sass": "^1.104.0",
+    "sass": "^1.105.1",
     "slick-carousel": "^2.0.0",
     "storybook": "^10.6.1"
   }
