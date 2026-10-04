@@ -31,7 +31,6 @@
     "prettier": "^3.9.6",
     "sass": "^1.105.1",
     "slick-carousel": "^2.0.0",
-    "storybook": "^10.6.1",
-    "storybook-design-token": "^5.0.0"
+    "storybook": "^10.6.1"
   }
 }
