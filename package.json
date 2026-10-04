@@ -8,6 +8,7 @@
     "dev": "gulp",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "test:storybook": "playwright test --config=playwright.storybook.config.cjs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "gulp prettier"
   },
@@ -15,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@storybook/addon-docs": "^10.6.1",
     "@storybook/html-vite": "^10.6.1",
     "browser-sync": "^3.0.4",
@@ -28,6 +30,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "prettier": "^3.9.6",
     "sass": "^1.104.0",
+    "slick-carousel": "^2.0.0",
     "storybook": "^10.6.1"
   }
 }

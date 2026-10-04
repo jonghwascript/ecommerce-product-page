@@ -1,17 +1,27 @@
-const meta = {
-  title: 'Product/Purchase Button',
-  render: () => `
-    <button class="c-purchase__submit c-button c-button--primary" type="button">
-      <span class="l-with-icon">
-        <svg class="icon l-icon" aria-hidden="true" focusable="false" viewBox="0 0 22 20">
-          <use href="/images/icon-cart.svg"></use>
-        </svg>
-        Add to cart
-      </span>
-    </button>
-  `,
-};
+import { renderFrame, scriptSource } from './helpers/frame';
+import { purchaseMarkup } from './helpers/markup';
+import navigation from './scripts/navigation.js?raw';
+import cart from './scripts/cart.js?raw';
 
-export default meta;
+export default {
+  title: 'Product/Purchase Button',
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      source: scriptSource(cart, 'initCart(jQuery);'),
+      description: {
+        component:
+          'Select a quantity and submit Add to cart, then open the header cart. A zero quantity displays an error. Repeated purchases accumulate and reset the quantity to zero.',
+      },
+    },
+  },
+  render: () =>
+    renderFrame({
+      title: 'Interactive purchase form',
+      markup: purchaseMarkup(),
+      scripts: [navigation, cart],
+      setup: 'initNavigation(jQuery); initCart(jQuery);',
+    }),
+};
 
 export const Default = {};

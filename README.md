@@ -146,13 +146,45 @@ npm run build
 
 The build output is written to `dist/`; edit the source files under `src/` instead.
 
-Start Storybook to preview the product purchase button in isolation:
+Start Storybook to explore individual components and the complete purchase flow:
 
 ```bash
 npm run storybook
 ```
 
 Storybook runs at `http://localhost:6006`. Create a static Storybook build with `npm run build-storybook`; its output is written to `storybook-static/`.
+
+`Pages / Purchase Flow` connects quantity selection, cart submission, accumulated totals,
+removal, responsive navigation, the Slick gallery, and the desktop lightbox. Checkout
+closes the cart, matching the original page; it does not process a payment.
+
+Interactive stories load only their required initialization scripts from
+`src/stories/scripts/`. These are Storybook-specific copies/adaptations of the
+functions in `src/js/main.js`; the production script is not imported or changed.
+Markup comes from `src/pages/index.html`, styles from the source SCSS, jQuery from
+the existing local asset, and Slick from the installed package. No `dist` build or
+CDN connection is required. Each story uses its own iframe so global selectors,
+document listeners, IDs, and modal state cannot affect another Docs example.
+Responsive behavior follows the width of that iframe, including the 1024px
+desktop-only thumbnails and lightbox. Future production behavior changes need to
+be reflected in these Storybook copies explicitly.
+
+Storybook adaptations fix the navigation open-state hidden assignment, count gallery
+images independently of thumbnails, and disable Slick transitions for reduced motion.
+Cart stories can seed initial items; the isolated lightbox has its own opener.
+Local SVG icons are inlined in the story markup for Firefox compatibility.
+Docs' Show code panel displays the relevant initialization JavaScript.
+
+To run the interaction checks (requires installed Google Chrome):
+
+```bash
+npx playwright install firefox
+npm run build-storybook
+npm run test:storybook
+```
+
+The tests serve `storybook-static/` on `127.0.0.1:6106` and check Chrome and Firefox.
+They do not use or delete `dist/`, or interfere with the application server on port 3000.
 
 ## Author
 
