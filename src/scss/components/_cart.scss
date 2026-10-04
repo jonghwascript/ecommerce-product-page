@@ -3,8 +3,11 @@
 @use '../mixins'as *;
 
 .c-header__actions {
-
+/**
+ * @tokens 위치 및 방향 (Positioning)
+ */
   @include mq('tablet') {
+    /* c-header 에서 c-header__actions 으로 부모 변경 */
     position: relative;
   }
 
@@ -35,7 +38,6 @@
     display: flex;
     flex-direction: column;
 
-    // display: flex가 hidden 속성의 기본 숨김을 덮어쓰지 않도록 한다.
     &[hidden] {
       display: none;
     }
@@ -81,6 +83,7 @@
           padding-inline: var(--inline-padding);
           justify-content: flex-start;
           --space: 1rem; //16px
+          /*@tokens */
           flex-shrink: 0;
 
           .c-cart__thumb {

@@ -1,0 +1,601 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="가이드/웹 접근성" />
+
+# 웹 접근성 작업 기록
+
+2026-10-05 기준의 소스와 Git 이력을 대조한 기록이다. 운영 페이지와 Storybook 전용 구현을 구분한다. **구현 확인은 브라우저·스크린 리더 검증 통과를 뜻하지 않는다.** 이 문서를 작성하면서 제품 동작은 수정하지 않았다.
+
+아래 코드는 각 파일의 접근성 관련 부분을 발췌한 것이다. 생략된 마크업·함수 문맥이 있으므로 독립 실행용 예제가 아니다. HTML 속성의 줄바꿈과 SCSS의 바깥 선택자는 읽기 쉽게 정리했다.
+
+## 문서 구조와 본문 바로가기
+
+- 영어 상품 페이지에 `lang="en"`과 페이지 제목을 지정했다.
+- `header`, 이름이 있는 `nav`, `main`, `article`, `footer`로 영역을 구분했다. 상품명은 `h1`, 장바구니와 라이트박스 제목은 `h2`로 제공한다.
+- 내비게이션에는 `aria-label="Primary"`, 상품 갤러리에는 `aria-label="Product images"`를 지정했다.
+- 문서 앞에 `Skip to main content` 링크를 배치하고 `href="#main"`을 본문의 `id="main"`과 연결했다. 본문은 `tabindex="-1"`로 프로그램적 포커스 이동을 받을 수 있게 했다.
+- 스킵 링크는 평소 화면 밖에 두고 포커스를 받으면 화면 안에 표시한다. 실제 키보드 이동 결과는 이번 문서 작업에서 재검증하지 않았다.
+- 목록 스타일을 제거한 내비게이션·썸네일·장바구니 목록에는 `role="list"`를 명시했다.
+
+근거: `src/pages/index.html`, `src/scss/_base.scss`, `src/scss/_reset.scss`.
+
+### 코드: 본문으로 건너뛰기
+
+`src/pages/index.html`의 링크와 목적지, `src/scss/_base.scss`의 포커스 표시를 함께 사용한다.
+
+```html
+<a class="c-skip-link" href="#main">Skip to main content</a>
+<!-- 중간 헤더 생략 -->
+<main class="c-page" id="main" tabindex="-1">
+  <!-- 상품 본문 -->
+</main>
+```
+
+```scss
+.c-skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10000;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  color: #000;
+  text-decoration: underline;
+  transform: translateY(calc(-100% - 2rem));
+
+  &:focus {
+    transform: translateY(0);
+  }
+}
+```
+
+## 접근 가능한 이름과 이미지 설명
+
+`.u-sr-only`는 화면에는 표시하지 않으면서 접근 가능한 텍스트를 제공하기 위한 공통 유틸리티다. `display: none`으로 숨기는 방식과 용도가 다르다.
+
+| 대상 | 적용한 내용 |
+| --- | --- |
+| 메뉴 열기·닫기 | `Open menu`, `Close menu` 텍스트와 `aria-controls="primary-nav"` |
+| 장바구니 버튼 | `Cart`와 현재 수량을 나타내는 숨김 텍스트, 패널을 가리키는 `aria-controls` |
+| 프로필 링크 | `My account` 텍스트를 제공하고 아바타 이미지는 빈 `alt`로 중복 설명 방지 |
+| 로고 링크 | 로고 이미지에 `alt="sneakers"` 제공 |
+| 갤러리 이전·다음 | `Previous image`, `Next image`와 조작 대상 ID 연결 |
+| 갤러리 썸네일 | `View image N of 4`로 목적을 설명하고 썸네일 이미지 자체는 빈 `alt` 사용 |
+| 큰 이미지 열기 | 상품 이미지의 대체 텍스트와 `Open larger view`, 데스크톱에서 `aria-haspopup="dialog"` 제공 |
+| 라이트박스 닫기 | `Close gallery` 텍스트 제공 |
+| 수량 감소·증가 | `Decrease quantity`, `Increase quantity`와 출력 요소를 가리키는 `aria-controls` |
+| 장바구니 삭제 | `Remove 상품명 from cart`로 삭제 대상을 포함한 이름 생성 |
+| 가격·할인 | `Current price:`, `Original price:`, `off` 텍스트와 정가의 `del` 요소로 의미 보완 |
+
+이미 이름이 있는 버튼의 SVG에는 `aria-hidden="true"`, `focusable="false"`를 지정했다. 장바구니 상품 썸네일도 인접 상품명과 중복되지 않도록 빈 `alt`를 사용한다. 라이트박스 이미지를 바꾸면 `src`뿐 아니라 원본 이미지의 `alt`도 함께 복사한다.
+
+근거: `src/pages/index.html`, `src/js/main.js`의 `createItem`, `renderBadge`, `showImage`, `src/scss/_utilities.scss`.
+
+### 코드: 아이콘의 중복 읽기 방지와 버튼 이름
+
+`src/pages/index.html`의 메뉴 버튼이다. 버튼 이름은 숨김 텍스트가 제공하고, 장식 SVG는 별도로 읽지 않도록 한다.
+
+```html
+<button class="c-header__menu-toggle c-icon-button" type="button"
+  aria-expanded="false" aria-controls="primary-nav">
+  <svg aria-hidden="true" focusable="false" width="16" height="15">
+    <use href="./images/icon-menu.svg"></use>
+  </svg>
+  <span class="u-sr-only">Open menu</span>
+</button>
+```
+
+`src/scss/_utilities.scss`의 숨김 텍스트 유틸리티:
+
+```scss
+.u-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+```
+
+## 키보드 포커스와 시각적 피드백
+
+- 조작 요소는 네이티브 `button`, 이동 요소는 `a`를 사용했다. 일반 버튼은 `type="button"`, 장바구니 담기는 폼의 `type="submit"`이다.
+- 공통 버튼에 `:focus-visible` 외곽선과 간격을 지정해 키보드 위치가 보이도록 했다.
+- 내비게이션 링크에 포커스 외곽선과 밑줄을 제공한다. 모바일·데스크톱 규칙을 각각 둔다.
+- 갤러리 이미지 버튼의 포커스 외곽선은 `outline-offset: -6px`로 안쪽에 배치해 Slick의 잘림 영역을 고려했다.
+- 갤러리 화살표와 라이트박스 버튼에는 별도 포커스 외곽선을 지정했다.
+- 기본 구매 버튼, 아이콘 버튼, 상품 이미지, 수량 버튼, 프로필, 삭제 버튼에 hover 피드백을 추가했다. 공통 hover 규칙은 `@media (hover: hover)`에서 적용한다.
+- 갤러리와 라이트박스의 선택된 썸네일은 테두리·이미지 투명도와 `aria-current`를 함께 갱신한다.
+
+근거: `src/scss/_base.scss`, `src/scss/components/_header.scss`, `_gallery.scss`, `_lightbox.scss`, `_interactions.scss`. 외곽선의 존재만으로 모든 배경에서 대비나 가려짐 문제가 없다고 판단하지 않는다.
+
+### 코드: 키보드 위치와 hover 상태
+
+공통 버튼 규칙은 `src/scss/_base.scss`, 이미지 버튼의 잘림 보완은 `src/scss/components/_gallery.scss`에 있다.
+
+```scss
+button {
+  // 버튼 초기화 규칙 생략
+  &:focus-visible {
+    outline: 3px solid $Grey-950;
+    outline-offset: 3px;
+  }
+}
+
+// 실제 파일에서는 .c-gallery 내부에 중첩된 선택자다.
+.c-gallery .c-gallery__stage .c-gallery__list .c-gallery__open {
+  &:focus-visible {
+    outline-offset: -6px;
+  }
+}
+```
+
+`src/scss/components/_interactions.scss`에서는 사용 가능한 수량 버튼에만 hover 배경을 적용한다.
+
+```scss
+@media (hover: hover) {
+  .c-quantity__button:not(:disabled):not([aria-disabled='true']):hover {
+    background-color: $Pale-orange;
+  }
+}
+```
+
+## 모바일 내비게이션
+
+`src/js/main.js`의 `initNavigation`에 다음 상태 관리가 들어 있다.
+
+1. 메뉴 버튼의 `aria-expanded`, 메뉴의 활성 클래스, 본문의 `inert`, 본문 스크롤 잠금을 함께 갱신한다.
+2. 열 때 닫기 버튼으로 포커스를 이동하도록 구현했다. 메뉴 안에서 Tab·Shift+Tab을 누르면 첫 요소와 마지막 요소 사이를 순환한다.
+3. 닫기 버튼·배경 클릭·Escape로 닫고, 모바일에서는 숨김 처리 전에 메뉴 열기 버튼으로 포커스를 복원한다.
+4. 닫히는 전환 중에도 `inert`와 `aria-hidden`으로 메뉴 탐색을 막고, 300ms 뒤 `hidden`을 적용하도록 했다.
+5. 1024px 이상에서는 `hidden`과 `inert`를 해제하고 `aria-hidden="false"`로 데스크톱 내비게이션을 노출한다. 문서 하단에서 즉시 초기화해 초기 데스크톱 숨김 상태를 해제한다.
+6. 화면 분기점을 넘을 때 사라지는 메뉴 버튼에 포커스가 남지 않도록 메뉴 열기 버튼 또는 첫 링크로 이동시킨다.
+7. 메뉴에 `100dvh`, 내부 세로 스크롤, 자식 요소 축소 방지를 적용해 낮은 화면에서 링크와 닫기 버튼에 접근할 수 있도록 했다.
+
+**운영 코드의 남은 제한:** 현재 `setMenuOpen`의 모바일 분기에는 열기 처리 후에도 마지막 `else`에서 `hidden=true`를 다시 설정하는 경로가 있다. 따라서 위 내용은 구현된 처리와 의도를 설명하며, 운영 메뉴의 정상 열림을 보장하는 기록이 아니다. Storybook 전용 `src/stories/scripts/navigation.js`는 이 분기를 `else if (!open)`으로 보완했다. 본문의 `inert` 대상은 `#main`이며 모든 배경 요소를 일괄 처리하는 구현은 아니다.
+
+### 코드: 상태 동기화와 포커스 복원
+
+`src/js/main.js`의 `initNavigation` → `setMenuOpen` 발췌:
+
+```js
+$nav.toggleClass('is-active', open);
+$body.toggleClass('no-scroll', open);
+$menuToggle.attr('aria-expanded', String(open));
+$mainContent.prop('inert', open);
+
+if (!open && wasOpen && restoreFocus && !desktop.matches) {
+  $menuToggle[0].focus({ preventScroll: true });
+}
+```
+
+같은 함수의 현재 숨김 분기다. 마지막 `else`가 열린 모바일 메뉴에도 실행될 수 있다는 제한을 그대로 기록한다.
+
+```js
+if (desktop.matches) {
+  clearTimeout(hideNavTimer);
+  $nav.prop('hidden', false);
+  $nav.prop('inert', false).attr('aria-hidden', 'false');
+} else {
+  $nav.prop('inert', !open).attr('aria-hidden', String(!open));
+  if (!open && wasOpen) {
+    hideNavTimer = setTimeout(() => {
+      if (!isOpen && !desktop.matches) $nav.prop('hidden', true);
+    }, 300);
+  } else {
+    $nav.prop('hidden', true);
+  }
+}
+if (open) $closeButton[0].focus({ preventScroll: true });
+```
+
+Storybook 전용 `src/stories/scripts/navigation.js`에서는 위 마지막 분기만 다음과 같이 다르다.
+
+```js
+} else if (!open) {
+  $nav.prop('hidden', true);
+}
+```
+
+### 코드: Tab 순환과 Escape
+
+`src/js/main.js`의 `initNavigation` → 문서 `keydown` 처리 중 발췌. `$first`와 `$last`는 보이고, 비활성화되지 않고, `inert` 조상이 없는 포커스 가능 요소에서 계산한다.
+
+```js
+if (event.key === 'Escape') {
+  event.preventDefault();
+  setMenuOpen(false);
+  return;
+}
+
+// Tab 여부 확인 및 포커스 가능 요소 계산 생략
+if (
+  !$nav.has(active).length ||
+  (event.shiftKey ? $first.is(active) : $last.is(active))
+) {
+  event.preventDefault();
+  (event.shiftKey ? $last : $first).trigger('focus');
+}
+```
+
+### 코드: 화면 전환 시 사라지는 요소의 포커스 처리
+
+`src/js/main.js`의 `syncNavigationMode` 발췌. `needsDesktopFocus`는 메뉴 열기·닫기 버튼 또는 열린 메뉴에서 포커스를 잃은 경우를 앞에서 판별한다.
+
+```js
+if (!desktop.matches && $nav[0].contains(active)) {
+  $menuToggle[0].focus({ preventScroll: true });
+}
+setMenuOpen(false, { restoreFocus: false });
+if (needsDesktopFocus) {
+  $nav.find('a[href]').first()[0]?.focus({ preventScroll: true });
+}
+```
+
+## 상품 이미지 갤러리
+
+- Slick의 기본 화살표 대신 이름이 있는 기존 이전·다음 버튼을 연결했다. 터치 제스처 외에도 버튼으로 이동할 수 있게 했다.
+- 슬라이드 전환 시 썸네일의 `is-active`와 `aria-current`를 갱신한다.
+- `role="status"` 영역에 `Image N of 4` 형태의 현재 위치를 기록한다.
+- 데스크톱에서는 썸네일을 표시하고 본문 화살표를 숨기며, 작은 화면에서는 반대로 표시한다.
+- Slick 복제 슬라이드를 실제 상품 이미지 목록에서 제외한다. 데스크톱 이미지 버튼의 초기·재초기화·화면 전환 동기화에서는 활성 원본만 Tab 순서에 두도록 처리한다.
+- 1024px 미만에서는 큰 이미지 열기 버튼을 네이티브 `disabled`로 비활성화하고 팝업 관련 ARIA와 열기 안내를 제거하거나 숨긴다. 비활성화되는 버튼에 포커스가 있으면 다음 이미지 버튼으로 이동한다.
+
+근거: `src/js/main.js`의 `initGallery`, `initLightbox`, `src/scss/components/_gallery.scss`.
+
+### 코드: 선택 상태와 이미지 위치 알림
+
+`src/pages/index.html`의 알림 영역과 `src/js/main.js`의 `syncThumbs`를 연결한다.
+
+```html
+<p class="c-gallery__status u-sr-only" role="status">Image 1 of 4</p>
+```
+
+```js
+function syncThumbs(index) {
+  $thumbs.each((i, thumb) => {
+    const isCurrent = i === index;
+    $(thumb).toggleClass('is-active', isCurrent);
+    if (isCurrent) $(thumb).attr('aria-current', 'true');
+    else $(thumb).removeAttr('aria-current');
+  });
+  $status.text(`Image ${index + 1} of ${$thumbs.length}`);
+}
+```
+
+### 코드: 모바일에서 실행할 수 없는 큰 이미지 열기 제거
+
+`src/js/main.js`의 `syncImageControls` 발췌. `desktop`은 `(min-width: 1024px)` 미디어 쿼리이며 `hadFocus`는 해당 요소에 포커스가 있었는지 저장한 값이다.
+
+```js
+element.disabled = !desktop.matches;
+element.querySelector('.u-sr-only').hidden = !desktop.matches;
+if (desktop.matches) {
+  element.setAttribute('type', 'button');
+  element.setAttribute('aria-haspopup', 'dialog');
+  element.setAttribute('aria-controls', dialog.id);
+  const slide = element.closest('.slick-slide');
+  element.tabIndex = slide
+    ? (slide.classList.contains('slick-active') && !slide.classList.contains('slick-cloned') ? 0 : -1)
+    : (element.contains(images[0]) ? 0 : -1);
+} else {
+  element.removeAttribute('tabindex');
+  element.removeAttribute('aria-haspopup');
+  element.removeAttribute('aria-controls');
+  if (hadFocus) focusGalleryControl();
+}
+```
+
+## 라이트박스
+
+- 네이티브 `dialog`와 `showModal()`을 사용해 모달 동작과 배경 접근 제한, Escape 닫기를 브라우저에 맡겼다.
+- `aria-labelledby="lightbox-title"`과 숨김 제목 `Product image gallery`로 대화상자의 이름을 제공한다.
+- 열 때 닫기 버튼에 포커스를 두고, 닫을 때 연결된 원래 열기 버튼으로 복원한다.
+- 이전·다음 버튼, 썸네일, ArrowLeft·ArrowRight로 이미지를 바꿀 수 있다.
+- 현재 이미지 설명, 선택 썸네일의 `aria-current`, `role="status"`의 이미지 위치 안내를 함께 갱신한다.
+- 열린 상태에서 1024px 미만으로 전환하면 모달을 닫고 본문 갤러리의 다음 버튼으로 포커스를 이동한다.
+- 높이를 뷰포트에 맞춰 제한하고 `overflow: auto`를 적용했다. 데스크톱 좌우 제어 버튼이 잘리지 않도록 여백도 확보했다.
+
+근거: `src/pages/index.html`, `src/js/main.js`의 `initLightbox`, `src/scss/components/_lightbox.scss`.
+
+### 코드: 이름이 있는 모달과 포커스 복귀
+
+`src/pages/index.html`의 대화상자 구조 발췌:
+
+```html
+<dialog class="c-lightbox l-imposter" id="lightbox"
+  aria-labelledby="lightbox-title">
+  <div class="c-lightbox__inner l-stack">
+    <h2 class="u-sr-only" id="lightbox-title">Product image gallery</h2>
+    <!-- 닫기 버튼, 이미지, 탐색 버튼, 썸네일 생략 -->
+  </div>
+</dialog>
+```
+
+`src/js/main.js`의 `initLightbox` 발췌. Escape는 별도 키 이벤트로 흉내 내지 않고 네이티브 모달 동작을 사용한다.
+
+```js
+// 이미지 클릭 처리에서 opener와 표시 이미지를 정한 다음 실행
+dialog.showModal();
+closeButton.focus({ preventScroll: true });
+
+// 이벤트 등록 부분
+closeButton.addEventListener('click', () => dialog.close());
+desktop.addEventListener('change', (event) => {
+  if (!event.matches && dialog.open) dialog.close();
+  syncImageControls();
+});
+dialog.addEventListener('close', () => {
+  if (!desktop.matches) focusGalleryControl();
+  else if (opener?.isConnected) opener.focus({ preventScroll: true });
+});
+dialog.addEventListener('keydown', (event) => {
+  if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+  event.preventDefault();
+  showImage(index + (event.key === 'ArrowLeft' ? -1 : 1));
+});
+```
+
+같은 함수의 `showImage`에서는 이미지의 설명도 갱신한다.
+
+```js
+image.src = images[index].src;
+image.alt = images[index].alt;
+dialog.querySelector('.c-lightbox__status').textContent =
+  `Image ${index + 1} of ${images.length}`;
+```
+
+## 수량 선택과 입력 오류
+
+- 수량 조작을 `role="group"`과 `aria-labelledby="quantity-label"`로 묶었다.
+- 현재 수량은 이름이 있는 `output`과 `aria-live="polite"`로 제공한다. 화면 출력과 폼의 숨김 입력값을 같이 갱신한다.
+- 0에서 감소할 수 없도록 이벤트 처리에서 차단한다. 감소 버튼은 `disabled` 대신 `aria-disabled="true"`를 사용해 0이 되어도 포커스를 유지한다. ARIA만으로 클릭을 막는 것이 아니라 JavaScript 조건문이 함께 동작한다.
+- 수량 0으로 담기를 시도하면 `Please select a quantity of at least 1.`을 `role="alert"` 영역에 표시한다.
+- 제출 버튼의 `aria-describedby="quantity-error"`로 오류 설명을 연결했다. 같은 오류를 다시 알릴 수 있도록 내용을 비운 뒤 100ms 후 기록한다.
+- 수량을 늘리면 오류를 지우며, 오류가 없을 때는 빈 오류 영역을 CSS로 숨긴다.
+
+근거: `src/pages/index.html`, `src/js/main.js`의 `initCart`, `src/scss/components/_purchase.scss`.
+
+### 코드: 수량 이름·알림과 최소 수량
+
+`src/pages/index.html`의 수량 그룹 내부 발췌:
+
+```html
+<span class="u-sr-only" id="quantity-label">Quantity</span>
+<output class="c-quantity__value" id="quantity-value"
+  aria-labelledby="quantity-label" aria-live="polite">0</output>
+```
+
+`src/js/main.js`의 `renderQuantity`와 감소 이벤트는 포커스를 유지하는 상태 표시와 실제 실행 차단을 나누어 처리한다.
+
+```js
+function renderQuantity() {
+  const atMin = quantity === 0;
+  $value.text(quantity);
+  $input.val(quantity);
+  $decrease
+    .toggleClass('is-disabled', atMin)
+    .attr('aria-disabled', String(atMin));
+}
+
+$decrease.on('click', () => {
+  if (quantity === 0) return;
+  quantity -= 1;
+  renderQuantity();
+});
+```
+
+### 코드: 오류 설명 연결과 반복 알림
+
+`src/pages/index.html`의 제출 버튼·오류 영역을 축약했다. 실제 버튼 내부에는 장식 SVG와 텍스트를 감싸는 요소가 있다.
+
+```html
+<button class="c-purchase__submit c-button c-button--primary"
+  type="submit" aria-describedby="quantity-error">Add to cart</button>
+<p class="c-purchase__error" id="quantity-error" role="alert"></p>
+```
+
+`src/js/main.js`의 `showError` 및 제출 처리 발췌:
+
+```js
+function showError(message) {
+  clearTimeout(errorTimer);
+  $error.text('');
+  errorTimer = setTimeout(() => $error.text(message), 100);
+}
+
+// submit 이벤트에서 event.preventDefault() 이후
+if (quantity === 0) {
+  showError('Please select a quantity of at least 1.');
+  return;
+}
+```
+
+## 장바구니 상태와 포커스
+
+- 장바구니 패널은 제목과 `aria-labelledby`로 연결한 `section`이다. 모달 대화상자로 취급하거나 포커스를 가두지는 않는다.
+- 패널의 `hidden`과 열기 버튼의 `aria-expanded`를 함께 갱신한다. `[hidden]` 상태의 패널은 CSS에서도 `display: none`으로 처리한다.
+- CSS 배지 숫자와 별도로 숨김 텍스트에 현재 상품 수량 및 단수·복수 표현을 갱신한다.
+- 추가·삭제 결과를 `#cart-status`의 `role="status"`에 기록한다.
+- 삭제 버튼 이름에 상품명을 포함하고, 삭제된 버튼의 포커스를 다음 삭제 버튼 또는 장바구니 열기 버튼으로 이동한다.
+- Escape와 Checkout으로 닫을 때 장바구니 버튼으로 포커스를 복원한다. 바깥 클릭으로 닫을 때는 포커스 복원을 강제하지 않는다.
+- 비어 있는 상태에서는 목록·Checkout 대신 `Your cart is empty.` 문구를 표시한다. 항목이 있을 때 표시를 반대로 바꾼다.
+
+근거: `src/js/main.js`의 `initCart`, `src/scss/components/_cart.scss`. Checkout은 패널을 닫는 데모 동작이며 실제 결제는 구현하지 않았다.
+
+### 코드: 열림 상태와 결과 알림
+
+`src/pages/index.html`의 상태 영역:
+
+```html
+<p class="u-sr-only" id="cart-status" role="status"></p>
+```
+
+`src/js/main.js`의 `setCartOpen`에서 접근성 관련 부분을 발췌했다. 중간의 제출 버튼 색상 클래스 처리는 생략했다.
+
+```js
+isOpen = open;
+$panel.prop('hidden', !open);
+$toggle.attr('aria-expanded', String(open));
+// 색상 클래스 처리 생략
+if (!open && restoreFocus) $toggle[0].focus({ preventScroll: true });
+```
+
+같은 파일의 `renderBadge`, 상품 추가·삭제 처리 발췌:
+
+```js
+// renderBadge
+const count = items.reduce((sum, item) => sum + item.quantity, 0);
+$badge.attr('data-count', count);
+$badge.find('.u-sr-only')
+  .text(`, ${count} ${count === 1 ? 'item' : 'items'}`);
+
+// 추가 처리에서 renderCart() 이후
+$status.text(`Added ${quantity} ${product.name} to cart.`);
+
+// 삭제 처리에서 renderCart() 이후
+$status.text(`Removed ${removed.name} from cart.`);
+const $next = $list.find('.c-cart__remove')
+  .eq(Math.min(index, items.length - 1));
+($next.length ? $next : $toggle).trigger('focus');
+```
+
+삭제 버튼에는 다음 텍스트를 `.u-sr-only` 요소로 추가한다. 대상이 명시되어 여러 삭제 버튼을 구분할 수 있다.
+
+```js
+$('<span class="u-sr-only"></span>').text(
+  `Remove ${item.name} from cart`,
+);
+```
+
+## 동작 줄이기와 반응형 배려
+
+| 범위 | 현재 구현 | 제한 |
+| --- | --- | --- |
+| 모바일 메뉴 | `prefers-reduced-motion: reduce`에서 메뉴 전환 제거 | 배경·배지의 모든 전환까지 제거하는 규칙은 아님 |
+| 운영 갤러리 | Slick 전환 속도 `300` | 운영 `main.js`에는 동작 줄이기 분기가 없음 |
+| Storybook 갤러리 | 초기화 시 동작 줄이기 설정이면 Slick 속도 `0` | 실행 중 설정 변경을 감지하는 리스너는 없음 |
+| 낮은 화면의 메뉴·라이트박스 | 내부 스크롤과 뷰포트 높이 제한 | 200% 확대·가로 모드에서 실제 조작은 별도 검증 필요 |
+| 버튼·글꼴·간격 | `rem`, 유동 너비, 반응형 표시 사용 | 사용 자체가 클릭 영역·리플로 기준 충족을 보장하지 않음 |
+
+### 코드: 메뉴 스크롤과 동작 줄이기
+
+`src/scss/components/_header.scss`의 `.c-nav` 발췌:
+
+```scss
+.c-nav {
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  // 크기·위치·색상 규칙 생략
+  > * {
+    flex-shrink: 0;
+  }
+  transition: all 0.3s ease-out;
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+```
+
+`src/stories/scripts/gallery.js`의 Slick 옵션 발췌. **운영 `src/js/main.js`는 아직 `speed: 300`이다.**
+
+```js
+speed: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ? 0
+  : 300,
+```
+
+## Storybook에서 보완한 내용
+
+Storybook은 운영 `main.js`를 직접 실행하지 않고 `src/stories/scripts/`의 복사·변형 스크립트를 사용한다. Storybook 통과 결과를 운영 페이지 전체에 그대로 적용하면 안 된다.
+
+- `navigation.js`: 열린 모바일 메뉴를 다시 숨기는 분기를 보완했다.
+- `gallery.js`: 썸네일이 없는 독립 스토리에서도 실제 Slick 슬라이드 수로 상태 안내를 계산하고, 초기 동작 줄이기 설정을 반영한다.
+- `thumbnails.js`: 단독 썸네일의 선택 상태를 `aria-current`와 동기화하고, 실제 연결 대상이 없는 `aria-controls`를 제거한다.
+- `lightbox.js`: 단독 스토리의 열기 버튼에도 대화상자 연결과 포커스 복원을 적용한다.
+- `helpers/frame.js`: 각 iframe에 설명용 `title`, 내부 문서 제목과 `lang="en"`을 제공한다. 스토리마다 문서·이벤트를 분리한다.
+- `helpers/icons.js`, `helpers/markup.js`: Storybook에서 SVG 아이콘을 인라인 처리해 Firefox 표시 문제에 대응한다. 보조 기술에서 아이콘을 중복 설명하지 않는 속성도 유지한다.
+
+### 코드: 독립 스토리의 잘못된 참조 방지
+
+`src/stories/scripts/thumbnails.js`는 독립 썸네일에 연결할 슬라이드가 없으므로 `aria-controls`를 제거한다.
+
+```js
+$thumbs.removeAttr('aria-controls').on('click', (event) => {
+  select(Number(event.currentTarget.dataset.index));
+});
+```
+
+`src/stories/scripts/gallery.js`는 썸네일 개수가 아니라 실제 슬라이드 수를 읽는다.
+
+```js
+$status.text(
+  `Image ${index + 1} of ${$gallery.slick('getSlick').slideCount}`,
+);
+```
+
+## 관련 작업 이력
+
+아래 커밋은 변경 의도를 확인하는 근거다. 커밋에 기능이 존재한다는 사실과 현재 소스에서 정상 동작한다는 판단은 구분한다.
+
+| 커밋 | 작업 |
+| --- | --- |
+| `52e470f` | 접근 가능한 모바일 내비게이션 드로어 추가 |
+| `76b934e` | 수량 선택·장바구니와 상태 관리 추가 |
+| `e4f8a29` | 데스크톱 상품 이미지 라이트박스 추가 |
+| `85f09ca` | 반응형 데스크톱 내비게이션 추가 |
+| `2161a03` | 버튼의 보이는 키보드 포커스 복원 |
+| `f332c8e` | 모바일 라이트박스 열기 비활성화 |
+| `37ad82e` | 반응형 상품 페이지 상호작용 개선 |
+| `840ca3c` | 화면별 제어 표시·hover 피드백 개선 |
+| `f8ee83f` | 초기 데스크톱 내비게이션 숨김 해제 |
+| `d190667` | Storybook 상호작용 스토리·구매 흐름과 검증 코드 추가 |
+
+## 검증 범위와 남은 확인
+
+| 항목 | 상태 | 근거 또는 다음 확인 |
+| --- | --- | --- |
+| 이 문서의 구현 설명 | 검증 완료 | HTML·SCSS·운영 JS·스토리 전용 JS 및 Git 이력 대조 |
+| 문서 MDX 문법 | 검증 완료 | 설치된 `@storybook/addon-docs/mdx-loader`로 이 파일 컴파일 |
+| 기존 자동 검증 항목 존재 | 검증 완료 | `tests/storybook/interactions.spec.cjs` 내용 확인. 이번에 실행한 결과는 아님 |
+| Chrome·Firefox UI 실행 | 미검증 | 이번 작업은 문서 작성이며 서버·브라우저를 실행하지 않음 |
+| 스킵 링크·모든 컨트롤의 수동 키보드 검사 | 미검증 | 포커스 순서, 가려짐, Enter·Space, 상태 전환 확인 필요 |
+| 스크린 리더 | 미검증 | 이름·역할·상태 및 반복 알림의 실제 읽기 확인 필요 |
+| 색 대비·고대비 모드 | 미검증 | 기본·hover·포커스·선택 상태의 실제 표시 측정 필요 |
+| 확대·리플로·클릭 영역 | 미검증 | 200% 확대, 작은 화면, 가로 모드와 분기점 전후에서 측정 필요 |
+| 실제 결제 접근성 | 해당 없음 | 데모의 Checkout은 결제 절차를 제공하지 않음 |
+
+기존 자동 테스트에는 375·768·1440px 구매 흐름, 1023·1024px 메뉴 전환, 메뉴 Tab 순환·Escape·포커스 복원, 라이트박스 키보드 이동, 0에서 수량 감소 시 포커스 유지, 썸네일 선택, 동작 줄이기 검사가 있다. 실행 구성은 `playwright.storybook.config.cjs`의 Chrome·Firefox이며 최신 정적 빌드가 필요하다.
+
+### 코드: 키보드 회귀 검사
+
+`tests/storybook/interactions.spec.cjs`의 메뉴 검사 일부다. 문서에는 기존 테스트를 소개한 것이며 이번 작업에서 테스트를 실행했다는 의미는 아니다.
+
+```js
+await toggle.focus();
+await page.keyboard.press('Space');
+await expect(nav).toBeVisible();
+await expect(frame.locator('#main')).toHaveJSProperty('inert', true);
+await expect(close).toBeFocused();
+await page.keyboard.press('Shift+Tab');
+await expect(nav.locator('a').last()).toBeFocused();
+await page.keyboard.press('Tab');
+await expect(close).toBeFocused();
+await page.keyboard.press('Escape');
+await expect(nav).toHaveJSProperty('hidden', true);
+await expect(toggle).toBeFocused();
+```
+
+실행 명령:
+
+```bash
+npm run build-storybook
+npm run test:storybook
+```
+
+추가로 확인할 항목은 운영 메뉴의 위 숨김 분기, 운영 갤러리의 동작 줄이기, 같은 상품을 반복 추가할 때 동일한 상태 문구의 재공지 여부다. 상품 이미지 네 장의 `alt`는 동일한 설명에 번호만 붙어 있으므로 각 실제 사진과 설명이 일치하는지도 확인해야 한다. 내비게이션과 프로필의 `href="#"`는 목적지가 아직 없는 placeholder다. 이 기록만으로 웹 접근성의 완전한 준수를 선언하지 않는다.
