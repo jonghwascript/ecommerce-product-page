@@ -1,0 +1,59 @@
+@use '../fonts' as *;
+@use '../variables' as *;
+
+.c-quantity {
+  display: flex;
+
+  .c-quantity__button--decrease {
+    border-top-left-radius: 0.625rem; //10px
+    border-bottom-left-radius: 0.625rem; //10px
+    background-color: $Grey-50;
+    flex: 1;
+  }
+
+  .c-quantity__value {
+    flex: 3;
+    background-color: $Grey-50;
+    padding: 1rem;
+    text-align: center;
+    @include text-preset-3-B;
+    color: $Grey-950;
+  }
+
+  .c-quantity__button--increase {
+    border-top-right-radius: 0.625rem; //10px
+    border-bottom-right-radius: 0.625rem; //10px
+    background-color: $Grey-50;
+    flex: 1;
+  }
+}
+
+// switcher 안에서 항상 한 줄 전체를 차지하고, 비어 있으면 간격을 만들지 않는다.
+.c-purchase__error {
+  flex-basis: 100%;
+  @include text-preset-3-R;
+  color: $Red-700;
+  text-align: center;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.c-button--primary {
+  padding: 1rem 1rem;
+  background-color: $Orange-500;
+  border-radius: 0.625rem; //10px
+  text-align: center;
+
+  .l-with-icon {
+    @include text-preset-3-B;
+
+    .icon {
+      --space: 1rem;
+      width: 1.0625rem; //17px
+      height: 1rem; //16px
+    }
+  }
+}
+

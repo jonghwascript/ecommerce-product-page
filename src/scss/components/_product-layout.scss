@@ -1,0 +1,24 @@
+@use '../mixins' as *;
+
+/* ################# Main   ################ */
+.c-product__layout {
+  // 화면 1024px(64rem)에서 가로 전환: 화면 폭 − 좌우 여백 = 레이아웃 너비
+  --threshold: calc(64rem - 2 * var(--gutter-inline, var(--s1)));
+
+  @include mq('desktop') {
+    gap: clamp(1.5rem, calc(-75.895rem + 120.93vw), 8rem);
+  }
+
+  // 상품 컴포넌트 안에서 갤러리가 차지하는 위치·크기 등 배치를 담당
+  .c-product__gallery {
+    min-inline-size: 0; // = min-width: 0
+
+    // 모바일: l-center 여백만큼 밖으로 확장 (full-bleed)
+    @media (max-width: 63.99em) {
+      // 프로젝트 분기점에 맞춤
+      margin-inline: calc(var(--gutter-inline, var(--s1)) * -1);
+      //요소에 좌우 음수 마진을 주면, 해당 요소가 양옆으로 늘어나서 부모 컨테이너의 영역 밖으로 확장
+    }
+  }
+}
+

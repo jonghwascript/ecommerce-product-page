@@ -1,0 +1,76 @@
+@use '../fonts' as *;
+@use '../variables' as *;
+@use '../mixins' as *;
+
+//제품정보
+.c-product__details {
+  --space: 2rem;
+  justify-content: center;
+
+  // 디자인 컬럼 너비를 따르도록 reset의 60ch 제한 해제
+  :is(p, h1) {
+    max-width: none;
+  }
+
+  .c-product__heading {
+    --space: 16px;
+
+    .c-product__brand {
+      color: $Grey-500;
+      font-family: $font-family-primary;
+      font-weight: 700;
+      font-size: clamp(0.75rem, calc(0.69rem + 0.254vw), 0.813rem);
+      line-height: 1.2;
+    }
+
+    .c-product__title {
+      color: $Grey-950;
+      font-family: $font-family-primary;
+      font-weight: 700;
+      font-size: clamp(1.75rem, calc(0.796rem + 4.071vw), 2.75rem);
+    }
+
+    .c-product__description {
+      color: $Grey-500;
+      font-family: $font-family-primary;
+      font-weight: 400;
+      font-size: clamp(0.938rem, calc(0.878rem + 0.254vw), 1rem);
+    }
+  }
+
+  .c-product__price {
+    @include mq('tablet') {
+      flex-direction: column;
+      row-gap: 0.5rem; //8px
+      align-items: flex-start;
+    }
+  }
+}
+
+.c-price {
+  .c-price__sale {
+    --space: var(--s0);
+
+    .c-price__current {
+      @include text-preset-2;
+      color: $Grey-950;
+    }
+
+    .c-price__badge {
+      @include text-preset-3-B;
+      color: $White;
+      background-color: $Grey-950;
+      border-radius: 0.375rem; //6px
+      padding-block: 0.1875rem; //3px
+      padding-inline: 0.5938rem; //9.5px
+    }
+  }
+
+  .c-price__original {
+    del {
+      @include text-preset-3-B;
+      color: $Grey-500;
+    }
+  }
+}
+

@@ -1,0 +1,31 @@
+@use '../variables' as *;
+
+/* 화면 가로 넓이가 1024px 이상일 때(PC)만 아래 코드를 적용합니다 */
+@media (min-width: 1024px) {
+
+  /* 1. 슬라이드가 보여지는 '창(틀)' 자체를 둥글게 자르기 */
+  .c-gallery__list .slick-list {
+    border-radius: 1.25rem !important; //20px
+    overflow: hidden !important;
+
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
+  }
+
+  /* 2. 버튼 투명화 및 둥글기 적용 */
+  .c-gallery__list .c-gallery__open {
+    border: none !important;
+    background: transparent !important;
+    border-radius: 1.25rem !important; //20px
+  }
+
+  /* 3. 내부 이미지 둥글기 적용 */
+  .c-gallery__list .c-gallery__image {
+    border-radius: 1.25rem !important; //20px
+    display: block;
+    width: 100%;
+  }
+
+}
+

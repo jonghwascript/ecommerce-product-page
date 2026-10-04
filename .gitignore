@@ -24,6 +24,7 @@ npm-debug.log*
 # Production
 /build
 /dist
+/storybook-static
 /.next
 /out
 
@@ -45,3 +46,4 @@ README-template.md
 style-guide.md
 design/*
 review/*
+storybook-static

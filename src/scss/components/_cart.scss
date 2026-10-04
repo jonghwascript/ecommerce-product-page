@@ -1,0 +1,149 @@
+@use '../fonts' as *;
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.c-header__actions {
+  //장바구니 위치 조정
+  .c-header__cart-panel {
+    position: absolute;
+    height: 16rem; //256px
+    top: calc(100% + 0.5rem);
+    left: 0.4rem;
+    right: 0.4rem;
+    z-index: 100;
+    max-inline-size: 22.8125rem; // max 365px
+
+    @include mq('tablet') {
+      width: 22.8125rem; //365px
+      top: calc(100% + -0.5rem);
+      left: auto;
+      right: 0.5rem;
+    }
+
+    @include mq('desktop') {
+      left: auto;
+      right: 15%;
+    }
+  }
+
+  // 장바구니 리스트
+  .c-cart {
+    background-color: $White;
+    padding-block: 1.5rem; //24px
+    border-radius: 0.625rem; //10px
+    box-shadow: 10px 20px 30px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    flex-direction: column;
+
+    // display: flex가 hidden 속성의 기본 숨김을 덮어쓰지 않도록 한다.
+    &[hidden] {
+      display: none;
+    }
+
+    .c-cart__title {
+      padding-inline: 0.75rem; //12px
+      @include text-preset-3-B;
+      color: $Grey-950;
+      flex-shrink: 0;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: $Grey-100;
+        margin-block-start: 1.5rem; //24px
+        margin-block-end: 1.5625rem; //25px
+      }
+    }
+
+    .c-cart__body {
+      --inline-padding: 1.5rem; //24px
+      flex: 1;
+      min-height: 0;
+
+      .c-cart__checkout,
+      .c-cart__list {
+        display: none;
+      }
+
+      .c-cart__list {
+        --space: 0.25rem; //4px
+        flex: 1;
+        min-height: 0;
+
+        //담겨져 있는 개수가 2개 이상이면 세로 스크롤바 생성
+        &:has(.c-cart__item:nth-child(2)) {
+          overflow-y: auto;
+        }
+
+        .c-cart__item {
+          padding-inline: var(--inline-padding);
+          justify-content: flex-start;
+          --space: 1rem; //16px
+          flex-shrink: 0;
+
+          .c-cart__thumb {
+            --n: 50;
+            --d: 50;
+            flex-shrink: 0;
+            flex-basis: 3.125rem; //50px
+          }
+
+          .c-cart__info {
+            .c-cart__name {
+              @include text-preset-3-R;
+              color: $Grey-500;
+            }
+
+            .c-cart__price {
+              .c-cart__unit {
+                @include text-preset-3-R;
+                color: $Grey-500;
+              }
+
+              .c-cart__total {
+                @include text-preset-3-B;
+                color: $Grey-950;
+              }
+            }
+          }
+
+          .c-cart__remove {
+            margin-inline-start: auto;
+          }
+        }
+      }
+
+
+      .c-cart__checkout {
+        flex-shrink: 0;
+        margin-inline: var(--inline-padding);
+        @include text-preset-3-B;
+        color: $Grey-950;
+      }
+
+      .c-cart__empty {
+        margin: auto;
+        display: block;
+        @include text-preset-3-B;
+        color: $Grey-500;
+      }
+
+      // 장바구니에 한개라도 있으면
+      &:has(.c-cart__list .c-cart__item:nth-child(1)) {
+
+        .c-cart__checkout,
+        .c-cart__list {
+          display: block;
+        }
+
+        .c-cart__empty {
+          display: none;
+        }
+      }
+    }
+  }
+}
+

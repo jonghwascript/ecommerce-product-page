@@ -146,6 +146,14 @@ npm run build
 
 The build output is written to `dist/`; edit the source files under `src/` instead.
 
+Start Storybook to preview the product purchase button in isolation:
+
+```bash
+npm run storybook
+```
+
+Storybook runs at `http://localhost:6006`. Create a static Storybook build with `npm run build-storybook`; its output is written to `storybook-static/`.
+
 ## Author
 
 - Frontend Mentor: [@jonghwascript](https://www.frontendmentor.io/profile/jonghwascript)

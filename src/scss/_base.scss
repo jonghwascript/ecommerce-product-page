@@ -1,0 +1,64 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+:root {
+  --page-max: 69.375rem; // 1110px (디자인 컨테이너)
+}
+
+body {
+  background-color: #fff;
+}
+
+.c-attribution,
+.c-header__inner,
+.c-product {
+  --measure: var(--page-max);
+}
+
+// 페이지 좌우 여백: header와 상품 영역이 같은 값을 쓴다
+.c-header__inner,
+.c-product {
+  @include mq('tablet') {
+    --gutter-inline: 5rem; //80px
+  }
+}
+
+.c-skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10000;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  color: #000;
+  text-decoration: underline;
+  transform: translateY(calc(-100% - 2rem));
+
+  &:focus {
+    transform: translateY(0);
+  }
+}
+
+button {
+  /* 배경 및 테두리 초기화 */
+  background: none;
+  background-color: transparent;
+  border: none;
+
+  /* 내부 여백 초기화 */
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+
+  /* 마우스 커서 및 정렬 */
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:focus-visible {
+    outline: 3px solid $Grey-950;
+    outline-offset: 3px;
+  }
+}
+

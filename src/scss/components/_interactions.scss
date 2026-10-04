@@ -1,0 +1,30 @@
+@use '../variables' as *;
+
+// 마우스·트랙패드가 있는 환경에서만 hover 피드백을 표시한다.
+@media (hover: hover) {
+  .c-button--primary:not(:disabled):hover {
+    background-color: $Orange-300;
+  }
+
+  .c-icon-button:not(:disabled):hover {
+    opacity: 0.7;
+  }
+
+  .c-gallery__open:not(:disabled):hover .c-gallery__image {
+    opacity: 0.85;
+  }
+
+  .c-quantity__button:not(:disabled):not([aria-disabled='true']):hover {
+    background-color: $Pale-orange;
+  }
+
+  .c-header__avatar:hover .c-avatar__image {
+    opacity: 0.7;
+  }
+
+  .c-cart__remove:hover {
+    opacity: 0.65;
+  }
+}
+
+
