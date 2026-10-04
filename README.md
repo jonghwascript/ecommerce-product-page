@@ -154,6 +154,16 @@ npm run storybook
 
 Storybook runs at `http://localhost:6006`. Create a static Storybook build with `npm run build-storybook`; its output is written to `storybook-static/`.
 
+The [Chromatic workflow](.github/workflows/chromatic.yml) builds and publishes Storybook
+on every branch push, or manually through GitHub Actions. Before running it, create
+a repository secret named `CHROMATIC_PROJECT_TOKEN` under **Settings → Secrets and
+variables → Actions**, using the project token from Chromatic's **Manage → Configure**
+page. See the [Chromatic CI documentation](https://www.chromatic.com/docs/ci/).
+The workflow uses the Chromatic CLI version installed from `package-lock.json`.
+Visual differences remain available for review in Chromatic without failing the
+deployment; build and upload errors still fail the workflow. Changes are not
+automatically accepted as new baselines.
+
 `Pages / Purchase Flow` connects quantity selection, cart submission, accumulated totals,
 removal, responsive navigation, the Slick gallery, and the desktop lightbox. Checkout
 closes the cart, matching the original page; it does not process a payment.
