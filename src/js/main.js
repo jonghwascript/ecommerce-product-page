@@ -500,9 +500,11 @@ function initCart($) {
   setCartOpen(false);
 }
 
-// DOM 준비 후 각 기능을 독립적으로 초기화한다.
+// 이 스크립트는 문서 하단에서 로드되므로 내비게이션 상태를 즉시 동기화한다.
+initNavigation(jQuery);
+
+// 나머지 기능은 DOM 준비 후 독립적으로 초기화한다.
 jQuery(($) => {
-  initNavigation($);
   initGallery($);
   initLightbox($);
   initCart($);
