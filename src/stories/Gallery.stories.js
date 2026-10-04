@@ -27,19 +27,6 @@ const galleryTemplate = `
             </button>
           </div>
           <p class="c-gallery__status u-sr-only" role="status" aria-live="polite">Image 1 of 4</p>
-          <ul class="c-gallery__thumbs l-cluster" aria-label="Choose a product image">
-            ${images
-              .map(
-                (image, index) => `
-                  <li class="c-gallery__thumb-item">
-                    <button class="c-gallery__thumb${index === 0 ? ' is-active' : ''}" type="button" aria-current="${index === 0 ? 'true' : 'false'}" aria-label="View image ${image} of 4" aria-controls="gallery-slides" data-index="${index}">
-                      <span class="c-gallery__thumb-frame l-frame"><img src="/images/image-product-${image}-thumbnail.jpg" alt="" width="88" height="88" /></span>
-                    </button>
-                  </li>
-                `,
-              )
-              .join('')}
-          </ul>
         </section>
       </div>
     </article>
@@ -57,7 +44,6 @@ const meta = {
 
     const gallery = root.querySelector('.c-gallery');
     const slides = [...gallery.querySelectorAll('.c-gallery__open')];
-    const thumbnails = [...gallery.querySelectorAll('.c-gallery__thumb')];
     const status = gallery.querySelector('.c-gallery__status');
     const list = gallery.querySelector('.c-gallery__list');
     let currentIndex = 0;
@@ -69,17 +55,10 @@ const meta = {
       slides.forEach((slide, slideIndex) => {
         slide.style.display = slideIndex === currentIndex ? '' : 'none';
       });
-      thumbnails.forEach((thumbnail, thumbnailIndex) => {
-        const active = thumbnailIndex === currentIndex;
-        thumbnail.classList.toggle('is-active', active);
-        thumbnail.setAttribute('aria-current', String(active));
-      });
       status.textContent = `Image ${currentIndex + 1} of ${slides.length}`;
     };
 
-    thumbnails.forEach((thumbnail) => {
-      thumbnail.addEventListener('click', () => showImage(Number(thumbnail.dataset.index)));
-    });
+    showImage(0);
     gallery.querySelector('.c-gallery__control--prev').addEventListener('click', () => showImage(currentIndex - 1));
     gallery.querySelector('.c-gallery__control--next').addEventListener('click', () => showImage(currentIndex + 1));
 

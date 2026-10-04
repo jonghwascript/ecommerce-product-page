@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@storybook/addon-docs": "^10.6.1",
     "@storybook/html-vite": "^10.6.1",
     "browser-sync": "^3.0.4",
     "chromatic": "^18.10.2",
