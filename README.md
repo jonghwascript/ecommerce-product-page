@@ -86,15 +86,15 @@ The page uses sample product data and a client-side cart. Checkout and the heade
 - The document uses a skip link, `header`, `nav`, `main`, product `article`, gallery `section`, native `dialog`, and `footer` landmarks.
 - The main product title is the page's `h1`. The cart and lightbox use labelled headings.
 - Decorative SVGs are hidden from assistive technology. Product images have descriptive alternative text; thumbnail images are decorative because their buttons have their own accessible names.
-- Gallery images keep stable button markup across viewport changes. The buttons are disabled on mobile and enabled with a lightbox action on desktop. If the viewport crosses back below the breakpoint while the dialog is open, it closes and focus moves to gallery navigation.
-- Buttons share a visible `:focus-visible` outline. The focus outline for the main gallery image is inset so Slick's clipping does not cut it off.
+- Gallery slides are plain elements. A single "Open larger view" button overlays the gallery on desktop and is removed with `display: none` below 1024px, so no inactive button is exposed on mobile. If the viewport crosses back below the breakpoint while the dialog is open, it closes and focus moves to gallery navigation.
+- Buttons share a visible `:focus-visible` outline. The focus outline for the gallery's open button is inset so it is not cut off at the gallery edge.
 - The navigation drawer keeps its `aria-expanded`, `aria-hidden`, and `inert` states in sync. It traps Tab while open on mobile, restores focus when closed, and becomes an ordinary accessible navigation bar on desktop.
 
 ### Responsive layout and spacing
 
 - `.l-center` owns the page's maximum content width and horizontal gutters. `--page-max` is `69.375rem` (1110px); the header and product share that measure.
 - The default inline gutter is `--s1` (24px). At the 768px tablet breakpoint, `--gutter-inline` becomes 80px. Avoid adding another outer gutter: it would be added to the `.l-center` padding.
-- `.l-switcher` changes the product columns based on its own available width, not the viewport. Its threshold is `64rem` minus the current left and right gutters, keeping the column change aligned with the 1024px desktop breakpoint.
+- The product layout keeps the `.l-switcher` markup, but its columns switch at the 1024px desktop media query, the same breakpoint as the other desktop styles and the script. A content-width threshold drifted from that breakpoint when a scrollbar was present or the root font size changed.
 - The gallery uses negative inline margins below 1024px to extend to the viewport edges while the product details remain inside the page gutters.
 - Reset styles cap headings and paragraphs at `60ch`. The product details locally remove that cap so their content follows the product column width.
 - `.l-stack` owns vertical gaps through `gap` and `--space`; individual children should not add margins to recreate the same spacing.
@@ -171,7 +171,8 @@ closes the cart, matching the original page; it does not process a payment.
 Interactive stories load only their required initialization scripts from
 `src/stories/scripts/`. These are Storybook-specific copies/adaptations of the
 functions in `src/js/main.js`; the production script is not imported or changed.
-Markup comes from `src/pages/index.html`, styles from the source SCSS, jQuery from
+Markup comes from `src/pages/index.html` with its `@@include` partials from
+`src/pages/components/` resolved, styles from the source SCSS, jQuery from
 the existing local asset, and Slick from the installed package. No `dist` build or
 CDN connection is required. Each story uses its own iframe so global selectors,
 document listeners, IDs, and modal state cannot affect another Docs example.

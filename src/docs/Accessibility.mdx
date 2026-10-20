@@ -17,7 +17,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 - 스킵 링크는 평소 화면 밖에 두고 포커스를 받으면 화면 안에 표시한다. 실제 키보드 이동 결과는 이번 문서 작업에서 재검증하지 않았다.
 - 목록 스타일을 제거한 내비게이션·썸네일·장바구니 목록에는 `role="list"`를 명시했다.
 
-근거: `src/pages/index.html`, `src/scss/_base.scss`, `src/scss/_reset.scss`.
+근거: `src/pages/index.html`과 `src/pages/components/*.html`, `src/scss/_base.scss`, `src/scss/_reset.scss`.
 
 ### 코드: 본문으로 건너뛰기
 
@@ -61,7 +61,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 | 로고 링크 | 로고 이미지에 `alt="sneakers"` 제공 |
 | 갤러리 이전·다음 | `Previous image`, `Next image`와 조작 대상 ID 연결 |
 | 갤러리 썸네일 | `View image N of 4`로 목적을 설명하고 썸네일 이미지 자체는 빈 `alt` 사용 |
-| 큰 이미지 열기 | 상품 이미지의 대체 텍스트와 `Open larger view`, 데스크톱에서 `aria-haspopup="dialog"` 제공 |
+| 큰 이미지 열기 | 데스크톱 전용 버튼 하나에 `Open larger view` 이름과 `aria-haspopup="dialog"` 제공. 1024px 미만에서는 `display: none`으로 제외 |
 | 라이트박스 닫기 | `Close gallery` 텍스트 제공 |
 | 수량 감소·증가 | `Decrease quantity`, `Increase quantity`와 출력 요소를 가리키는 `aria-controls` |
 | 장바구니 삭제 | `Remove 상품명 from cart`로 삭제 대상을 포함한 이름 생성 |
@@ -69,11 +69,11 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 이미 이름이 있는 버튼의 SVG에는 `aria-hidden="true"`, `focusable="false"`를 지정했다. 장바구니 상품 썸네일도 인접 상품명과 중복되지 않도록 빈 `alt`를 사용한다. 라이트박스 이미지를 바꾸면 `src`뿐 아니라 원본 이미지의 `alt`도 함께 복사한다.
 
-근거: `src/pages/index.html`, `src/js/main.js`의 `createItem`, `renderBadge`, `showImage`, `src/scss/_utilities.scss`.
+근거: `src/pages/components/*.html`, `src/js/main.js`의 `createItem`, `renderBadge`, `showImage`, `src/scss/_utilities.scss`.
 
 ### 코드: 아이콘의 중복 읽기 방지와 버튼 이름
 
-`src/pages/index.html`의 메뉴 버튼이다. 버튼 이름은 숨김 텍스트가 제공하고, 장식 SVG는 별도로 읽지 않도록 한다.
+`src/pages/components/header.html`의 메뉴 버튼이다. 버튼 이름은 숨김 텍스트가 제공하고, 장식 SVG는 별도로 읽지 않도록 한다.
 
 ```html
 <button class="c-header__menu-toggle c-icon-button" type="button"
@@ -115,7 +115,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 ### 코드: 키보드 위치와 hover 상태
 
-공통 버튼 규칙은 `src/scss/_base.scss`, 이미지 버튼의 잘림 보완은 `src/scss/components/_gallery.scss`에 있다.
+공통 버튼 규칙은 `src/scss/_base.scss`, 큰 이미지 열기 버튼의 잘림 보완은 `src/scss/components/_gallery.scss`에 있다.
 
 ```scss
 button {
@@ -127,7 +127,8 @@ button {
 }
 
 // 실제 파일에서는 .c-gallery 내부에 중첩된 선택자다.
-.c-gallery .c-gallery__stage .c-gallery__list .c-gallery__open {
+// 버튼이 stage 경계에 붙어 있어 외곽선을 안쪽에 그린다.
+.c-gallery .c-gallery__stage .c-gallery__open {
   &:focus-visible {
     outline-offset: -6px;
   }
@@ -241,15 +242,15 @@ if (needsDesktopFocus) {
 - Slick의 기본 화살표 대신 이름이 있는 기존 이전·다음 버튼을 연결했다. 터치 제스처 외에도 버튼으로 이동할 수 있게 했다.
 - 슬라이드 전환 시 썸네일의 `is-active`와 `aria-current`를 갱신한다.
 - `role="status"` 영역에 `Image N of 4` 형태의 현재 위치를 기록한다.
-- 데스크톱에서는 썸네일을 표시하고 본문 화살표를 숨기며, 작은 화면에서는 반대로 표시한다.
-- Slick 복제 슬라이드를 실제 상품 이미지 목록에서 제외한다. 데스크톱 이미지 버튼의 초기·재초기화·화면 전환 동기화에서는 활성 원본만 Tab 순서에 두도록 처리한다.
-- 1024px 미만에서는 큰 이미지 열기 버튼을 네이티브 `disabled`로 비활성화하고 팝업 관련 ARIA와 열기 안내를 제거하거나 숨긴다. 비활성화되는 버튼에 포커스가 있으면 다음 이미지 버튼으로 이동한다.
+- 데스크톱에서는 썸네일을 표시하고 본문 화살표를 숨기며, 작은 화면에서는 반대로 표시한다. Slick이 화살표에 넣는 인라인 `display`는 데스크톱 규칙의 `!important`로 덮는다.
+- 슬라이드는 버튼이 아닌 `div.c-gallery__slide`다. Slick 복제 슬라이드는 실제 상품 이미지 목록에서 제외한다.
+- 큰 이미지 열기는 stage를 덮는 버튼 하나(`.c-gallery__open`)가 맡는다. 1024px 미만에서는 `display: none`이라 화면·Tab 순서·보조 기술에서 모두 빠지므로, 모바일에 실행할 수 없는 버튼이 남지 않는다.
 
 근거: `src/js/main.js`의 `initGallery`, `initLightbox`, `src/scss/components/_gallery.scss`.
 
 ### 코드: 선택 상태와 이미지 위치 알림
 
-`src/pages/index.html`의 알림 영역과 `src/js/main.js`의 `syncThumbs`를 연결한다.
+`src/pages/components/product.html`의 알림 영역과 `src/js/main.js`의 `syncThumbs`를 연결한다.
 
 ```html
 <p class="c-gallery__status u-sr-only" role="status">Image 1 of 4</p>
@@ -267,26 +268,34 @@ function syncThumbs(index) {
 }
 ```
 
-### 코드: 모바일에서 실행할 수 없는 큰 이미지 열기 제거
+### 코드: 데스크톱 전용 큰 이미지 열기 버튼
 
-`src/js/main.js`의 `syncImageControls` 발췌. `desktop`은 `(min-width: 1024px)` 미디어 쿼리이며 `hadFocus`는 해당 요소에 포커스가 있었는지 저장한 값이다.
+`src/pages/components/product.html`의 stage 발췌. 이미지는 버튼 밖에 있으므로 버튼 이름은 숨김 텍스트로 준다.
 
-```js
-element.disabled = !desktop.matches;
-element.querySelector('.u-sr-only').hidden = !desktop.matches;
-if (desktop.matches) {
-  element.setAttribute('type', 'button');
-  element.setAttribute('aria-haspopup', 'dialog');
-  element.setAttribute('aria-controls', dialog.id);
-  const slide = element.closest('.slick-slide');
-  element.tabIndex = slide
-    ? (slide.classList.contains('slick-active') && !slide.classList.contains('slick-cloned') ? 0 : -1)
-    : (element.contains(images[0]) ? 0 : -1);
-} else {
-  element.removeAttribute('tabindex');
-  element.removeAttribute('aria-haspopup');
-  element.removeAttribute('aria-controls');
-  if (hadFocus) focusGalleryControl();
+```html
+<div class="c-gallery__list" id="gallery-slides">
+  <div class="c-gallery__slide">
+    <span class="c-gallery__frame l-frame"><img class="c-gallery__image" alt="…" /></span>
+  </div>
+  <!-- 슬라이드 4개 -->
+</div>
+<button class="c-gallery__open" type="button" aria-haspopup="dialog" aria-controls="lightbox">
+  <span class="u-sr-only">Open larger view</span>
+</button>
+```
+
+`src/scss/components/_gallery.scss` 발췌. 모바일 제외는 스크립트가 아니라 CSS가 맡으므로 화면 전환마다 속성을 동기화할 필요가 없다.
+
+```scss
+.c-gallery__open {
+  display: none;
+
+  @include mq('desktop') {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
 }
 ```
 
@@ -300,11 +309,11 @@ if (desktop.matches) {
 - 열린 상태에서 1024px 미만으로 전환하면 모달을 닫고 본문 갤러리의 다음 버튼으로 포커스를 이동한다.
 - 높이를 뷰포트에 맞춰 제한하고 `overflow: auto`를 적용했다. 데스크톱 좌우 제어 버튼이 잘리지 않도록 여백도 확보했다.
 
-근거: `src/pages/index.html`, `src/js/main.js`의 `initLightbox`, `src/scss/components/_lightbox.scss`.
+근거: `src/pages/components/dialog.html`, `src/js/main.js`의 `initLightbox`, `src/scss/components/_lightbox.scss`.
 
 ### 코드: 이름이 있는 모달과 포커스 복귀
 
-`src/pages/index.html`의 대화상자 구조 발췌:
+`src/pages/components/dialog.html`의 대화상자 구조 발췌:
 
 ```html
 <dialog class="c-lightbox l-imposter" id="lightbox"
@@ -319,19 +328,22 @@ if (desktop.matches) {
 `src/js/main.js`의 `initLightbox` 발췌. Escape는 별도 키 이벤트로 흉내 내지 않고 네이티브 모달 동작을 사용한다.
 
 ```js
-// 이미지 클릭 처리에서 opener와 표시 이미지를 정한 다음 실행
-dialog.showModal();
-closeButton.focus({ preventScroll: true });
+// 열기 버튼: Slick의 현재 슬라이드로 연다
+openButton.addEventListener('click', () => {
+  if (!desktop.matches || dialog.open) return;
+  showImage(currentSlide());
+  dialog.showModal();
+  closeButton.focus({ preventScroll: true });
+});
 
 // 이벤트 등록 부분
 closeButton.addEventListener('click', () => dialog.close());
 desktop.addEventListener('change', (event) => {
   if (!event.matches && dialog.open) dialog.close();
-  syncImageControls();
 });
 dialog.addEventListener('close', () => {
-  if (!desktop.matches) focusGalleryControl();
-  else if (opener?.isConnected) opener.focus({ preventScroll: true });
+  if (desktop.matches) openButton.focus({ preventScroll: true });
+  else focusGalleryControl();
 });
 dialog.addEventListener('keydown', (event) => {
   if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
@@ -358,11 +370,11 @@ dialog.querySelector('.c-lightbox__status').textContent =
 - 제출 버튼의 `aria-describedby="quantity-error"`로 오류 설명을 연결했다. 같은 오류를 다시 알릴 수 있도록 내용을 비운 뒤 100ms 후 기록한다.
 - 수량을 늘리면 오류를 지우며, 오류가 없을 때는 빈 오류 영역을 CSS로 숨긴다.
 
-근거: `src/pages/index.html`, `src/js/main.js`의 `initCart`, `src/scss/components/_purchase.scss`.
+근거: `src/pages/components/product.html`, `src/js/main.js`의 `initCart`, `src/scss/components/_purchase.scss`.
 
 ### 코드: 수량 이름·알림과 최소 수량
 
-`src/pages/index.html`의 수량 그룹 내부 발췌:
+`src/pages/components/product.html`의 수량 그룹 내부 발췌:
 
 ```html
 <span class="u-sr-only" id="quantity-label">Quantity</span>
@@ -391,7 +403,7 @@ $decrease.on('click', () => {
 
 ### 코드: 오류 설명 연결과 반복 알림
 
-`src/pages/index.html`의 제출 버튼·오류 영역을 축약했다. 실제 버튼 내부에는 장식 SVG와 텍스트를 감싸는 요소가 있다.
+`src/pages/components/product.html`의 제출 버튼·오류 영역을 축약했다. 실제 버튼 내부에는 장식 SVG와 텍스트를 감싸는 요소가 있다.
 
 ```html
 <button class="c-purchase__submit c-button c-button--primary"
@@ -429,7 +441,7 @@ if (quantity === 0) {
 
 ### 코드: 열림 상태와 결과 알림
 
-`src/pages/index.html`의 상태 영역:
+`src/pages/components/header.html`의 상태 영역:
 
 ```html
 <p class="u-sr-only" id="cart-status" role="status"></p>

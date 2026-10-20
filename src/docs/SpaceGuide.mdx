@@ -21,41 +21,42 @@ header와 main의 간격(96x)에서 장식선의 높이(44px)를 뺀다
 `_reset.scss`는 `p, li, figcaption`과 `h1`~`h4`에 `max-width: 60ch`를 줍니다. 컬럼이 60ch보다 넓은 모바일·태블릿에서는 상품 정보 문단만 좁아져 왼쪽에 붙고, 가격 줄·버튼과 오른쪽 끝이 어긋납니다. 전역 규칙은 두고 `.c-product__details :is(p, h1) { max-width: none; }`으로 상품 정보 안에서만 해제했습니다.
 
 
-## l-switcher의 --threshold는 컨테이너 너비 기준이다
+## 상품 두 열 전환은 mq('desktop')을 따른다
+
+`.c-product__layout`은 `l-switcher` 마크업을 유지하지만, 전환은 `--threshold` 계산이 아니라 미디어 쿼리로 정합니다.
 
 ```scss
-.l-switcher > * { flex-basis: calc((var(--threshold) - 100%) * 999); }
+.c-product__layout > * {
+  flex-basis: 100%;          // 1024px 미만: 세로로 쌓기
+
+  @include mq('desktop') {
+    flex-basis: 0;           // 1024px 이상: 같은 너비 두 열
+  }
+}
 ```
 
-`100%`는 화면 너비가 아니라 `.c-product__layout` 자신의 너비입니다. 레이아웃 너비가 threshold 이상이면 가로로 놓이고, 미만이면 세로로 쌓입니다.
+이전에는 `--threshold: calc(64rem - 2 * var(--gutter-inline, var(--s1)))`로 레이아웃 너비를 비교했습니다. 이 방식은 다른 데스크톱 스타일·스크립트와 기준이 달라 전환점이 어긋났습니다.
 
-화면 분기점 1024px(64rem)에서 바뀌게 하려면 `.l-center`의 좌우 padding을 뺀 값을 씁니다. 이 계산을 식으로 두어 여백이 바뀌어도 전환점이 유지되게 했습니다.
-
-```scss
---threshold: calc(64rem - 2 * var(--gutter-inline, var(--s1)));
-// 768px 미만: 1024 − 48  = 976px
-// 768px 이상: 1024 − 160 = 864px
-```
-
-- 이전 값 `61rem`은 여백 24px 기준(`64rem − 3rem`)이었습니다. 여백 변수와 따로 적은 숫자라서 여백이 바뀌면 함께 고쳐야 했습니다.
-- 바깥 요소에 padding을 추가하면 이 식에 반영되지 않아 전환점이 다시 어긋납니다.
-- 최대 너비가 threshold보다 작으면 절대 가로로 바뀌지 않습니다. 예: `--measure` 없이 60ch(약 529px)일 때 608px threshold는 어떤 화면에서도 세로였습니다.
-- px 대신 rem을 써서 브라우저 글꼴 크기 설정을 따라가게 합니다.
+- 미디어 쿼리 `1024px`은 스크롤바를 포함한 뷰포트 너비, `--threshold`는 스크롤바를 뺀 콘텐츠 너비와 비교합니다. 세로 스크롤바가 있으면 1024~약 1039px에서 썸네일·열기 버튼 등 데스크톱 스타일이 켜졌는데 레이아웃은 세로였습니다.
+- `64rem`은 루트 글꼴 크기를 따릅니다. 루트 글꼴이 20px이면 전환점이 1280px로 밀려 1024~1279px에서 같은 어긋남이 생겼습니다.
+- 지금은 레이아웃·데스크톱 스타일·`main.js`의 `matchMedia('(min-width: 1024px)')`가 같은 지점에서 바뀝니다. 루트 글꼴을 키운 상태로 1024px에서 보면 두 열이 좁아질 수 있습니다(루트 20px에서 갤러리 약 389px, 가로 넘침 없음).
 
 
 ## 모바일 갤러리 full-bleed
 
 ```scss
 .c-product__gallery {
-  @media (max-width: 63.99em) {
-    margin-inline: calc(var(--gutter-inline, var(--s1)) * -1);
+  margin-inline: calc(var(--gutter-inline, var(--s1)) * -1);
+
+  @include mq('desktop') {
+    margin-inline: 0;
   }
 }
 ```
 
 `.l-center`의 좌우 padding만큼 음수 margin을 주어 갤러리만 화면 끝까지 넓힙니다. 상품 정보는 padding 안쪽에 남습니다. 값을 padding과 같은 변수에 묶어 두었기 때문에 padding이 바뀌어도 어긋나지 않습니다(모바일 −24px, 태블릿 −80px). `--gutter-inline`은 `.c-product`에 지정되어 갤러리까지 상속됩니다.
 
-이 기법은 `.c-product`가 최대 너비에 닿기 전까지만 화면 끝에 닿습니다. 지금은 최대 너비가 1110px이고 63.99em 미만에서만 적용되므로 모바일·태블릿 전 구간에서 화면 끝까지 닿습니다.
+이 기법은 `.c-product`가 최대 너비에 닿기 전까지만 화면 끝에 닿습니다. 지금은 최대 너비가 1110px이고 1024px 미만에서만 적용되므로 모바일·태블릿 전 구간에서 화면 끝까지 닿습니다. 이전의 `@media (max-width: 63.99em)`은 브라우저 기본 글꼴 크기를 따르고 1023.84~1024px 사이에 틈이 있었습니다. 그래서 모바일 우선 규칙과 `mq('desktop')` 해제로 바꾸었습니다.
 
 ## 측정 결과 (Chrome headless, 여백 80px 적용 후)
 
@@ -79,15 +80,15 @@ header와 main의 간격(96x)에서 장식선의 높이(44px)를 뺀다
 
 ## 1단계: 슬라이드 너비는 slick이 정함
 
-slick은 `.slick-list` 너비를 재서 각 슬라이드에 그 값을 넣습니다. 지금 `rows`가 기본값 1이라 따로 감싸는 요소가 생기지 않고, `<button class="c-gallery__open">`이 바로 슬라이드가 됩니다. 로컬 slick은 `rows > 1`일 때만 감싸는 요소를 만듭니다. 결과는 이렇습니다.
+slick은 `.slick-list` 너비를 재서 각 슬라이드에 그 값을 넣습니다. 지금 `rows`가 기본값 1이라 따로 감싸는 요소가 생기지 않고, `<div class="c-gallery__slide">`이 바로 슬라이드가 됩니다. 로컬 slick은 `rows > 1`일 때만 감싸는 요소를 만듭니다. 결과는 이렇습니다.
 
 ```html
-<button class="c-gallery__open slick-slide" style="width: 375px;">
+<div class="c-gallery__slide slick-slide" style="width: 375px;">
 ```
 
-## 2단계: 틀 너비는 버튼을 따라감
+## 2단계: 틀 너비는 슬라이드를 따라감
 
-`.c-gallery__frame`은 `<span>`이지만 `.l-frame`이 `display: flex`를 주므로 블록처럼 동작합니다. 너비를 따로 주지 않았으니 버튼 너비를 채워 **375px**가 됩니다.
+`.c-gallery__frame`은 `<span>`이지만 `.l-frame`이 `display: flex`를 주므로 블록처럼 동작합니다. 너비를 따로 주지 않았으니 슬라이드 너비를 채워 **375px**가 됩니다.
 
 ## 3단계: 틀 높이는 비율로 계산
 
@@ -264,6 +265,6 @@ main.js `initCart`가 상태 3개(`quantity`, `items`, `isOpen`)를 갖고 `rend
 }
 ```
 
-Slick 초기화 전에는 첫 번째 버튼만 표시하고, `.slick-initialized` 클래스가 붙으면 이 숨김 규칙의 적용을 해제합니다. 기록 시점의 `src/scss/style.scss`에는 위 규칙이 중첩 문법으로 이미 반영되어 있습니다.
+Slick 초기화 전에는 첫 번째 버튼만 표시하고, `.slick-initialized` 클래스가 붙으면 이 숨김 규칙의 적용을 해제합니다. 기록 시점의 `src/scss/style.scss`에는 위 규칙이 중첩 문법으로 이미 반영되어 있습니다. 지금은 슬라이드가 `div.c-gallery__slide`로 바뀌어 `_gallery.scss`의 선택자도 `> .c-gallery__slide:not(:first-child)`입니다.
 
 초기화 직전의 일시적인 노출인지, 로딩 후에도 두 장이 계속 보이는지는 아직 확인되지 않았습니다. 지속적으로 보인다면 슬라이드와 컨테이너의 실제 너비를 추가로 확인해야 합니다. 기존에 기록된 리사이즈 시 노출 문제와는 별도로 구분합니다.

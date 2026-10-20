@@ -15,7 +15,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 위치: `src/scss/components/_gallery-responsive.scss`. 아래 규칙은 원본의 `@media (min-width: 1024px)` 내부 발췌다.
 
 ```scss
-  /* 1. 슬라이드가 보여지는 '창(틀)' 자체를 둥글게 자르기 */
+  // 1. 슬라이드가 보여지는 '창(틀)' 자체를 둥글게 자르기
   .c-gallery__list .slick-list {
     border-radius: 1.25rem !important; //20px
     overflow: hidden !important;
@@ -25,14 +25,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
     -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
   }
 
-  /* 2. 버튼 투명화 및 둥글기 적용 */
-  .c-gallery__list .c-gallery__open {
-    border: none !important;
-    background: transparent !important;
-    border-radius: 1.25rem !important; //20px
-  }
-
-  /* 3. 내부 이미지 둥글기 적용 */
+  // 2. 내부 이미지 둥글기 적용
   .c-gallery__list .c-gallery__image {
     border-radius: 1.25rem !important; //20px
     display: block;
@@ -42,16 +35,16 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 ## 2. 새로고침 직후 나머지 이미지가 함께 보임
 
-**현상:** Slick이 초기화되기 전에는 원본 이미지 버튼들이 일반 문서 흐름에 나타날 수 있다.
+**현상:** Slick이 초기화되기 전에는 원본 슬라이드들이 일반 문서 흐름에 나타날 수 있다.
 
-**대응:** 초기화 클래스가 없는 동안 첫 버튼만 표시한다. Slick 초기화 후에는 이 규칙이 적용되지 않는다.
+**대응:** 초기화 클래스가 없는 동안 첫 슬라이드만 표시한다. Slick 초기화 후에는 이 규칙이 적용되지 않는다.
 
 위치: `src/scss/components/_gallery.scss`의 `.c-gallery__list` 중첩 규칙을 펼친 코드.
 
 ```scss
 .c-gallery .c-gallery__stage .c-gallery__list {
   &:not(.slick-initialized) {
-    > .c-gallery__open:not(:first-child) {
+    > .c-gallery__slide:not(:first-child) {
       display: none;
     }
   }
@@ -121,7 +114,7 @@ $(window).on('resize', () => {
 
 **현상:** `infinite: true`에서 생긴 복제 슬라이드까지 이미지 목록에 포함되어 라이트박스 순서·총 이미지 수·썸네일 대응이 어긋났다.
 
-**원인:** 이전 코드는 버튼 자체의 `.slick-cloned`만 제외했다. 실제 복제 표시는 버튼의 조상 슬라이드에 붙을 수 있다.
+**원인:** 이전 코드는 슬라이드 버튼 자체의 `.slick-cloned`만 제외했다. 실제 복제 표시는 그 조상 슬라이드에 붙을 수 있다.
 
 수정 전 선택자 — `eb7cb59` 커밋에서 확인한 과거 코드:
 
@@ -133,11 +126,11 @@ gallery.querySelectorAll('.c-gallery__open:not(.slick-cloned) img');
 
 ```js
 const images = Array.from(
-  gallery.querySelectorAll('.c-gallery__open img'),
+  gallery.querySelectorAll('.c-gallery__image'),
 ).filter((image) => !image.closest('.slick-cloned'));
 ```
 
-현재 설치된 Slick의 `buildRows`는 `rows > 0`에서 래퍼를 생성한다. 과거 문서의 “기본 rows에서는 버튼 자체가 항상 슬라이드”라는 설명은 현재 소스에 적용하지 않는다. 슬라이드 판별에는 버튼 자체의 클래스만 확인하지 말고 `closest('.slick-slide')` 등 실제 조상 구조를 확인한다.
+현재 설치된 Slick의 `buildRows`는 `rows > 0`에서 래퍼를 생성한다. 과거 문서의 “기본 rows에서는 마크업의 슬라이드 요소 자체가 항상 슬라이드”라는 설명은 현재 소스에 적용하지 않는다. 슬라이드 판별에는 요소 자체의 클래스만 확인하지 말고 `closest('.slick-slide')` 등 실제 조상 구조를 확인한다.
 
 ## 6. 기존 화살표의 위치와 화면별 표시가 어긋남
 
@@ -145,7 +138,7 @@ const images = Array.from(
 
 **대응:** HTML에서 갤러리 스테이지 안에 버튼을 배치하고 CSS로 기준 위치를 정했다. 모바일·태블릿은 화살표, 데스크톱은 썸네일을 제공한다.
 
-위치: `src/pages/index.html`, `src/scss/components/_gallery.scss`. 아래는 중첩 선택자를 정리한 발췌다.
+위치: `src/pages/components/product.html`, `src/scss/components/_gallery.scss`. 아래는 중첩 선택자를 정리한 발췌다.
 
 ```scss
 .c-gallery .c-gallery__stage {
@@ -158,7 +151,7 @@ const images = Array.from(
     display: grid;
 
     @include mq('desktop') {
-      display: none;
+      display: none !important;
     }
   }
   .c-gallery__control--prev { inset-inline-start: 1rem; }
@@ -166,7 +159,7 @@ const images = Array.from(
 }
 ```
 
-`840ca3c`에서는 갤러리 컨트롤의 화면별 표시를 CSS 미디어 쿼리로 옮겼다. Slick의 생성 DOM이나 인라인 스타일을 추측해서 덮어쓰기 전에 computed style과 실제 배치를 확인한다.
+`840ca3c`에서는 갤러리 컨트롤의 화면별 표시를 CSS 미디어 쿼리로 옮겼다. 그런데 Slick은 초기화할 때 화살표에 `.show()`를 호출하고, jQuery가 넣은 인라인 `display`가 데스크톱의 `display: none`을 덮었다. 그래서 데스크톱 너비에서 페이지를 열면 숨겨야 할 화살표가 보이고 Tab 순서에도 들어갔다. computed style과 인라인 `style` 속성으로 원인을 확인한 뒤 데스크톱 규칙에만 `!important`를 붙였다.
 
 ## 7. 슬라이드와 썸네일·현재 위치 안내가 따로 움직임
 
@@ -205,24 +198,22 @@ $status.text(
 
 ## 8. 포커스 외곽선이 잘리거나 모바일에 실행 불가능한 조작이 남음
 
-**외곽선 문제:** Slick의 클리핑과 이미지 버튼의 `overflow`가 바깥 포커스 표시를 자를 수 있다. `src/scss/components/_gallery.scss`에서는 이미지 버튼의 `:focus-visible`에 `outline-offset: -6px`을 지정해 안쪽에 표시한다.
+**외곽선 문제:** 큰 이미지 열기 버튼은 stage 경계에 붙어 있어 바깥 포커스 표시가 잘릴 수 있다. `src/scss/components/_gallery.scss`에서는 이 버튼의 `:focus-visible`에 `outline-offset: -6px`을 지정해 안쪽에 표시한다.
 
-**모바일 문제:** 라이트박스는 데스크톱 전용이므로 모바일에서는 이미지 버튼을 `disabled`로 만들고 대화상자를 여는 ARIA 속성도 제거한다. 화면 변경 시 포커스가 있었다면 다음 이미지 버튼으로 옮긴다.
+**이전 모바일 처리:** 슬라이드마다 이미지 버튼을 두고, 모바일에서는 `disabled`와 ARIA 속성 제거로 비활성화했다. 이 방식에서는 스크린 리더가 슬라이드마다 “사용 불가 버튼”을 읽었다. 또 화면 전환과 Slick 재초기화 때마다 `syncImageControls`로 속성과 tabindex를 맞춰야 했다.
 
-**복제 슬라이드 대응:** `src/js/main.js`의 `syncImageControls`는 데스크톱 초기 동기화에서 표시 중인 원본 슬라이드만 Tab 순서에 포함하며 Slick 재초기화에서도 동기화한다.
+**현재 구조:** 슬라이드는 `div.c-gallery__slide`이고, 열기 버튼은 stage를 덮는 `.c-gallery__open` 하나다. 1024px 미만에서는 CSS의 `display: none`으로 빠지므로 스크립트 동기화가 필요 없다. 버튼이 복제 슬라이드 밖에 있어 복제본의 Tab 순서 문제도 생기지 않는다. 버튼을 누르면 `slickCurrentSlide`로 현재 슬라이드를 열고, 닫으면 포커스를 이 버튼으로 돌려준다.
 
 ```js
-const slide = element.closest('.slick-slide');
-element.tabIndex = slide
-  ? (slide.classList.contains('slick-active') && !slide.classList.contains('slick-cloned') ? 0 : -1)
-  : (element.contains(images[0]) ? 0 : -1);
-
-// initLightbox 내부의 이벤트 등록
-$(gallery).on('reInit', syncImageControls);
-syncImageControls();
+openButton.addEventListener('click', () => {
+  if (!desktop.matches || dialog.open) return;
+  showImage(currentSlide());
+  dialog.showModal();
+  closeButton.focus({ preventScroll: true });
+});
 ```
 
-일반 슬라이드 전환 후에는 Slick 자체 접근성 처리도 동작하므로, 위 코드만으로 모든 전환의 Tab 순서를 보장하지 않는다. 래퍼 구조, 비표시·복제 슬라이드, 1023↔1024px 포커스를 실제 브라우저에서 확인한다. 자세한 내용은 Storybook의 ‘가이드/웹 접근성’을 참조한다.
+데스크톱에서는 버튼이 stage를 덮으므로 Slick의 마우스 드래그 이동은 동작하지 않는다. 데스크톱의 이미지 전환은 썸네일이 맡는다. 1023↔1024px 전환에서의 포커스는 실제 브라우저에서 확인한다. 자세한 내용은 Storybook의 ‘가이드/웹 접근성’을 참조한다.
 
 ## 9. 동작 줄이기 설정이 슬라이드에 반영되지 않음
 
