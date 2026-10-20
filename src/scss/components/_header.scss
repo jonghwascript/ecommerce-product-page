@@ -24,19 +24,37 @@
   }
 
   // 관계: 시작 묶음(메뉴 버튼·로고·내비)과 actions가 한 행에 놓이고, actions는 자동 여백으로 오른쪽 끝에 붙는다.
-  // 전환: l-cluster라 가용 너비가 부족하면 actions가 다음 줄로 넘어갈 수 있다.
+  // 제한: l-cluster의 줄바꿈을 막아 항상 한 행을 유지한다. 공간이 부족하면 시작 묶음이 줄어든다.
   // l-cluster 기본값(가운데 정렬)을 왼쪽 정렬로 덮는다.
   .c-header__inner {
     justify-content: flex-start;
+    flex-wrap: nowrap;
 
     // 관계: 메뉴 버튼·로고·(desktop) 내비 링크를 기준선에 맞춰 --space 간격으로 놓는다.
-    // 전환: desktop(≥1024px)에서 간격이 1rem → 3.5rem으로 넓어진다.
+    // 제한: desktop 전에는 줄바꿈 대신 로고가 비율을 유지하며 줄어든다.
+    // 전환: desktop(≥1024px)에서 간격이 1rem → 3.5rem으로 넓어지고, 내비 링크는 공간이 부족하면 줄바꿈할 수 있다.
     .c-header__start {
       --space: 1rem;
       align-items: baseline;
+      min-inline-size: 0;
+      flex-wrap: nowrap;
 
       @include mq('desktop') {
         --space: 3.5rem;
+        flex-wrap: wrap;
+      }
+
+      // 메뉴 버튼은 크기를 유지하고 로고만 줄어들게 한다.
+      .c-header__menu-toggle {
+        flex-shrink: 0;
+      }
+
+      .c-header__logo {
+        min-inline-size: 0;
+
+        img {
+          height: auto; // width·height 속성 대신 줄어든 너비에 맞춰 비율 유지
+        }
       }
 
       // 관계: 뷰포트 전체를 덮고 내비(z-index 999) 아래, 페이지 위(99)에 놓인다.
@@ -177,8 +195,11 @@
   }
 }
 
+// 관계: 자동 여백으로 헤더 행의 오른쪽 끝에 붙는다.
+// 제한: 줄어들지 않아 장바구니와 아바타가 항상 한 줄로 남고, 부족한 공간은 로고가 줄어 흡수한다.
 .c-header__actions {
   margin-inline-start: auto;
+  flex-shrink: 0;
   --space: 1.5rem;
 
   .c-header__cart {
