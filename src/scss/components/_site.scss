@@ -1,10 +1,12 @@
 @use '../mixins' as *;
 
-/* ################# c-site  ################ */
+// ################# c-site  ################
 
+// 관계: .c-site(l-stack)의 --space가 header와 main 사이 세로 간격(gap)이 된다.
+// 전환: desktop(≥1024px) 전에는 l-stack 기본값 1.5rem, 이후에는 아래 값을 쓴다.
 .c-site {
   @include mq('desktop') {
-    //header와 main의 간격(96x)에서 장식선의 높이(44px)를 뺀다
+    // 6rem에서 header 장식선 위 여백(2.75rem, _header.scss)을 뺀 값이라 두 값을 함께 유지한다.
     --space: calc(6rem - 2.75rem); //96px - 44px
   }
 }

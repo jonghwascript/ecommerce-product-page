@@ -1,8 +1,10 @@
+// 관계: l-center라 페이지 콘텐츠 너비(--page-max)까지 가운데 정렬된다.
 .c-attribution {
   border: 0;
   font-size: 0.6875rem;
   text-align: center;
 
+  // 제한: reset의 단락 60ch 제한을 풀어 attribution 너비 전체를 쓴다.
   >p {
     max-inline-size: 100%;
   }

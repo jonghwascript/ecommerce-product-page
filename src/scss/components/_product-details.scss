@@ -3,6 +3,7 @@
 @use '../mixins' as *;
 
 //제품정보
+// 관계: 제목 묶음·가격·구매 폼을 2rem 간격으로 쌓는다. 가로 두 열에서 갤러리보다 짧으면 세로 가운데에 놓인다.
 .c-product__details {
   --space: 2rem;
   justify-content: center;
@@ -38,6 +39,8 @@
     }
   }
 
+  // 관계: 할인가 묶음과 원가를 양 끝에 나눠 한 행에 놓는다(l-cluster, between).
+  // 전환: tablet(≥768px)부터 세로로 쌓고 왼쪽에 맞추며 간격은 0.5rem이 된다.
   .c-product__price {
     @include mq('tablet') {
       flex-direction: column;

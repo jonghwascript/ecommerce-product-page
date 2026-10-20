@@ -1,10 +1,14 @@
 @use '../mixins' as *;
 
-/* ################# Main   ################ */
+// ################# Main   ################
+// 관계: 갤러리와 상품 정보가 l-switcher의 두 열이다. 레이아웃 너비는 .c-product(l-center)의 콘텐츠 너비를 따른다.
+// 전환: 레이아웃 너비가 --threshold 이상이면 가로 두 열, 미만이면 세로로 쌓인다.
 .c-product__layout {
   // 화면 1024px(64rem)에서 가로 전환: 화면 폭 − 좌우 여백 = 레이아웃 너비
+  // rem 기준이라 루트 글꼴 크기가 바뀌면 px 미디어 쿼리(1024px)와 전환 시점이 어긋날 수 있다.
   --threshold: calc(64rem - 2 * var(--gutter-inline, var(--s1)));
 
+  // 관계: 두 열 사이 간격은 뷰포트 너비에 따라 1.5rem~8rem 사이에서 변한다.
   @include mq('desktop') {
     gap: clamp(1.5rem, calc(-75.895rem + 120.93vw), 8rem);
   }
@@ -14,6 +18,7 @@
     min-inline-size: 0; // = min-width: 0
 
     // 모바일: l-center 여백만큼 밖으로 확장 (full-bleed)
+    // em 미디어 쿼리는 루트 글꼴이 아니라 브라우저 기본 글꼴 크기를 기준으로 한다.
     @media (max-width: 63.99em) {
       // 프로젝트 분기점에 맞춤
       margin-inline: calc(var(--gutter-inline, var(--s1)) * -1);

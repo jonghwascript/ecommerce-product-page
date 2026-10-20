@@ -2,6 +2,8 @@
 @use '../mixins' as *;
 
 // 갤러리 자체를 독립적인 컴포넌트로 정의
+// 관계: 큰 이미지 영역(stage)과 썸네일 목록을 l-stack으로 쌓는다.
+// 전환: desktop(≥1024px)에서 둘 사이 간격이 2rem이 된다.
 .c-gallery {
   @include mq('desktop') {
     --space: 2rem; // 32px
@@ -27,6 +29,8 @@
           outline-offset: -6px;
         }
 
+        // 관계: 너비는 갤러리 너비를 따르고, 높이는 l-frame 비율(--n / --d)로 정해진다. 이미지는 비율에 맞춰 잘린다.
+        // 전환: 375:300 → tablet(≥768px) 608:290 → desktop(≥1024px) 448:445.
         .c-gallery__frame {
           --n: 375;
           --d: 300;
@@ -46,6 +50,9 @@
     }
 
     //이전 다음 버튼
+    // 관계: stage 기준으로 세로 가운데, 좌우 끝에서 1rem 안쪽에 겹쳐 놓인다.
+    // 제한: 2.5rem 원형 고정 크기다.
+    // 전환: desktop(≥1024px)에서는 썸네일로 대체되어 숨긴다.
     .c-gallery__control {
       position: absolute;
       top: 50%;
@@ -88,6 +95,9 @@
   }
 
   //썸네일
+  // 관계: 4개 항목이 2rem 간격을 뺀 갤러리 너비를 똑같이 나누고, 각 썸네일은 1:1 비율이라 높이도 함께 변한다.
+  // 제한: nowrap이라 줄바꿈하지 않는다.
+  // 전환: desktop(≥1024px)에서만 표시된다.
   .c-gallery__thumbs {
     display: none;
 
