@@ -139,9 +139,11 @@ test('gallery slide navigation and integrated desktop lightbox', async ({
   await expect(frame.locator('.c-gallery__thumbs')).toHaveCount(0);
   await frame.locator('.c-gallery__control--next').click();
   await expect(frame.locator('.c-gallery__status')).toHaveText('Image 2 of 4');
-  await expect(frame.locator('.slick-active .c-gallery__open')).toBeDisabled();
+  // 모바일에서는 열기 버튼이 display: none이라 접근 트리에서도 빠진다.
+  const opener = frame.locator('.c-gallery__open');
+  await expect(opener).toBeHidden();
   await page.setViewportSize({ width: 1440, height: 1000 });
-  const opener = frame.locator('.slick-active .c-gallery__open');
+  await expect(opener).toBeVisible();
   await opener.click();
   await expect(frame.locator('.c-lightbox')).toBeVisible();
   await expect(frame.locator('.c-lightbox__status')).toHaveText('Image 2 of 4');

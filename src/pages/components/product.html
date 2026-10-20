@@ -8,12 +8,7 @@
       <div class="c-gallery__stage slider">
         <div class="c-gallery__list my-slider" id="gallery-slides">
           <!-- 사진 1번  -->
-          <button
-            class="c-gallery__open"
-            type="button"
-            aria-haspopup="dialog"
-            aria-controls="lightbox"
-          >
+          <div class="c-gallery__slide">
             <span class="c-gallery__frame l-frame">
               <img
                 class="c-gallery__image"
@@ -23,15 +18,9 @@
                 height="445"
               />
             </span>
-            <span class="u-sr-only">Open larger view</span>
-          </button>
+          </div>
           <!-- 사진 2번  -->
-          <button
-            class="c-gallery__open"
-            type="button"
-            aria-haspopup="dialog"
-            aria-controls="lightbox"
-          >
+          <div class="c-gallery__slide">
             <span class="c-gallery__frame l-frame">
               <img
                 class="c-gallery__image"
@@ -41,15 +30,9 @@
                 height="445"
               />
             </span>
-            <span class="u-sr-only">Open larger view</span>
-          </button>
+          </div>
           <!-- 사진 3번 -->
-          <button
-            class="c-gallery__open"
-            type="button"
-            aria-haspopup="dialog"
-            aria-controls="lightbox"
-          >
+          <div class="c-gallery__slide">
             <span class="c-gallery__frame l-frame">
               <img
                 class="c-gallery__image"
@@ -59,15 +42,9 @@
                 height="445"
               />
             </span>
-            <span class="u-sr-only">Open larger view</span>
-          </button>
+          </div>
           <!-- 사진 4번  -->
-          <button
-            class="c-gallery__open"
-            type="button"
-            aria-haspopup="dialog"
-            aria-controls="lightbox"
-          >
+          <div class="c-gallery__slide">
             <span class="c-gallery__frame l-frame">
               <img
                 class="c-gallery__image"
@@ -77,9 +54,17 @@
                 height="445"
               />
             </span>
-            <span class="u-sr-only">Open larger view</span>
-          </button>
+          </div>
         </div>
+        <!-- 큰 이미지 보기 (desktop 전용, CSS로 모바일에서 제거) -->
+        <button
+          class="c-gallery__open"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="lightbox"
+        >
+          <span class="u-sr-only">Open larger view</span>
+        </button>
         <!-- 이전 사진 보기  -->
         <button
           class="c-gallery__control c-gallery__control--prev c-icon-button c-icon-button--round"

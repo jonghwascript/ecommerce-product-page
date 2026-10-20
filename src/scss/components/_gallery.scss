@@ -16,18 +16,13 @@
 
       //Slick 초기화 전에 나머지 이미지를 숨긴다.
       &:not(.slick-initialized) {
-        >.c-gallery__open:not(:first-child) {
+        >.c-gallery__slide:not(:first-child) {
           display: none;
         }
       }
 
-      .c-gallery__open {
+      .c-gallery__slide {
         overflow: hidden;
-
-        // Slick의 overflow에 잘리지 않도록 이미지 안쪽에 표시한다.
-        &:focus-visible {
-          outline-offset: -6px;
-        }
 
         // 관계: 너비는 갤러리 너비를 따르고, 높이는 l-frame 비율(--n / --d)로 정해진다. 이미지는 비율에 맞춰 잘린다.
         // 전환: 375:300 → tablet(≥768px) 608:290 → desktop(≥1024px) 448:445.
@@ -46,6 +41,26 @@
             --d: 445;
           }
         }
+      }
+    }
+
+    // 큰 이미지 보기 버튼
+    // 관계: stage 전체를 덮어 현재 슬라이드 위에 겹친다. 이미지는 버튼 밖에 있으므로 이름은 숨김 텍스트로 준다.
+    // 전환: desktop(≥1024px)에서만 표시한다. 그 전에는 display: none이라 키보드·보조 기술에서도 제외된다.
+    .c-gallery__open {
+      display: none;
+
+      @include mq('desktop') {
+        display: block;
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        border-radius: 1.25rem; //20px, 슬라이드 창과 같은 반경
+      }
+
+      // stage 경계에 붙어 있으므로 버튼 안쪽에 표시한다.
+      &:focus-visible {
+        outline-offset: -6px;
       }
     }
 

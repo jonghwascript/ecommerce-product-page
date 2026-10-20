@@ -10,7 +10,8 @@
     opacity: 0.7;
   }
 
-  .c-gallery__open:not(:disabled):hover .c-gallery__image {
+  // 열기 버튼은 이미지 위에 겹친 형제 요소라 stage 기준으로 이미지를 흐리게 한다.
+  .c-gallery__stage:has(> .c-gallery__open:hover) .c-gallery__image {
     opacity: 0.85;
   }
 

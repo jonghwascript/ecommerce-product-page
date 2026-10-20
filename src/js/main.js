@@ -191,50 +191,29 @@ function initLightbox($) {
   const gallery = document.querySelector('.c-gallery__list');
   if (!dialog || !gallery) return;
 
-  // Slick은 버튼의 조상 슬라이드에 slick-cloned를 붙인다.
+  // Slick이 무한 반복용으로 복제한 슬라이드(.slick-cloned)는 제외한다.
   const images = Array.from(
-    gallery.querySelectorAll('.c-gallery__open img'),
+    gallery.querySelectorAll('.c-gallery__image'),
   ).filter((image) => !image.closest('.slick-cloned'));
+  // 열기 버튼은 desktop에서만 CSS로 표시되며, 모바일에서는 display: none으로 제외된다.
+  const openButton = gallery.closest('.c-gallery__stage')?.querySelector('.c-gallery__open');
   const image = dialog.querySelector('.c-lightbox__image');
   const closeButton = dialog.querySelector('.c-lightbox__close');
   const thumbs = Array.from(dialog.querySelectorAll('.c-lightbox__thumb'));
-  if (!images.length || !image || !closeButton) return;
+  if (!images.length || !openButton || !image || !closeButton) return;
 
   const desktop = window.matchMedia('(min-width: 1024px)');
   let index = 0;
-  let opener = null;
 
   function focusGalleryControl() {
     gallery.closest('.c-gallery')
       .querySelector('.c-gallery__control--next')?.focus({ preventScroll: true });
   }
 
-  function syncImageControls() {
-    gallery.querySelectorAll('.c-gallery__open').forEach((element) => {
-      const hadFocus = document.activeElement === element;
-      // 버튼 노드는 유지하고 모바일에서는 네이티브 disabled 상태로 비활성화한다.
-      element.disabled = !desktop.matches;
-      element.querySelector('.u-sr-only').hidden = !desktop.matches;
-      if (desktop.matches) {
-        element.setAttribute('type', 'button');
-        element.setAttribute('aria-haspopup', 'dialog');
-        element.setAttribute('aria-controls', dialog.id);
-        const slide = element.closest('.slick-slide');
-        element.tabIndex = slide
-          ? (slide.classList.contains('slick-active') && !slide.classList.contains('slick-cloned') ? 0 : -1)
-          : (element.contains(images[0]) ? 0 : -1);
-      } else {
-        element.removeAttribute('tabindex');
-        element.removeAttribute('aria-haspopup');
-        element.removeAttribute('aria-controls');
-        if (hadFocus) focusGalleryControl();
-      }
-    });
+  // Slick이 없거나 초기화 전이면 첫 번째 이미지가 보이는 상태다.
+  function currentSlide() {
+    return $(gallery).hasClass('slick-initialized') ? $(gallery).slick('slickCurrentSlide') : 0;
   }
-
-  // 재초기화로 생성된 복제 슬라이드에도 현재 화면의 의미를 적용한다.
-  $(gallery).on('reInit', syncImageControls);
-  syncImageControls();
 
   function showImage(nextIndex) {
     index = (nextIndex + images.length) % images.length;
@@ -249,11 +228,9 @@ function initLightbox($) {
       `Image ${index + 1} of ${images.length}`;
   }
 
-  $(gallery).on('click', '.c-gallery__open', (event) => {
-    if (!desktop.matches || event.currentTarget.disabled || dialog.open) return;
-    opener = event.currentTarget;
-    const selected = opener.querySelector('img');
-    showImage(Math.max(0, images.findIndex((item) => item.src === selected.src)));
+  openButton.addEventListener('click', () => {
+    if (!desktop.matches || dialog.open) return;
+    showImage(currentSlide());
     dialog.showModal();
     closeButton.focus({ preventScroll: true });
   });
@@ -261,11 +238,11 @@ function initLightbox($) {
   closeButton.addEventListener('click', () => dialog.close());
   desktop.addEventListener('change', (event) => {
     if (!event.matches && dialog.open) dialog.close();
-    syncImageControls();
   });
+  // 모바일로 전환되어 닫혔다면 열기 버튼이 숨겨졌으므로 갤러리 다음 버튼으로 보낸다.
   dialog.addEventListener('close', () => {
-    if (!desktop.matches) focusGalleryControl();
-    else if (opener?.isConnected) opener.focus({ preventScroll: true });
+    if (desktop.matches) openButton.focus({ preventScroll: true });
+    else focusGalleryControl();
   });
   dialog.querySelector('.c-lightbox__control--prev')
     .addEventListener('click', () => showImage(index - 1));
