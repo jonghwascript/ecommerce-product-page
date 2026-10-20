@@ -1,11 +1,30 @@
 @use '../fonts' as *;
 @use '../variables' as *;
+@use '../mixins' as *;
+
+// 관계: desktop에서 수량 선택기와 장바구니 버튼을 1rem 간격으로 한 행에 놓는다.
+// 수량 선택기는 간격을 뺀 폼 너비의 35.28%로 고정하고, 버튼이 나머지(64.72%)를 채운다(약 1 : 1.83).
+// 제한: 두 항목의 합이 폼 너비와 같아 한 행에 남는다. l-switcher의 --threshold 계산 대신 이 값이 너비를 정한다.
+// 전환: 줄바꿈은 허용하므로 에러 메시지(flex-basis 100%)는 다음 줄로 내려간다.
+// desktop(≥1024px) 전에는 l-switcher 규칙대로 폼 너비 30rem을 기준으로 가로·세로가 바뀐다.
+.c-purchase{
+  @include mq('desktop'){
+    gap: 1rem;
+    .c-quantity{
+      flex: 0 0 calc((100% - 1rem) * 0.3528);
+    }
+
+    // 기준 크기 0에서 남은 공간을 채운다. 패딩이 있어도 수량 선택기와의 비율이 어긋나지 않는다.
+    .c-purchase__submit{
+      flex: 1 1 0;
+    }
+  }
+}
 
 // 관계: 감소 버튼·수량·증가 버튼이 1:3:1 비율로 수량 선택기 너비를 나눈다.
 // 제한: 줄바꿈 없이 한 행을 유지한다.
 .c-quantity {
   display: flex;
-
   .c-quantity__button--decrease {
     border-top-left-radius: 0.625rem; //10px
     border-bottom-left-radius: 0.625rem; //10px
@@ -32,6 +51,7 @@
 
 // switcher 안에서 항상 한 줄 전체를 차지하고, 비어 있으면 간격을 만들지 않는다.
 // 관계: .c-purchase(l-switcher)는 폼 너비가 --threshold(기본 30rem) 이상이면 수량 선택기와 버튼을 한 행에, 미만이면 세로로 놓는다.
+// 이 규칙은 .c-purchase가 줄바꿈을 허용해야 성립한다(desktop 포함).
 .c-purchase__error {
   flex-basis: 100%;
   @include text-preset-3-R;
