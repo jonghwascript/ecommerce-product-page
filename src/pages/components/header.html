@@ -1,0 +1,116 @@
+<header class="c-header">
+  <div class="c-header__inner l-center l-cluster">
+    <div class="c-header__start l-cluster">
+      <button
+        class="c-header__menu-toggle c-icon-button"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+      >
+        <svg aria-hidden="true" focusable="false" width="16" height="15">
+          <use href="./images/icon-menu.svg"></use>
+        </svg>
+        <span class="u-sr-only">Open menu</span>
+      </button>
+      <a
+        class="c-header__logo"
+        href="https://jonghwascript.github.io/ecommerce-product-page"
+      >
+        <img src="./images/logo.svg" alt="sneakers" width="138" height="20" />
+      </a>
+      <nav
+        class="c-header__nav c-nav l-stack"
+        id="primary-nav"
+        aria-label="Primary"
+        aria-hidden="true"
+        hidden
+      >
+        <button
+          class="c-nav__close c-icon-button"
+          type="button"
+          aria-controls="primary-nav"
+        >
+          <svg aria-hidden="true" focusable="false" width="14" height="15">
+            <use href="./images/icon-close.svg"></use>
+          </svg>
+          <span class="u-sr-only">Close menu</span>
+        </button>
+        <ul class="c-nav__list l-stack" role="list">
+          <li class="c-nav__item">
+            <a class="c-nav__link" href="#">Collections</a>
+          </li>
+          <li class="c-nav__item">
+            <a class="c-nav__link" href="#">Men</a>
+          </li>
+          <li class="c-nav__item">
+            <a class="c-nav__link" href="#">Women</a>
+          </li>
+          <li class="c-nav__item">
+            <a class="c-nav__link" href="#">About</a>
+          </li>
+          <li class="c-nav__item">
+            <a class="c-nav__link" href="#">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- 오버레이 -->
+      <div class="c-header__backdrop" aria-hidden="true"></div>
+    </div>
+    <div class="c-header__actions l-cluster">
+      <!-- 장바구니 열기 버튼  -->
+      <button
+        class="c-header__cart c-icon-button"
+        id="cart-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="cart-panel"
+      >
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          width="28"
+          height="24"
+          viewBox="0 0 22 20"
+        >
+          <use href="./images/icon-cart.svg"></use>
+        </svg>
+        <span class="u-sr-only">Cart</span>
+        <!-- 배치 카운터 -->
+        <span class="c-header__badge c-badge c-badge--count" data-count="0"
+          ><span class="u-sr-only">, 0 items</span></span
+        >
+      </button>
+      <!-- 내 프로필 보기  -->
+      <a class="c-header__avatar c-avatar" href="#">
+        <img
+          class="c-avatar__image"
+          src="./images/image-avatar.png"
+          alt=""
+          width="24"
+          height="24"
+        />
+        <span class="u-sr-only">My account</span>
+      </a>
+      <!-- 장바구니 리스트  -->
+      <section
+        class="c-header__cart-panel c-cart"
+        id="cart-panel"
+        aria-labelledby="cart-title"
+        hidden
+      >
+        <h2 class="c-cart__title" id="cart-title">Cart</h2>
+        <div class="c-cart__body l-stack">
+          <ul class="c-cart__list l-stack" role="list"></ul>
+          <button
+            class="c-cart__checkout c-button c-button--primary c-button--block"
+            type="button"
+          >
+            Checkout
+          </button>
+          <p class="c-cart__empty" hidden>Your cart is empty.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <p class="u-sr-only" id="cart-status" role="status"></p>
+</header>
