@@ -9,14 +9,15 @@ body {
   background-color: #fff;
 }
 
+// header는 안쪽 .c-header__inner(l-center)와 장식선(::after)이 함께 쓰도록 header에 선언한다.
 .c-attribution,
-.c-header__inner,
+.c-header,
 .c-product {
   --measure: var(--page-max);
 }
 
 // 페이지 좌우 여백: header와 상품 영역이 같은 값을 쓴다
-.c-header__inner,
+.c-header,
 .c-product {
   @include mq('tablet') {
     --gutter-inline: 5rem; //80px

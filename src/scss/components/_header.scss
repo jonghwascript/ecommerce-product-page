@@ -8,13 +8,15 @@
   position: relative;
   padding-block: 1.1875rem; //19px
 
-  // 관계: 장식선은 header 너비 전체에 걸쳐 내용 아래 2.75rem에 놓인다.
+  // 관계: 장식선은 .c-header__inner(l-center)의 콘텐츠 폭과 같은 식으로 가운데에 놓여 로고~아바타 너비와 맞는다.
+  // 세로로는 내용 아래 2.75rem에 놓인다.
   // 전환: desktop(≥1024px)에서만 생성된다.
   @include mq('desktop') {
     &::after {
       content: '';
       display: block;
-      width: 100%;
+      width: min(var(--measure), 100% - 2 * var(--gutter-inline, var(--s1)));
+      margin-inline: auto;
       margin-block-start: 2.75rem; //44px
       height: 1px;
       background-color: $Grey-100;
