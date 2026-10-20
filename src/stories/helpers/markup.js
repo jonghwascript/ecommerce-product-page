@@ -1,5 +1,21 @@
-import pageSource from '../../pages/index.html?raw';
+import pageTemplate from '../../pages/index.html?raw';
 import { inlineIcons } from './icons';
+
+// index.html pulls its sections in with gulp-file-include (@@include).
+// Resolve those directives from the source partials the same way the build does.
+const partials = import.meta.glob('../../pages/components/*.html', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+const pageSource = pageTemplate.replace(
+  /@@include\(\s*['"]\.\/components\/([^'"]+)['"]\s*\)/g,
+  (_directive, file) => {
+    const partial = partials[`../../pages/components/${file}`];
+    if (partial === undefined) throw new Error(`Missing page partial: ${file}`);
+    return partial;
+  },
+);
 
 // Reuse source markup, never generated dist files or executable page scripts.
 export function pageDocument() {
