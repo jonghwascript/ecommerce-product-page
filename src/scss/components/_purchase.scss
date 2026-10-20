@@ -7,15 +7,15 @@
 // 제한: 두 항목의 합이 폼 너비와 같아 한 행에 남는다. l-switcher의 --threshold 계산 대신 이 값이 너비를 정한다.
 // 전환: 줄바꿈은 허용하므로 에러 메시지(flex-basis 100%)는 다음 줄로 내려간다.
 // desktop(≥1024px) 전에는 l-switcher 규칙대로 폼 너비 30rem을 기준으로 가로·세로가 바뀐다.
-.c-purchase{
-  @include mq('desktop'){
+.c-purchase {
+  @include mq('desktop') {
     gap: 1rem;
-    .c-quantity{
+    .c-quantity {
       flex: 0 0 calc((100% - 1rem) * 0.3528);
     }
 
     // 기준 크기 0에서 남은 공간을 채운다. 패딩이 있어도 수량 선택기와의 비율이 어긋나지 않는다.
-    .c-purchase__submit{
+    .c-purchase__submit {
       flex: 1 1 0;
     }
   }
@@ -25,14 +25,17 @@
 // 제한: 줄바꿈 없이 한 행을 유지한다.
 .c-quantity {
   display: flex;
-  .c-quantity__button--decrease {
+  &__button--decrease {
     border-top-left-radius: 0.625rem; //10px
     border-bottom-left-radius: 0.625rem; //10px
     background-color: $Grey-50;
     flex: 1;
+    @include mq('desktop') {
+      padding-inline: 13.5px;
+    }
   }
 
-  .c-quantity__value {
+  &__value {
     flex: 3;
     background-color: $Grey-50;
     padding: 1rem;
@@ -41,11 +44,14 @@
     color: $Grey-950;
   }
 
-  .c-quantity__button--increase {
+  &__button--increase {
     border-top-right-radius: 0.625rem; //10px
     border-bottom-right-radius: 0.625rem; //10px
     background-color: $Grey-50;
     flex: 1;
+    @include mq('desktop') {
+      padding-inline: 13.5px;
+    }
   }
 }
 
@@ -80,4 +86,3 @@
     }
   }
 }
-
