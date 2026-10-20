@@ -49,7 +49,8 @@ function initNavigation($) {
         hideNavTimer = setTimeout(() => {
           if (!isOpen && !desktop.matches) $nav.prop('hidden', true);
         }, 300);
-      } else {
+      } else if (!open) {
+        // 열 때는 위에서 푼 hidden을 유지하고, 처음부터 닫힌 경우에만 숨긴다.
         $nav.prop('hidden', true);
       }
     }

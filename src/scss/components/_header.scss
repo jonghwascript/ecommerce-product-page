@@ -136,8 +136,7 @@
 
 // 관계: 모바일 서랍 메뉴. 뷰포트 왼쪽에 붙은 전체 높이 패널이며, 닫힌 상태에서는 자기 너비만큼 왼쪽 화면 밖에 둔다.
 // 제한: 너비는 뷰포트 너비에 따라 15.625rem~18.813rem 사이에서 변한다. 내용이 높이를 넘으면 패널 안에서 스크롤한다.
-// 전환: .is-active이면 left: 0으로 들어온다. l-stack의 display가 HTML hidden 속성보다 우선하므로
-// 화면에서는 위치로 가려지며, 키보드·보조 기술 차단은 스크립트(hidden·inert·aria-hidden)가 맡는다.
+// 전환: .is-active이면 left: 0으로 들어온다. 닫힌 동안에는 스크립트가 hidden·inert·aria-hidden을 붙인다.
 .c-nav {
   --measure: clamp(15.625rem, calc(12.584rem + 12.977vw), 18.813rem);
   position: fixed;
@@ -169,6 +168,13 @@
 
   &.is-active {
     left: 0;
+  }
+
+  // l-stack의 display: flex가 브라우저 기본 [hidden] 숨김을 덮으므로 직접 상자를 제거한다.
+  // 스크립트 없이도 화면 밖 링크가 Tab 순서에 남지 않는다.
+  // desktop의 display: contents(.c-header__start 안, 더 높은 우선순위)는 hidden이 있어도 내비를 표시한다.
+  &[hidden] {
+    display: none;
   }
 
   .c-nav__list {
