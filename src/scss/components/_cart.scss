@@ -15,16 +15,16 @@
   // 전환: tablet(≥768px)부터 .c-header__actions 기준으로 오른쪽 끝을 맞추고, 아래 1rem에 22.8125rem 고정 너비로 놓인다.
   .c-header__cart-panel {
     position: absolute;
-    top: calc(100% + 0.5rem);
-    inset-inline: 0.4rem;
-    margin-inline-start: auto;
-    max-inline-size: 22.8125rem;
+    top: calc(100% + 0.5rem);     // absolute일 때 top의 100%는 기준 요소(.c-header, tablet부터 .c-header__actions)의 높이
+    inset-inline: 0.4rem;         // 좌우 앵커를 잡는다.
+    margin-inline-start: auto;    // 좌우 앵커가 잡혀 있어도 요소가 오른쪽으로 밀착된다.
+    max-inline-size: 22.8125rem;  // 모바일 화면 폭이 충분히 넓을 때: max-inline-size인 22.8125rem까지만 커집니다
     height: 16rem;
     z-index: 100;
 
     @include mq('tablet') {
       top: calc(100% + 1rem);
-      inset-inline: auto 0;
+      inset-inline: auto 0; // 왼쪽 기준선을 풀고 오른쪽을 0으로 고정합니다.
       width: 22.8125rem;
     }
   }
