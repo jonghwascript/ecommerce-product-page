@@ -80,8 +80,9 @@
       border-radius: 50%;
       background-color: #fff;
 
+      // Slick이 초기화할 때 화살표에 .show()로 인라인 display를 넣으므로 !important로 덮는다.
       @include mq('desktop') {
-        display: none;
+        display: none !important;
       }
 
       &:hover {
