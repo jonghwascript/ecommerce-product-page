@@ -1,0 +1,163 @@
+// Layout primitives from Every Layout by Heydon Pickering & Andy Bell
+// https://every-layout.dev/layouts — © Heydon Pickering & Andy Bell
+// Obtained via https://gist.github.com/Arkweid/18cc3e64c84e1292c2b3a5143bb02a2b
+// (no licence stated), then fixed and modified for this project.
+// Used under a purchased Every Layout licence held by the repository owner.
+// Not covered by this repository's license. Do not copy or redistribute.
+// 🚨 모든 기본 변수(Default Vars) 지정 완료 및 오타 수정판
+
+// ----------------------------------
+// The Stack: 세로 레이아웃의 지배자
+// 스택은 수직 여백을 삽입하는 용도 외에는 다른 목적으로 사용되어서는 안 됩니다
+// 자식들의 margin을 각각 관리하지 않고 부모가 수직 간격 규칙을 통제한다
+// ----------------------------------
+
+.l-stack {
+  // 1. 모듈러 스케일에 기반한 기본 간격 설정 (언제든 덮어쓸 수 있도록 CSS 변수 사용)
+  --space: 1.5rem;
+
+  // 2. 블록 요소들을 세로로 안전하게 쌓기 위한 모던 규칙
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  // 3. 자식 요소들 사이에 일정한 여백 주입
+  gap: var(--space, 1.5rem);
+}
+
+// 4. 자식 요소들의 기본 세로 여백 '백지화' (충돌 방지 핵심!)
+.l-stack > * {
+  margin-block: 0;
+}
+
+// ----------------------------------
+// The Box: 콘텐츠를 시각적으로 감싸는 컨테이너
+// 콘텐츠에 내부 공간과 경계를 제공한다.
+// ----------------------------------
+
+.l-box {
+  // 1. 패딩도 모듈러 스케일에 맞춰 변수로 관리 (기본 1.5rem)
+  // Box 요소는 모든 면 에 패딩을 적용 하거나, 아예 패딩을 적용하지 않아야 합니다
+  --padding: 1.5rem;
+  padding: var(--padding);
+
+  // 2. 기본적인 시각적 형태
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #1e293b;
+  border-radius: 0.5rem;
+
+  // 🚨 3. Every Layout의 시그니처: 고대비(High Contrast) 모드 방어
+  outline: 0.125rem solid transparent;
+  outline-offset: -0.125rem;
+}
+
+// ==========================================
+// The Center (가로 중앙 정렬 및 텍스트 너비 제한)
+// ==========================================
+.l-center {
+  // 패딩을 너비 계산에서 제외
+  box-sizing: content-box;
+  // 최대 너비를 텍스트 읽기 좋은 크기(Measure)로 제한
+  max-inline-size: var(--measure, 60ch);   // 기본값은 그대로 60ch
+  // 가로 여백만 자동으로 설정하여 중앙 정렬
+  margin-inline: auto;
+  // 최소 가로 여백 적용 (--gutter-inline으로 컴포넌트별 조정 가능)
+  padding-inline-start: var(--gutter-inline, var(--s1, 1.5rem));
+  padding-inline-end: var(--gutter-inline, var(--s1, 1.5rem));
+  //| padding | ←──── 60ch content ────→ | padding |
+}
+
+// ==========================================
+// The Cluster (가로 줄바꿈 배치 - 태그, 버튼 그룹용)
+// ==========================================
+.l-cluster {
+  // Flexbox 문맥 설정
+  display: flex;
+  // 자식 요소들이 넘치면 자연스럽게 줄바꿈 허용
+  flex-wrap: wrap;
+  // 간격 설정 (기본 1rem)
+  gap: var(--space, 1rem);
+  // 가로 정렬 방식 선택 (기본값 flex-start)
+  justify-content: center;
+  // 세로 정렬 방식 선택 (기본값 flex-start)
+  align-items: center;
+}
+
+.l-cluster[data-justify='between'] {
+  justify-content: space-between;
+}
+
+// ==========================================
+// The Switcher (임계점 도달 시 세로로 전환되는 레이아웃)
+// ==========================================
+.l-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gutter, var(--s1, 1.5rem));
+  // 레이아웃이 세로로 깨지는(breaks) 임계점 설정
+  --threshold: 30rem;
+}
+.l-switcher > * {
+  // 자식 요소들이 커질 수 있도록 허용
+  flex-grow: 1;
+  // --threshold를 기준으로 가로/세로 레이아웃 자동 전환 (수학적 트릭)
+  flex-basis: calc((var(--threshold) - 100%) * 999);
+}
+.l-switcher > :nth-last-child(n + 5),
+.l-switcher > :nth-last-child(n + 5) ~ * {
+  // 자식 요소가 4개를 초과하면 무조건 세로 배치로 전환
+  flex-basis: 100%;
+}
+
+// ==========================================
+// The Frame (비율 고정 미디어 컨테이너)
+// ==========================================
+.l-frame {
+  --n: 16; // 분자 (비율 가로)
+  --d: 9; // 분모 (비율 세로)
+  aspect-ratio: var(--n) / var(--d);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.l-frame > img,
+.l-frame > video {
+  inline-size: 100%;
+  block-size: 100%;
+  // 비율이 깨지지 않게 꽉 채움 (크롭 발생)
+  object-fit: cover;
+}
+
+// ==========================================
+// The Imposter (모달, 다이얼로그용 중앙 강제 배치)
+// ==========================================
+.l-imposter {
+  // 포지셔닝 방식 선택 (기본 absolute)
+  position: var(--positioning, absolute);
+  // 상단 좌측 모서리를 중앙에 배치
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  // 요소의 정중앙이 컨테이너의 정중앙이 되도록 재배치
+  transform: translate(-50%, -50%);
+}
+// ==========================================
+// The Icon (글꼴 크기에 맞춰지는 인라인 아이콘)
+// ==========================================
+.l-icon {
+  height: 0.75em;
+  // cap 단위가 지원되는 환경에서는 1cap으로 덮어씀 (대문자 높이에 맞춤)
+  height: 1cap;
+  width: 0.75em;
+  width: 1cap;
+}
+.l-with-icon {
+  // 단어 사이의 공백(word space)을 없애주는 인라인 플렉스 문맥
+  display: inline-flex;
+  align-items: baseline;
+}
+.l-with-icon .icon {
+  // 논리적 속성을 사용하여 텍스트 읽는 방향에 맞춰 여백 적용
+  margin-inline-end: var(--space, 0.5em);
+}

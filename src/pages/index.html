@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+    <title>Frontend Mentor | E-commerce product page</title>
+
+    <!-- Slick CSS 파일 -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css"
+    />
+
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body>
+    <a class="c-skip-link" href="#main">Skip to main content</a>
+    <div class="c-site l-stack">
+      <!-- Header -->
+      @@include('./components/header.html')
+      <!-- Main -->
+      <main class="c-page" id="main" tabindex="-1">
+        @@include('./components/product.html')
+      </main>
+    </div>
+    <!-- dialog -->
+     @@include('./components/dialog.html')
+    <!-- footer -->
+    @@include('./components/footer.html')
+    <script src="./js/lib/jquery-4.0.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+@use '../fonts' as *;
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// ################# Dialog   ################
+// 관계: inset 0 + margin auto로 뷰포트 가운데에 놓는다. l-imposter의 50% 위치·transform은 여기서 무효화한다.
+// 제한: 너비는 최대 34.375rem(좁은 화면에서는 뷰포트 − 2rem), 높이는 뷰포트 − 1rem까지이며 넘치면 dialog 안에서 스크롤한다.
+.c-lightbox {
+  position: fixed;
+  inset: 0;
+  transform: none;
+  margin: auto;
+  inline-size: min(34.375rem, calc(100% - 2rem));
+  max-block-size: calc(100dvh - 1rem);
+  padding: 1rem;
+  border: 0;
+  background: transparent;
+  overflow: auto;
+
+  // 전환: desktop(≥1024px)에서는 뷰포트 기준 축소(min)가 빠지고, 좌우 패딩이 --control-gutter로 넓어진다.
+  @include mq('desktop') {
+    // 좌우 패딩 증가분만큼 바깥 너비도 늘려 이미지 너비를 유지한다.
+    // 이 여백은 반쯤 밖으로 나가는 이전·다음 버튼(절반 1.75rem)을 담는다. 여백이 그보다 좁으면 버튼이 넘칠 수 있다.
+    --control-gutter: max(1rem, 34px);
+    inline-size: calc(34.375rem + 2 * (var(--control-gutter) - 1rem));
+    padding-inline: var(--control-gutter);
+  }
+
+  &::backdrop {
+    background: rgb(0 0 0 / 75%);
+  }
+
+  .c-lightbox__inner {
+    --space: 1rem;
+
+    @include mq('desktop') {
+      --space: 2rem;
+    }
+  }
+
+  .c-lightbox__close {
+    align-self: flex-end;
+
+    .btn-close-icon {
+      color: $Orange-500;
+    }
+  }
+
+  .c-lightbox__stage {
+    position: relative;
+  }
+
+  .c-lightbox__frame {
+    --n: 375;
+    --d: 300;
+
+    @include mq('tablet') {
+      --n: 608;
+      --d: 290;
+      border-radius: 0.9375rem;
+    }
+
+    @include mq('desktop') {
+      --n: 448;
+      --d: 445;
+      border-radius: 1.25rem; //20px
+    }
+  }
+
+  // 관계: stage 기준으로 세로 가운데, 좌우 끝에 놓인다.
+  // 제한: 3.5rem 원형 고정 크기다.
+  // 전환: desktop(≥1024px)에서 버튼 중심을 이미지 좌우 끝선으로 옮겨 절반이 dialog 패딩 영역에 걸친다.
+  .c-lightbox__control {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    inline-size: 3.5rem; //56px
+    block-size: 3.5rem; //56px
+    border-radius: 50%;
+    background: $White;
+  }
+
+  .c-lightbox__control--prev {
+    left: 0;
+    transform: translateY(-50%);
+
+    @include mq('desktop') {
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .c-lightbox__control--next {
+    right: 0;
+    transform: translateY(-50%);
+
+    @include mq('desktop') {
+      transform: translate(50%, -50%);
+    }
+  }
+
+  // 관계: 항목들이 2rem 간격을 뺀 목록 너비를 똑같이 나누고, 각 항목 안의 썸네일은 5.5rem 고정 크기다.
+  // 제한: 항목 최소 너비가 0이라 목록은 줄바꿈하지 않는다. 항목이 5.5rem보다 좁아지면 썸네일이 항목 밖으로 넘칠 수 있다.
+  .c-lightbox__thumbs {
+    margin-inline: auto;
+    --space: 2rem;
+
+    >.c-lightbox__thumb-item {
+      flex: 1;
+      min-inline-size: 0;
+    }
+  }
+
+  .c-lightbox__thumb {
+    -webkit-tap-highlight-color: transparent;
+    inline-size: 5.5rem; //88px
+  }
+
+  .c-lightbox__thumb-frame {
+    --n: 88;
+    --d: 88;
+    border: 2px solid transparent;
+    border-radius: 0.625rem;
+    background: $White;
+  }
+
+  .c-lightbox__thumb:hover img {
+    opacity: 0.5;
+  }
+
+  .c-lightbox__thumb.is-active .c-lightbox__thumb-frame {
+    border-color: $Orange-500;
+  }
+
+  .c-lightbox__thumb.is-active img {
+    opacity: 0.25;
+  }
+
+  button:hover {
+    color: $Orange-500;
+  }
+
+  button:focus-visible {
+    outline: 0.1875rem solid $Orange-500;
+    outline-offset: 0.1875rem;
+  }
+}
+
+// 전환: 라이트박스가 열려 있는 동안 페이지 스크롤을 막는다.
+body:has(.c-lightbox[open]) {
+  overflow: hidden;
+}
+
